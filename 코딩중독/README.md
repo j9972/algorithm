@@ -68,3 +68,18 @@ STACK
 
 기초수학
 #questions 2004 -> 0이 끝자리라는건 10의 배수라는 의미 이다
+
+graph
+
+1. sys.setrecursionlimit(10 \*\* 9) -> 재귀를 사용한다면 필수 코드
+
+2. 그래프는 노드의 개수 + 1 만큼의 크기로 만들면 된다
+   -> graph = [[] for \_ in range(n + 1)]
+
+3. 트리 구현시 지금 question 11724 에서는 간선의 양옆에는 u,v가 있다니
+   for \_ in range(m):
+   u, v = map(int, input().split())
+   graph[u].append(v)
+   graph[v].append(u)
+   이런식으로 구현하면 되고, 하나의 노드에 2개가 연결 된 경우는
+   -> graph[u].append([a,b]) 이런식
