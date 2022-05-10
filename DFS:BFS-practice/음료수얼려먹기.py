@@ -18,10 +18,9 @@ def dfs(x, y):
     return False
 
 
-count = 0
+res = 0
 for i in range(n):
     for j in range(m):
-        if dfs(i, j) == 1:
-            count += 1
-
-print(count)
+        if dfs(i, j) == True:
+            res += 1
+print(res)
