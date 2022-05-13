@@ -4,8 +4,7 @@ graph = []
 for i in range(n):
     graph.append(list(map(int, input().split())))
 
-# 벽을 설치하 뒤의 맵 리스트
-temp = [[0] * m for _ in range(n)]
+temp = [[0]*m for _ in range(n)]
 
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
@@ -17,7 +16,7 @@ def virus(x, y):
         nx = x + dx[i]
         ny = y + dy[i]
 
-        if nx >= 0 and nx < n and ny >= 0 and ny < m:
+        if nx < n and nx > 0 and ny > 0 and ny < m:
             if temp[nx][ny] == 0:
                 temp[nx][ny] = 2
                 virus(nx, ny)
@@ -35,7 +34,6 @@ def area():
 
 def dfs(count):
     global res
-    # count 는 울타리
     if count == 3:
         for i in range(n):
             for j in range(m):
