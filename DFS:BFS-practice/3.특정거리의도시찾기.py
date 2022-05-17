@@ -1,6 +1,4 @@
 from collections import deque
-from dis import dis
-from math import dist
 n, m, k, x = map(int, input().split())
 
 graph = [[] for _ in range(n+1)]
