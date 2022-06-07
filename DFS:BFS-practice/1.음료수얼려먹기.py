@@ -1,4 +1,5 @@
 n, m = map(int, input().split())
+
 graph = []
 for i in range(n):
     graph.append(list(map(int, input())))
@@ -9,18 +10,17 @@ def dfs(x, y):
         return False
     if graph[x][y] == 0:
         graph[x][y] = 1
-        dfs(x+1, y)
         dfs(x-1, y)
-        dfs(x, y+1)
+        dfs(x+1, y)
         dfs(x, y-1)
+        dfs(x, y+1)
         return True
     return False
 
 
-res = 0
+c = 0
 for i in range(n):
     for j in range(m):
         if dfs(i, j) == 1:
-            res += 1
-
-print(res)
+            c += 1
+print(c)
