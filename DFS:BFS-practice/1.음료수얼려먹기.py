@@ -1,12 +1,12 @@
 n, m = map(int, input().split())
 
 graph = []
-for _ in range(n):
+for i in range(n):
     graph.append(list(map(int, input())))
 
 
 def dfs(x, y):
-    if x <= -1 or x >= n or y <= -1 or x >= m:
+    if x <= -1 or x >= n or y <= -1 or y >= m:
         return False
     if graph[x][y] == 0:
         graph[x][y] = 1
@@ -18,11 +18,9 @@ def dfs(x, y):
     return False
 
 
-res = 0
+ans = 0
 for i in range(n):
     for j in range(m):
         if dfs(i, j) == True:
-            res += 1
-
-
-print(res)
+            ans += 1
+print(ans)
