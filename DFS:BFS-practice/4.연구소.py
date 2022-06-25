@@ -1,9 +1,11 @@
+# dfs 문제
+
 n, m = map(int, input().split())
 
-data = []
 graph = [[0] * m for _ in range(n)]
+data = []  # 이전
 
-for i in range(n):
+for _ in range(n):
     data.append(list(map(int, input().split())))
 
 dx = [-1, 1, 0, 0]
@@ -15,9 +17,10 @@ def virus(x, y):
     for i in range(4):
         nx = x + dx[i]
         ny = y + dy[i]
-        if nx < n and nx >= 0 and ny < m and ny >= 0:
-            if data[nx][ny] == 0:
-                data[nx][ny] = 2
+
+        if nx >= 0 and nx < n and ny >= 0 and ny < m:
+            if graph[nx][ny] == 0:
+                graph[nx][ny] = 2
                 virus(nx, ny)
 
 
