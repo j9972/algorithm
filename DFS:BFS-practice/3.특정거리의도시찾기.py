@@ -1,8 +1,9 @@
 from collections import deque
 
 n, m, k, x = map(int, input().split())
-graph = [[] for _ in range(n+1)]
 
+# data, graph 부분의 배열을 어떤식으로 만들어 놔야 할지 모르겠음
+graph = [[] for _ in range(n+1)]
 for i in range(m):
     a, b = map(int, input().split())
     graph[a].append(b)
@@ -24,5 +25,6 @@ for i in range(1, n+1):
     if distance[i] == k:
         print(i)
         check = True
+
 if check == False:
     print(-1)
