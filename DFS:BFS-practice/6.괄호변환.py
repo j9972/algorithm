@@ -41,5 +41,5 @@ def solution(p):
                 u[i] = ')'
             else:
                 u[i] = '('
-        ans += ''.join(u)
+        ans += ''.join(u)  # join은 문자열들을 합치는 역할을 한다
     return ans
