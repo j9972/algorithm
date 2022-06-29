@@ -35,3 +35,39 @@ for i in range(1, n+1):
 
 if check == False:
     print(-1)
+
+
+# from collections import deque
+
+# n,m,k,x = map(int,input().split())
+
+
+# graph = [[] for _ in range(n+1)]
+# for i in range(m):
+#     a,b = map(int,input().split())
+#     graph[a].append(b)
+
+# distacne = [-1] * (n+1)
+# distacne[x] = 0
+
+# queue = deque([x])
+
+# dx = [-1,1,0,0]
+# dy = [0,0,-1,1]
+
+# while queue:
+#     now = queue.popleft()
+#     while queue:
+#         for next in graph[now]:
+#             if distacne[next] == -1:
+#                 distacne[next] = distacne[now] + 1
+#                 queue.append(next)
+
+# check = False
+# for i in range(1,n+1):
+#     if distacne[i] == k:
+#         print(i)
+#         check = True
+
+# if check == False:
+#     print(-1)
