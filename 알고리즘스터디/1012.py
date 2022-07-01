@@ -1,7 +1,7 @@
 # dfs 문제
 import sys
-input = sys.stdin.readline
 sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
 # 런타임 에러때문에 써줘야함
 
 t = int(input())
@@ -37,6 +37,8 @@ for i in range(t):
         for j in range(m):
             if graph[i][j] != 0:
                 count += 1
+                # 함수를 재귀적으로 호출, 다른 방법으로는 이코테에 음료수 얼려먹기 방법도 있다
                 dfs(i, j)
 
-print(count)
+    # print(count) 이거 선언하는 위치 조심하기
+    print(count)

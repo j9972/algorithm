@@ -20,7 +20,7 @@ visitiedS = [False] * (n+1)
 
 def dfs(now):
     visitied[now] = True
-    print(now, end='')
+    print(now, end=' ')
 
     for i in graph[now]:
         if not visitied[i]:
@@ -33,13 +33,18 @@ def bfs(now):
 
     while queue:
         v = queue.popleft()
-        print(v, end='')
+        print(v, end=' ')
 
         for i in graph[v]:
             if not visitiedS[i]:
                 queue.append(i)
                 visitiedS[i] = True
 
+
+# graph를 정렬시켜줘야 bfs문제가 통과된다. ( 이유는 우선순위가 낮은순서로 되기때문이다)
+# range 범위가 1부터 n+1인 이유는 0번째 인덱스는 시작 간선을 체크하기때문
+for i in range(1, n+1):
+    graph[i].sort()
 
 # print(dfs(v)) 이런식으로 하면 마지막에 None이 발생하는데 이를 조심
 dfs(v)
