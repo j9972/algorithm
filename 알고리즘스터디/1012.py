@@ -1,3 +1,9 @@
+# dfs 문제
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**9)
+# 런타임 에러때문에 써줘야함
+
 t = int(input())
 
 dx = [-1, 1, 0, 0]
@@ -10,23 +16,27 @@ def dfs(x, y):
         ny = y + dy[i]
 
         if 0 <= nx < n and 0 <= ny < m:
-            if board[nx][ny] == 1:
-                board[nx][ny] = 2
+            if graph[nx][ny] == 1:
+                # 여기서 graph[nx][ny]이 값을 0이하로 바꿔줘야함
+                # 맨 아래 for 문에서 graph[i][j] 가 0이 아닐때 count 를 증가하므로
+                graph[nx][ny] = 0
                 dfs(nx, ny)
 
 
 for i in range(t):
+    m, n, k = map(int, input().split())
     count = 0
-    m, n, k = map(int, input().split())  # m = 가로, n = 세로 , k = 배추 개수
-    board = [[0] * m for _ in range(n)]  # 0으로 일단 만들어 놓은 배열 상태
+    graph = [[0]*m for _ in range(n)]
 
-    for j in range(k):
+    for _ in range(k):
         x, y = map(int, input().split())
-        board[y][x] = 1
+        # x의 범위가 0 부터 m-1까지 이므로 2번째에 오는게 맞다 ( 같은 원리로 y는 첫번째 )
+        graph[y][x] = 1
 
-    for a in range(n):
-        for b in range(m):
-            if board[b][a] == 1:
-                dfs(x, y)
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] != 0:
                 count += 1
-    print(count)
+                dfs(i, j)
+
+print(count)
