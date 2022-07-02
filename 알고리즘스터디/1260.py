@@ -13,6 +13,7 @@ for _ in range(m):
     graph[a].append(b)
     graph[b].append(a)
 
+# 기본적으로 false로 초기화를 시키고 false를 true로 바꾸면서 문제를 실행함
 visitied = [False] * (n+1)
 # visited를 공유하면 뒤의 함수가 실행이 잘 되지 않는다.
 visitiedS = [False] * (n+1)
