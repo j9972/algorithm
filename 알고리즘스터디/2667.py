@@ -33,6 +33,7 @@ for i in range(n):
             res += 1
             # num 을 초기화 시켜줘야 숫자가 합쳐지는게 아니라 나눠짐
             num = 0
+# 정렬을 해줘야 한다 ( 문제에서 오름차순으로 출력을 원하기 때문 )
 count.sort()
 print(res)
 for i in range(len(count)):
