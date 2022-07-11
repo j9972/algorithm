@@ -1,57 +1,4 @@
-# # DFS BFS 문제
-# from collections import deque
-
-# # dfs
-# n, m, v = map(int, input().split())
-
-# # 예제 입력을 받기 위해서 2차원 배열 형태로 밭고 n+1인 이유는 0부터 시작하니까 0인 부분을 나두고 1부터 n까지 받으려고하는것
-# graph = [[] * (n+1) for _ in range(n+1)]
-
-# # 배열의 입력을 잘 2개씩 받기 위함
-# for _ in range(m):
-#     a, b = map(int, input().split())
-#     graph[a].append(b)
-#     graph[b].append(a)
-
-# # 기본적으로 false로 초기화를 시키고 false를 true로 바꾸면서 문제를 실행함
-# visitied = [False] * (n+1)
-# # visited를 공유하면 뒤의 함수가 실행이 잘 되지 않는다.
-# visitiedS = [False] * (n+1)
-
-
-# def dfs(now):
-#     visitied[now] = True
-#     print(now, end=' ')
-
-#     for i in graph[now]:
-#         if not visitied[i]:
-#             dfs(i)
-
-
-# def bfs(now):
-#     queue = deque([now])
-#     visitiedS[now] = True
-
-#     while queue:
-#         v = queue.popleft()
-#         print(v, end=' ')
-
-#         for i in graph[v]:
-#             if not visitiedS[i]:
-#                 queue.append(i)
-#                 visitiedS[i] = True
-
-
-# # graph를 정렬시켜줘야 bfs문제가 통과된다. ( 이유는 우선순위가 낮은순서로 되기때문이다)
-# # range 범위가 1부터 n+1인 이유는 0번째 인덱스는 시작 간선을 체크하기때문
-# for i in range(1, n+1):
-#     graph[i].sort()
-
-# # print(dfs(v)) 이런식으로 하면 마지막에 None이 발생하는데 이를 조심
-# dfs(v)
-# print()
-# bfs(v)
-
+# dfs bfs 작성
 from collections import deque
 
 import sys
@@ -60,45 +7,49 @@ input = sys.stdin.readline
 
 n, m, v = map(int, input().split())
 
-# 정점의 개수보다는 많은 수가 필요 하다
-visited = [False] * (n+1)
-visitedA = [False] * (n+1)
+# 방문처리 하지 않은걸로 처리 해놔야 한다.
+visitedD = [False] * (n+1)
+visitedB = [False] * (n+1)
 
-# 비워져 있는 것을 만들기 n or n+1
 board = [[] * (n+1) for _ in range(n+1)]
+
+# 입력을 보면 2개의 숫자를 넣는데 그걸 보고 알수 있다.
 for i in range(m):
     a, b = map(int, input().split())
     board[a].append(b)
     board[b].append(a)
 
 
-def dfs(now):
-    visited[now] = True
-    print(now, end=' ')
+def dfs(start):
+    visitedD[start] = True
+    print(start, end=' ')
 
-    for i in board[now]:
-        if not visited[i]:
+    # board에 있는지 먼저 확인해야 한다
+    for i in board[start]:
+        if not visitedD[i]:
             dfs(i)
 
 
-def bfs(now):
-    queue = deque([now])
-    visitedA[now] = True
+def bfs(start):
+    queue = deque([start])
+    visitedB[start] = True
 
     while queue:
         v = queue.popleft()
         print(v, end=' ')
 
+        # board의 인덱스에 start가 아니라 v를 써야한다
         for i in board[v]:
-            if not visitedA[i]:
+            if not visitedB[i]:
+                visitedB[i] = True
                 queue.append(i)
-                visitedA[i] = True
 
 
-# for은 왜? range 범위?
-for i in range(1, n+1):
+# 방문할 수 있는 정점이 여러 개인 경우에는 정점 번호가 작은 것을 먼저 방문 이라는 문제 조건 떄문에 오름차순 시켜준다
+for i in range(n):
     board[i].sort()
 
+# print(dfs()) 이런식으로 하면 뒤에 None이 따라 나온다.
 dfs(v)
 print()
 bfs(v)
