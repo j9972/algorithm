@@ -1,4 +1,4 @@
-# bfs 문제 - 미로탈출  ( 최소 칸 수 )
+# bfs 문제 - 미로탈출  ( 최소 칸 수 ) - done
 from collections import deque
 
 n, m = map(int, input().split())

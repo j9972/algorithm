@@ -1,5 +1,5 @@
 # 토마토가 다 익는 최소 일수
-# keep
+# done
 from collections import deque
 
 dx = [-1, 1, 0, 0]
@@ -12,37 +12,37 @@ board = []
 for i in range(n):
     board.append(list(map(int, input().split())))
 
-flag = False
+queue = deque()
 
 
 def bfs():
-    global flag
-    queue = deque()
-    count = 0
-
     while queue:
         x, y = queue.popleft()
+
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
 
-            if (board[nx-1][ny] == -1 or board[nx-1][ny] == 0) and (board[nx+1][ny] == -1 or board[nx+1][ny] == n) and (board[nx][ny-1] == -1 or board[nx][ny-1] == 0) and (board[nx][ny+1] == -1 or board[nx][ny+1] == m):
-                print(-1)
-                break
-
-            if 0 <= nx < n and 0 <= ny < m:
-                if board[nx][ny] == 1:
-                    board[nx][ny] = board[x][y] + 1
-                    count += 1
-                    queue.append((nx, ny))
-                    flag = True
-        return count
+            # 주변이 익지 않은 토마토일때 번지게 허기
+            if 0 <= nx < n and 0 <= ny < m and board[nx][ny] == 0:
+                board[nx][ny] = board[x][y] + 1
+                queue.append((nx, ny))
 
 
-# 처음부터 익을 수 없는경우
-for _ in range(n):
-    for _ in range(m):
-        if 0 not in board and 1 not in board:
-            print(0)
-            break
+# 시작점을 찾아서 queue에 넣어주기
+for i in range(n):
+    for j in range(m):
+        if board[i][j] == 1:
+            queue.append((i, j))
+
 bfs()
+
+# 익지 못하는 상황이 오면 종료
+for i in range(n):
+    for j in range(m):
+        if board[i][j] == 0:
+            print(-1)
+            break
+# 질문!! -1을 하는 이유
+# 가장 큰값 - 1 ( 1부터 시작을 하니까)
+print(max(map(max, board)) - 1)

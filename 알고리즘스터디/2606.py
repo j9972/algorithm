@@ -1,16 +1,21 @@
+# dfs - done
+import sys
+sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
+
+# 컴터 개수
 n = int(input())
+# 쌍의 개수
 m = int(input())
 
-# 예제 입력을 받기 위해서 2차원 배열 형태로 밭고 n+1인 이유는 0부터 시작하니까 0인 부분을 나두고 1부터 n까지 받으려고하는것
-graph = [[]*n for _ in range(n+1)]
-
-# 간선의 개수만큰을 for문 돌린다
-for _ in range(m):
-    # 각 노드가 다른 노드랑 연결됨을 보이기 위함
+# 쌍이므로 이렇게 생각
+board = [[] for _ in range(n+1)]
+for i in range(m):
     a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+    board[a].append(b)
+    board[b].append(a)
 
+# 1차원 생각 ( 트리 )
 visited = [False] * (n+1)
 
 count = 0
@@ -20,11 +25,14 @@ def dfs(now):
     global count
     visited[now] = True
 
-    for i in graph[now]:
-        if not visited[i]:
-            dfs(i)
+    # 중복을 피하기 위해서 방문체크 필수, 방문시 count 증가
+    for i in board[now]:
+        if visited[i] == False:
             count += 1
+            dfs(i)
 
 
+# 문제에서 1번 컴퓨터 부터 시작한다 했음
 dfs(1)
+
 print(count)
