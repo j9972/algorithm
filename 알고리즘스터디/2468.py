@@ -1,39 +1,39 @@
-# 안전 영역 체크 -> dfs : 음료수 얼려먹기 같음
+# dfs 영역 문제 -> 음료수 얼려 먹기
+# keep
 import sys
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(10**9)
 input = sys.stdin.readline
 
 n = int(input())
 
-# graph는 입력값이 주어지는 2차원배열
-graph = []
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+board = []
 for i in range(n):
-    graph.append(list(map(int, input().split())))
+    board.append(list(map(int, input().split())))
 
-count = 1
+visited = [[0] * (n+1) for _ in range(n+1)]
 
-
-def dfs(x, y, h):
-    if 0 <= x < n and 0 <= y < n and graph[x][y] >= h and not visited[x][y]:
-        visited[x][y] = True
-        dfs(x-1, y, h)
-        dfs(x+1, y, h)
-        dfs(x, y-1, h)
-        dfs(x, y+1, h)
-        return True
-    return False
+res = 0
 
 
-for h in range(1, 101):
-    cnt = 0
-    visited = [[False] * n for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            if graph[i][j] >= h and not visited[i][j] and dfs(i, j, h) == True:
-                cnt += 1
-                visited[i][j] = True
+def dfs(x, y):
+    for i in range(1, 101):
+        if 0 <= x < n and 0 <= y < n and board[x][y] >= i:
+            if visited[x][y] == 0:
+                visited[x][y] = 1
+                board[x][y] = i - 1
+                dfs(x-1, y)
+                dfs(x+1, y)
+                dfs(x, y-1)
+                dfs(x, y+1)
+                return True
+        return False
 
-    count = max(count, cnt)
 
-
-print(count)
+for i in range(n):
+    for j in range(n):
+        if dfs(i, j) == True:
+            res += 1
+print(res)
