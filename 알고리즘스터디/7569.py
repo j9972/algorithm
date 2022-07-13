@@ -50,5 +50,5 @@ for i in range(h):
                 break
             #
             result = max(result, board[i][j][k])
-
+# 익은 토마토의 숫자가 0으로 시작하기 때문이다.
 print(result-1)

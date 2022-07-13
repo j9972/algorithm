@@ -1,3 +1,7 @@
+import sys
+sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
+
 n, m = map(int, input().split())
 
 # 2차원 리스트 맵을 이런식으로 줘도 되는 이유는 후에 변수를 받지 않고 맵의 정보를 통해서만 문제를 풀기 때문

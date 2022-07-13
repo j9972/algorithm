@@ -40,6 +40,7 @@ for i in range(n):
             rgb += 1
             dfs(i, j)
 
+board_new = [] 
 # 적록색맹인 경우를 확인해서 board랑 visited를 초기화 시키기
 for i in range(n):
     for j in range(n):
