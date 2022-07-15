@@ -17,15 +17,14 @@ for i in range(m):
     single.append(s)
 
 mPack = min(pack)
-mSingle = min(single)
 
 res = 0
 while n > 0:
     if n >= 6:
-        mSingle *= 6
+        mSingle = min(single) * 6
         n -= 6
     else:
-        mSingle *= n
+        mSingle = min(single) * n
         n -= n
     if mSingle < mPack:
         res += mSingle
