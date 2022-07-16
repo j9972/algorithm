@@ -26,6 +26,7 @@ while n > 0:
     else:
         mSingle = min(single) * n
         n -= n
+    # 6개가 넘을시에 6개 단위로 비교를 하기 위해 ( 2번째에 주의하라고 한 문장 체크)
     if mSingle < mPack:
         res += mSingle
     else:
