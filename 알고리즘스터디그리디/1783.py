@@ -1,10 +1,13 @@
-n, m = int(input())
+from sys import stdin
 
-dx = [1, 2, 2, 1]
-dy = [2, 1, -1, -2]
+Y, X = map(int, stdin.readline().split())
 
-board = [[0] * m for _ in range(n)]
-
-
-def dfs(x, y):
-    for i in range()
+if Y == 1:
+    print(1)
+elif Y == 2:
+    print(min(4, (X + 1) // 2))
+else:
+    if X <= 6:
+        print(min(4, X))
+    else:
+        print(X-2)
