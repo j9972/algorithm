@@ -1,14 +1,13 @@
-n = int(input())
-data = list(map(int, input().split()))
+data = list(map(int, input()))
+ans = data[0]
 
-count = 0
-teamCount = 0
+print("data = {}".format(data))
 
-data.sort()
+for i in range(1, len(data)):
+    if ans == 0 or data[i] == 0 or data[i] == 1:
+        ans += data[i]
+    else:
+        ans *= data[i]
 
-for i in data:
-    count += 1
-    if count == i:
-        teamCount += 1
-        count = 0
-print(teamCount)
+
+print(ans)

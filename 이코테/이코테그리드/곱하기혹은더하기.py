@@ -11,3 +11,18 @@ for i in range(1, len(s_list)):
         count *= int(s_list[i])
 
 print(count)
+
+# new way -> 데이터가 1일때는 더하는게 더 좋다
+# data = list(map(int, input()))
+# ans = data[0]
+
+# print("data = {}".format(data))
+
+# for i in range(1, len(data)):
+#     if ans == 0 or data[i] == 0 or data[i] == 1:
+#         ans += data[i]
+#     else:
+#         ans *= data[i]
+
+
+# print(ans)
