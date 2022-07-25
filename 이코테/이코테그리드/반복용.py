@@ -1,12 +1,17 @@
-import sys
-sys.setrecursionlimit(10**9)
-input = sys.stdin.readline
+n, k = map(int, input().split())
 
-n, m = map(int, input().split())
+count = 0
 
-board = []
-v = []
-for i in range(n):
-    board = list(map(int, input().split()))
-    v.append(min(board))
-print(max(v))
+while True:
+    if n % k == 0:
+        count += 1
+        n //= k
+        if n == 1:
+            break
+    else:
+        count += 1
+        n -= 1
+        if n == 1:
+            break
+
+print(count)
