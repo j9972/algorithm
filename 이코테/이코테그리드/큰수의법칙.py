@@ -30,6 +30,7 @@ num_list = list(map(int, input().split()))
 num_list.sort()
 
 # m을 k+1(반복되는 수열 길이) 나눈 몫이 수열이 반복되는 횟수 * k = 가장 큰 수가 등장하는 횟수
+# m/(k+1) 은 수열이 몇번 반복 횟수 , *k 는 반복되는 수열 * k의 범위
 count = int(m/(k+1)) * k
 count += m % (k+1)  # k+1 로 나뉘어 지지 않은 경우
 
