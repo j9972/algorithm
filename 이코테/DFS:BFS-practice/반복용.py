@@ -1,34 +1,46 @@
-from collections import deque
+def balance(p):
+    count = 0
+    for i in range(len(p)):
+        if p[i] == '(':
+            count += 1
+        else:
+            count -= 1
+        if count == 0:
+            return i
 
-n, k = map(int, input().split())
 
-board = []
-data = []
-for i in range(n):
-    board.append(list(map(int, input().split())))
-    for j in range(n):
-        if board[i][j] != 0:
-            data.append((board[i][j], 0, i, j))
+def proper(p):
+    count = 0
+    for i in p:
+        if i == '(':
+            count += 1
+        else:
+            if count == 0:
+                return False
+            else:
+                count -= 1
+        return True
 
-data.sort()
-queue = deque((data))
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+def solution(p):
+    ans = ''
+    if p == '':
+        return ans
+    idx = balance(p)
+    u = p[:idx+1]
+    v = p[idx+1:]
 
-target_s, target_x, target_y = map(int, input().split())
-
-while queue:
-    virus, s, x, y = queue.popleft()
-    if s == target_s:
-        break
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
-
-        if 0 <= nx < n and 0 <= ny < n:
-            if board[nx][ny] == 0:
-                board[nx][ny] = virus
-                queue.append((virus, s+1, nx, ny))
-
-print(board[target_x-1][target_y-1])
+    if proper(p):
+        ans = u + solution(v)
+    else:
+        ans += '('
+        ans += u + solution(v)
+        ans += ')'
+        u = list(p[1:-1])
+        for i in len(u):
+            if u[i] == '(':
+                u[i] = ')'
+            else:
+                u[i] = '('
+        ans += ''.join(u)
+    return ans
