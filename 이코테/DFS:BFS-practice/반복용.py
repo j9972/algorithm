@@ -1,46 +1,36 @@
-def balance(p):
-    count = 0
-    for i in range(len(p)):
-        if p[i] == '(':
-            count += 1
-        else:
-            count -= 1
-        if count == 0:
-            return i
+n = int(input())
+data = list(map(int, input().split()))
+add, minus, multi, div = map(int, input().split())
+
+maxValue = -10e9
+minValue = 10e9
 
 
-def proper(p):
-    count = 0
-    for i in p:
-        if i == '(':
-            count += 1
-        else:
-            if count == 0:
-                return False
-            else:
-                count -= 1
-        return True
-
-
-def solution(p):
-    ans = ''
-    if p == '':
-        return ans
-    idx = balance(p)
-    u = p[:idx+1]
-    v = p[idx+1:]
-
-    if proper(p):
-        ans = u + solution(v)
+def dfs(i, now):
+    global maxValue, minValue, minus, add, multi, div
+    if i == n:
+        minValue = min(minValue, now)
+        maxValue = max(maxValue, now)
     else:
-        ans += '('
-        ans += u + solution(v)
-        ans += ')'
-        u = list(p[1:-1])
-        for i in len(u):
-            if u[i] == '(':
-                u[i] = ')'
-            else:
-                u[i] = '('
-        ans += ''.join(u)
-    return ans
+        if add > 0:
+            add -= 1
+            dfs(i+1, now + data[i])
+            add += 1
+        if minus > 0:
+            minus -= 1
+            dfs(i+1, now - data[i])
+            minus += 1
+        if multi > 0:
+            multi -= 1
+            dfs(i+1, now * data[i])
+            multi += 1
+        if div > 0:
+            div -= 1
+            dfs(i+1, int(now / data[i]))
+            div += 1
+
+
+dfs(1, data[0])
+
+print(maxValue)
+print(minValue)
