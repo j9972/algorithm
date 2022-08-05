@@ -1,6 +1,5 @@
 # dfs 문제
 from itertools import combinations
-from xmlrpc.client import FastMarshaller
 n = int(input())
 
 board = []
@@ -16,6 +15,11 @@ for i in range(n):
             teacher.append((i, j))
         if board[i][j] == 'X':
             space.append((i, j))
+
+# [
+#     [x,y],[x,y+1],
+#     [x+1,y],[x+1,y+1]
+# ]
 
 
 def watch(x, y, direction):
@@ -73,7 +77,7 @@ for data in combinations(space, 3):
         board[x][y] = 'O'
     # process 함수는 학생을 찾지못했단 return 값이 있다 따라서 울타리를 세웠을때, 이를 사용하면 된다
     if process():
-        find = False
+        find = True
         break
     # 기존의 상태로 돌려줘야 한다.
     for x, y in data:
