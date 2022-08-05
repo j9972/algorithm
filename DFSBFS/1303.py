@@ -1,29 +1,23 @@
 # 전쟁 - 전투 -> Dfs
-
-n, m = map(int, input().split())
+m, n = map(int, input().split())
 
 board = []
-boardW = []
-boardB = []
-
 for i in range(n):
     board.append(list(map(str, input())))
-    for j in range(m):
-        if board[i][j] == 'W':
-            boardW[i][j] = board[i][j]
-        elif board[i][j] == 'B':
-            boardB[i][j] = board[i][j]
 
+wCount = 0
+wTotal = 0
 
-count = []
-num = 0
+bCount = 0
+bTotal = 0
 
 
 def dfs(x, y):
-    global num
-    if 0 <= x < n and 0 <= y < n and boardB[x][y]:
+    global wCount
+
+    if 0 <= x < n and 0 <= y < m and board[x][y] == 'W':
         board[x][y] = 'S'
-        num += 1
+        wCount += 1
         dfs(x-1, y)
         dfs(x+1, y)
         dfs(x, y-1)
@@ -32,15 +26,16 @@ def dfs(x, y):
     return False
 
 
-def dfsW(x, y):
-    global numW
-    if 0 <= x < n and 0 <= y < n and board[x][y] == 'W':
+def dfsS(x, y):
+    global bCount
+
+    if 0 <= x < n and 0 <= y < m and board[x][y] == 'B':
         board[x][y] = 'S'
-        numW += 1
-        dfs(x-1, y)
-        dfs(x+1, y)
-        dfs(x, y-1)
-        dfs(x, y+1)
+        bCount += 1
+        dfsS(x-1, y)
+        dfsS(x+1, y)
+        dfsS(x, y-1)
+        dfsS(x, y+1)
         return True
     return False
 
@@ -48,12 +43,14 @@ def dfsW(x, y):
 for i in range(n):
     for j in range(m):
         if dfs(i, j) == True:
-            count.append(numB**2)
-            numB = 0
-        if dfsW(i, j) == True:
-            count.append(numW**2)
-            numW = 0
+            wTotal += wCount ** 2
+            wCount = 0
+
+for i in range(n):
+    for j in range(m):
+        if dfsS(i, j) == True:
+            bTotal += bCount ** 2
+            bCount = 0
 
 
-for i in range(len(count)):
-    print(count[i])
+print(wTotal, bTotal)
