@@ -1,73 +1,56 @@
-# 감시피하기
-from itertools import combinations
-n = int(input())
+from collections import deque
+
+n, l, r = map(int, input().split())
 
 board = []
-teacher = []
-space = []
-
 for i in range(n):
-    board.append(list(map(str, input().split())))
-    for j in range(n):
-        if board[i][j] == 'T':
-            teacher.append((i, j))
-        elif board[i][j] == 'X':
-            space.append((i, j))
+    board.append(list(map(int, input().split())))
+
+res = 0
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
 
-def process(x, y, direction):
-    # left
-    if direction == 0:
-        while y <= 0:
-            if board[x][y] == 'T':
-                return False
-            if board[x][y] == 'S':
-                return True
-            y -= 1
-    if direction == 1:
-        while y > n:
-            if board[x][y] == 'T':
-                return False
-            if board[x][y] == 'S':
-                return True
-            y += 1
-    if direction == 2:
-        while x <= 0:
-            if board[x][y] == 'T':
-                return False
-            if board[x][y] == 'S':
-                return True
-            x -= 1
-    if direction == 3:
-        while x > n:
-            if board[x][y] == 'T':
-                return False
-            if board[x][y] == 'S':
-                return True
-            x += 1
-    return False
+def process(x, y, index):
+    united = []
+    united.append((x, y))
 
+    queue = deque()
+    queue.append((x, y))
 
-def watch():
-    for x, y in teacher:
+    summary = board[x][y]
+    count = 1
+    union[x][y] = index
+
+    while queue:
+        x, y = queue.popleft()
         for i in range(4):
-            if process(x, y, i) == True:
-                return True
-    return False
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+                if l <= abs(board[nx][ny] - board[x][y]) <= r:
+                    summary += board[nx][ny]
+                    count += 1
+                    united.append((nx, ny))
+                    queue.append((nx, ny))
+                    union[nx][ny] = index
+    for a, b in united:
+        board[a][b] = summary // count
+    return count
 
 
-find = True
+total = 0
 
-for data in combinations(space, 3):
-    for x, y in data:
-        board[x][y] = 'O'
-    if watch():
-        find = True
+while True:
+    union = [[-1]*n for _ in range(n)]
+    index = 0
+    for i in range(n):
+        for j in range(n):
+            if union[i][j] == -1:
+                process(i, j, index)
+                index += 1
+    if n*n == index:
         break
-    for x, y in data:
-        board[x][y] = 'X'
-
-if find == False:
-    print('YES')
-else:
-    print('NO')
+    total += 1
+print(total)
