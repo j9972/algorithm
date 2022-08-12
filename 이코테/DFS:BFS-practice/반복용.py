@@ -1,38 +1,39 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
+n = int(input())
 
-board = []
-data = []
-for i in range(n):
-    board.append(list(map(int, input().split())))
-    for j in range(n):
-        if board[i][j] != 0:
-            data.append((board[i][j], 0, i, j))
+maxValue = -10e9
+minValue = 10e9
+
+data = list(map(int, input().split()))
+add, minus, multi, div = map(int, input().split())
 
 
-target_s, target_x, target_y = map(int, input().split())
+def dfs(i, now):
+    global maxValue, minValue, add, minus, multi, div
+    if i == n:
+        maxValue = max(maxValue, now)
+        minValue = min(minValue, now)
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+    if add > 0:
+        add -= 1
+        dfs(i+1, now + data[i])
+        add += 1
+    if minus > 0:
+        minus -= 1
+        dfs(i+1, now - data[i])
+        minus += 1
+    if multi > 0:
+        multi -= 1
+        dfs(i+1, now * data[i])
+        multi += 1
+    if div > 0:
+        div -= 1
+        dfs(i+1, int(now / data[i]))
+        div += 1
 
-data.sort()
-queue = deque(data)
 
-while queue:
-    virus, s, x, y = queue.popleft()
-
-    if s == target_s:
-        break
-
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
-
-        if 0 <= nx < n and 0 <= ny < n:
-            if board[nx][ny] == 0:
-                board[nx][ny] = virus
-                queue.append((virus, s+1, nx, ny))
-print(board[target_x-1][target_y-1])
+dfs(1, data[0])
+print(maxValue)
+print(minValue)

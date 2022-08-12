@@ -1,7 +1,7 @@
 # balance
 def balance(p):
     count = 0
-    for i in len(p):
+    for i in range(len(p)):
         if p[i] == '(':
             count += 1
         else:
