@@ -1,19 +1,24 @@
-# 범위의 시작과 끝을 체
+import sys
+input = sys.stdin.readline
 
-from bisect import bisect_left, bisect_right
-n, x = map(int, input().split())
+n = int(input())
 array = list(map(int, input().split()))
-array.sort()
 
 
-def count_by_range(array, left_value, right_value):
-    left_index = bisect_left(array, left_value)
-    right_index = bisect_right(array, right_value)
-    return right_index - left_index
+def binary_search(array, start, end):
+    if start >= end:
+        return None
+    mid = (start+end) // 2
+    if array[mid] == mid:
+        return mid
+    elif array[mid] > mid:
+        return binary_search(array, start, mid - 1)
+    elif array[mid] < mid:
+        return binary_search(array, mid + 1, end)
 
 
-count = count_by_range(array, x, x)
-if count == 0:
-    print(-1)
+idx = binary_search(array, 0, n-1)
+if idx != None:
+    print(idx)
 else:
-    print(count)
+    print(-1)
