@@ -1,57 +1,55 @@
 from collections import deque
 
-n, l, r = map(int, input().split())
 
-board = []
-for i in range(n):
-    board.append(list(map(int, input().split())))
+def next_get_pos(pos, board):
+    next_pos = []
+    pos = list(pos)
+    pos1_x, pos1_y, pos2_x, pos2_y = pos[0][0], pos[0][1], pos[1][0], pos[1][1],
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
 
-total = 0
+    for i in range(4):
+        pos1_next_x, pos1_next_y = pos1_x + dx[i], pos1_y + dy[i]
+        pos2_next_x, pos2_next_y = pos2_x + dx[i], pos2_y + dy[i]
 
+        if board[pos1_next_x][pos1_next_y] == 0 and board[pos2_next_x][pos2_next_y] == 0:
+            next_pos.append({(pos1_next_x, pos1_next_y),
+                            (pos2_next_x, pos2_next_y)})
 
-def process(x, y, index):
-    united = []
-    united.append((x, y))
+    if pos1_x == pos2_x:
+        for i in [-1, 1]:
+            if board[pos1_x + i][pos1_y] == 0 and board[pos2_x + i][pos2_y] == 0:
+                next_pos.append({(pos1_x, pos1_y), (pos1_x + i, pos1_y)})
+                next_pos.append({(pos2_x, pos2_y), (pos2_x + i, pos2_y)})
 
-    summary = board[x][y]
-    count = 0
-    union[x][y] = index
-
-    queue = deque()
-    queue.append((x, y))
-
-    while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-
-            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
-                if l <= abs(board[nx][ny] - board[x][y]) <= r:
-                    summary += board[nx][ny]
-                    count += 1
-                    united.append((nx, ny))
-                    queue.append((nx, ny))
-                    union[nx][ny] = index
-
-    for i, j in united:
-        board[i][j] = summary // count
-    return count
+    elif pos1_y == pos2_y:
+        for i in [-1, 1]:
+            if board[pos1_x][pos1_y + i] == 0 and board[pos2_x][pos2_y + i] == 0:
+                next_pos.append({(pos1_x, pos1_y), (pos1_x, pos1_y + i)})
+                next_pos.append({(pos2_x, pos2_y), (pos2_x, pos2_y + i)})
+    return next
 
 
-while True:
-    union = [[-1]*n for _ in range(n)]
-    index = 0
+def solution(board):
+    n = len(board)
+    newBoard = [[1]*(n+2) for _ in range(n+2)]
     for i in range(n):
         for j in range(n):
-            if union[i][j] == -1:
-                process(i, j, index)
-                index += 1
-    if n*n == index:
-        break
-    total += 1
+            newBoard[i+1][j+1] = board[i][j]
 
-print(total)
+    visited = []
+    queue = deque()
+    pos = {(1, 1), (1, 2)}
+    visited.append(pos)
+    queue.append((pos, 0))
+
+    while queue:
+        pos, cost = queue.popleft()
+        if (n, n) in pos:
+            return cost
+        for next in next_get_pos(pos, newBoard):
+            if next not in visited:
+                queue.append((next, cost + 1))
+                visited.append(next)
+    return 0
