@@ -13,8 +13,8 @@ end = array[-1] - array[0]
 res = 0
 
 while start <= end:
-    mid = (start + end) // 2
-    count = 1c
+    mid = (start + end) // 2  # 거리 gap
+    count = 1
     value = array[0]
 
     # 처음부터 하나하나 넣어본다 ( 현재 mid값을 통해 공유기 설치 )
@@ -25,7 +25,7 @@ while start <= end:
     # 거리를 늘릴수 있으면 늘리고, 없으면 줄인다
     if count >= c:
         start = mid + 1
-        res = mid
+        res = mid  # 최적의 거리
     else:
         end = mid - 1
 

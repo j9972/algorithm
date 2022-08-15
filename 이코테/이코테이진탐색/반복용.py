@@ -1,24 +1,34 @@
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-array = list(map(int, input().split()))
+n, c = map(int, input().split())
+array = []
 
+for i in range(n):
+    array.append(int(input()))
 
-def binary_search(array, start, end):
-    if start >= end:
-        return None
+array.sort()
+
+# 최소 범위, 최대 범위
+start = 1
+end = array[-1] - array[0]
+
+res = 0
+
+while start <= end:
     mid = (start+end) // 2
-    if array[mid] == mid:
-        return mid
-    elif array[mid] > mid:
-        return binary_search(array, start, mid - 1)
-    elif array[mid] < mid:
-        return binary_search(array, mid + 1, end)
+    count = 1
+    value = array[0]
 
+    for i in range(1, n):
+        if array[i] >= value + mid:
+            count += 1
+            value = array[i]
 
-idx = binary_search(array, 0, n-1)
-if idx != None:
-    print(idx)
-else:
-    print(-1)
+    if count >= c:
+        start = mid + 1
+        res = mid
+    else:
+        end = mid - 1
+
+print(res)
