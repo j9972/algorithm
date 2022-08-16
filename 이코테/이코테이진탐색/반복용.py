@@ -2,32 +2,34 @@ from bisect import bisect_left, bisect_right
 import sys
 input = sys.stdin.readline
 
-n, c = map(int, input().split())
 
-array = []
-for i in range(n):
-    array.append(int(input()))
+def count_by_range(a, left_value, right_value):
+    left_index = bisect_left(a, left_value)
+    right_index = bisect_right(a, right_value)
+    return right_index - left_index
 
-array.sort()
 
-# 최소 거리랑 최대 거리
-start = 1
-end = array[-1] - array[0]
-res = 0
+def solution(words, queries):
+    answer = []
 
-while start <= end:
-    mid = (start + end) // 2
-    value = array[0]
-    count = 1
+    array = [[] for _ in range(10001)]
+    reverseArray = [[] for _ in range(10001)]
 
-    for i in range(1, n):
-        if array[i] >= mid + value:
-            value = array[i]
-            count += 1
-    if count >= c:
-        start = mid + 1
-        res = mid
-    else:
-        end = mid - 1
+    for word in words:
+        array[len(word)].append(word)
+        reverseArray[len(word)].append(word[::-1])
 
-print(res)
+    for i in range(10001):
+        array[i].sort()
+        reverseArray[i].sort()
+
+    for q in queries:
+        if q[0] != '?':
+            res = count_by_range(array[len(q)], q.replace(
+                'a', '?'), q.replace('z', '?'))
+        else:
+            res = count_by_range(
+                reverseArray[len(q)], q[::-1].replace('a', '?'), q[::-1].replace('z', '?'))
+        answer.append(res)
+
+    print(answer)
