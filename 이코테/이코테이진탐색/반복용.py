@@ -2,21 +2,27 @@ from bisect import bisect_left, bisect_right
 import sys
 input = sys.stdin.readline
 
-n, x = map(int, input().split())
+n = int(input())
 array = list(map(int, input().split()))
 
 array.sort()
 
 
-def count_by_range(array, left_value, right_value):
-    left_index = bisect_left(array, left_value)
-    right_index = bisect_right(array, right_value)
-    return right_index - left_index
+def binary_search(array, start, end):
+    if start >= end:
+        return None
+    mid = (start+end) // 2
+    if array[mid] == mid:
+        return mid
+    elif array[mid] < mid:
+        return binary_search(array, mid+1, end)
+    else:
+        return binary_search(array, start, mid-1)
 
 
-res = count_by_range(array, x, x)
+idx = binary_search(array, 0, n-1)
 
-if res:
-    print(res)
+if idx != None:
+    print(idx)
 else:
     print(-1)
