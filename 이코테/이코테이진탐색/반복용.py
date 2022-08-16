@@ -2,27 +2,32 @@ from bisect import bisect_left, bisect_right
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-array = list(map(int, input().split()))
+n, c = map(int, input().split())
+
+array = []
+for i in range(n):
+    array.append(int(input()))
 
 array.sort()
 
+# 최소 거리랑 최대 거리
+start = 1
+end = array[-1] - array[0]
+res = 0
 
-def binary_search(array, start, end):
-    if start >= end:
-        return None
-    mid = (start+end) // 2
-    if array[mid] == mid:
-        return mid
-    elif array[mid] < mid:
-        return binary_search(array, mid+1, end)
+while start <= end:
+    mid = (start + end) // 2
+    value = array[0]
+    count = 1
+
+    for i in range(1, n):
+        if array[i] >= mid + value:
+            value = array[i]
+            count += 1
+    if count >= c:
+        start = mid + 1
+        res = mid
     else:
-        return binary_search(array, start, mid-1)
+        end = mid - 1
 
-
-idx = binary_search(array, 0, n-1)
-
-if idx != None:
-    print(idx)
-else:
-    print(-1)
+print(res)
