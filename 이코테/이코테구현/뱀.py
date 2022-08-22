@@ -13,7 +13,7 @@ for i in range(k):
 
 l = int(input())
 for i in range(l):
-    x, c = map(str, input().split())
+    x, c = input().split()
     info.append((int(x), c))
 
 # 동 남 서 북
@@ -43,7 +43,7 @@ def simulate():
         nx = x + dx[direction]
         ny = y + dy[direction]
 
-        if 0 <= nx <= n and 0 <= ny <= n and board[nx][ny] != 2:
+        if 1 <= nx <= n and 1 <= ny <= n and board[nx][ny] != 2:
             if board[nx][ny] == 0:
                 board[nx][ny] = 2
                 q.append((nx, ny))
@@ -58,7 +58,7 @@ def simulate():
         time += 1
         x, y = nx, ny
 
-        if index <= l and info[index][0] == time:
+        if index < l and info[index][0] == time:
             direction = turing(direction, info[index][1])
             index += 1
     return time
