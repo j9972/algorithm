@@ -1,37 +1,45 @@
-from collections import deque
+def balance(p):
+    count = 0
+    for i in range(len(p)):
+        if p[i] == '(':
+            count += 1
+        else:
+            count -= 1
+        if count == 0:
+            return i
 
-n, k = map(int, input().split())
+def proper(p):
+    count = 0
+    for i in p:
+        if i == '(':
+            count += 1
+        else:
+            if count == 0:
+                return False
+            else:
+                count -= 1
+        return True
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+def solution(p):
+    ans = ''
+    if p == '':
+        return ans
+    idx = balance(p)
+    u = p[:idx+1]
+    v = p[idx+1:]
 
-board = []
-graph = []
+    if proper(p):
+        ans = u + solution(v)
+    else:
+        ans += '('
+        ans += u + solution(v)
+        ans += ')'
+        u = list(u[1:-1])
+        for i in range(len(u)):
+            if u[i] == '(':
+                u[i] = ')'
+            else:
+                u[i] = '('
+        ans += ''.join(u)
 
-for i in range(n):
-    board.append(list(map(int, input().split())))
-    for j in range(n):
-        if board[i][j] != 0:
-            graph.append((board[i][j], 0, i, j))
-
-tarS, tarX, tarY = map(int, input().split())
-
-graph.sort()
-queue = deque(graph)
-
-while queue:
-    virus, s, x, y = queue.popleft()
-
-    if s == tarS:
-        break
-
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
-
-        if 0 <= nx < n and 0 <= ny < n:
-            if board[nx][ny] == 0:
-                board[nx][ny] = virus
-                queue.append((virus, s+1, nx, ny))
-
-print(board[tarX-1][tarY-1])
+    return ans
