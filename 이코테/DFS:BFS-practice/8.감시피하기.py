@@ -50,7 +50,7 @@ def watch(x, y, direction):
             x -= 1
     # down
     if direction == 3:
-        while y > n:
+        while x > n:
             if board[x][y] == 'T':
                 return False
             if board[x][y] == 'S':

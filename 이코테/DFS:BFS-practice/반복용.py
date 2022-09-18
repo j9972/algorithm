@@ -1,40 +1,72 @@
+from itertools import combinations
+
 n = int(input())
 
-data = list(map(int, input().split()))
+board = []
+teacher = []
+space = []
 
-plus, minus, multi, div = map(int, input().split())
-
-max_value = -10e9
-min_value = 10e9
-
-
-# i는 순서, now 지금 값
-def dfs(i, now):
-    global plus, minus, multi, div, max_value, min_value
-
-    if i == n:
-        min_value = min(min_value, now)
-        max_value = max(max_value, now)
-    else:
-        if plus > 0:
-            plus -= 1
-            dfs(i+1, now+data[i])
-            plus += 1
-        if minus > 0:
-            minus -= 1
-            dfs(i+1, now-data[i])
-            minus += 1
-        if multi > 0:
-            multi -= 1
-            dfs(i+1, now*data[i])
-            multi += 1
-        if div > 0:
-            div -= 1
-            dfs(i+1, int(now/data[i]))
-            div += 1
+for i in range(n):
+    board.append(list(map(str, input().split())))
+    for j in range(n):
+        if board[i][j] == 'T':
+            teacher.append((i, j))
+        if board[i][j] == 'X':
+            space.append((i, j))
 
 
-dfs(1, data[0])
+def watch(direction, x, y):
+    if direction == 0:
+        while y >= 0:
+            if board[x][y] == 'T':
+                return False
+            if board[x][y] == 'XS':
+                return True
+            y -= 1
+    if direction == 1:
+        while y < n:
+            if board[x][y] == 'T':
+                return False
+            if board[x][y] == 'S':
+                return True
+            y += 1
+    if direction == 2:
+        while x >= 0:
+            if board[x][y] == 'T':
+                return False
+            if board[x][y] == 'S':
+                return True
+            x -= 1
+    if direction == 3:
+        while x < n:
+            if board[x][y] == 'T':
+                return False
+            if board[x][y] == 'S':
+                return True
+            x += 1
+    return False
 
-print(max_value)
-print(min_value)
+
+def process():
+    for x, y in teacher:
+        for i in range(4):
+            if watch(i, x, y) == True:
+                return True
+    return False
+
+
+find = True
+for data in combinations(space, 3):
+    for x, y in data:
+        board[x][y] = 'O'
+
+    if process():
+        find = True
+        break
+    for x, y in data:
+        board[x][y] = 'X'
+
+if find == False:
+    print('YES')
+else:
+    print('NO')
