@@ -1,14 +1,12 @@
-x = int(input())
+n = int(input())
+data = list(map(int, input().split()))
 
-dp = [0] * 30001
+dp = [0] * 100
 
-for i in range(2, x+1):
-    dp[i] = dp[i-1] + 1
-    if i % 2 == 0:
-        dp[i] = min(dp[i], dp[i//2] + 1)
-    if i % 3 == 0:
-        dp[i] = min(dp[i], dp[i//3] + 1)
-    if i % 5 == 0:
-        dp[i] = min(dp[i], dp[i//5] + 1)
+dp[0] = data[0]
+dp[1] = max(data[0], data[1])
 
-print(dp[x])
+for i in range(2, n):
+    dp[i] = max(dp[i-1], dp[i-2] + data[i])
+
+print(dp[n-1])
