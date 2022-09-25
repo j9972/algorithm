@@ -1,5 +1,5 @@
-# dp[i] - 1 = dp[i-1]
 x = int(input())
+
 dp = [0] * 30001
 
 for i in range(2, x+1):
