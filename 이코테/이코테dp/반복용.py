@@ -1,12 +1,19 @@
-n = int(input())
+# 효율적인 화폐 구성
+n, m = map(int, input().split())
 
-dp = [0] * 1000
+data = []
+for i in range(n):
+    data.append(int(input()))
 
-dp[1] = 1
-dp[2] = 3
-dp[3] = 5
+dp = [10001] * (m+1)
+dp[0] = 0
 
-for i in range(3, n):
-    dp[i] = (dp[i-1] + dp[i-2] * 2) % 796796
+for i in range(n):
+    for j in range(data[i], m+1):
+        if dp[j-data[i]] != 10001:
+            dp[j] = min(dp[j], dp[j-data[i]] + 1)
 
-print(dp[n])
+if dp[m] != 10001:
+    print(dp[m])
+else:
+    print(-1)
