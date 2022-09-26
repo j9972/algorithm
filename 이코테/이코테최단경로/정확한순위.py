@@ -30,4 +30,4 @@ for i in range(1, n+1):
             count += 1
     if count == n:
         res += 1
-print(count)
+print(res)
