@@ -3,35 +3,51 @@ import sys
 import heapq
 input = sys.stdin.readline
 
-dx = [-1, 0, 1, 0]
-dy = [0, 1, 0, -1]
+
 INF = int(1e9)
 
-for tc in range(int(input())):
-    n = int(input())
 
-    graph = []
-    for i in range(n):
-        graph.append(list(map(int, input().split())))
+n, m = map(int, input().split())
 
-    distance = [[INF]*n for _ in range(n)]
+graph = [[] for _ in range(n+1)]
+distance = [INF]*(n+1)
+start = 1
 
-    x, y = 0
-    q = [(graph[x][y], x, y)]
-    distance[x][y] = graph[x][y]
+for i in range(m):
+    a, b = map(int, input().split())
+    graph[a].append((b, 1))
+    graph[b].append((a, 1))
+
+
+def dijkstra(start):
+    q = []
+    heapq.heappush(q, (0, start))
+    distance[start] = 0
 
     while q:
-        dist, x, y = heapq.heappop(q)
+        dist, now = heapq.heappop(q)
 
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+        if distance[now] < dist:
+            continue
+        for i in graph[now]:
+            cost = dist + i[1]
+            if distance[i[0]] > cost:
+                distance[i[0]] = cost
+                heapq.heappush(q, (cost, i[0]))
 
-            if distance[nx][ny] < dist:
-                continue
-            if 0 <= nx < n and 0 <= ny < n:
-                cost = dist + graph[nx][ny]
-                if distance[nx][ny] > cost:
-                    distance[nx][ny] = cost
-                    heapq.heappush(q, (cost, nx, ny))
-    print(distance[n-1][n-1])
+
+dijkstra(start)
+
+count = 0
+maxDistance = 0
+
+res = []
+for i in range(1, n+1):
+    if maxDistance < distance[i]:
+        maxNode = i
+        maxDistance = distance[i]
+        res = [maxNode]
+    elif maxDistance == distance[i]:
+        res.append(i)
+
+print(maxNode, maxDistance, len(res))
