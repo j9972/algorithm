@@ -1,46 +1,35 @@
-# 전보 - 개선된 우선순위 큐
+# 플로이드 - 플로이드
 import sys
 import heapq
 input = sys.stdin.readline
 
 INF = int(1e9)
 
-n, m, start = map(int, input().split())
+n = int(input())
+m = int(input())
 
-graph = [[] for _ in range(n+1)]
-distance = [INF] * (n+1)
+graph = [[INF]*(n+1) for _ in range(n+1)]
 
+# 최소거리만 찾으면 된다
 for _ in range(m):
-    x, y, z = map(int, input().split())
-    graph[x].append((y, z))
+    a, b, c = map(int, input().split())
+    if graph[a][b] > c:
+        graph[a][b] = c
 
+for a in range(1, n+1):
+    for b in range(1, n+1):
+        if a == b:
+            graph[a][b] = 0
 
-def dijkstra(start):
-    q = []
-    distance[start] = 0
-    heapq.heappush(q, (0, start))
+for k in range(1, n+1):
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
 
-    while q:
-        dist, now = heapq.heappop(q)
-
-        if distance[now] < dist:
-            continue
-        for i in graph[now]:
-            # 바로 가는거
-            cost = dist + i[1]
-            if distance[i[0]] > cost:
-                # 현재 지점 찍고 가는거 더 가까운 경우
-                distance[i[0]] = cost
-                heapq.heappush(q, (cost, i[0]))
-
-
-dijkstra(start)
-
-count = 0
-maxDistance = 0
-
-for d in distance:
-    if d != INF:
-        count += 1
-        maxDistance = max(maxDistance, d)
-print(count - 1, maxDistance)
+for a in range(1, n+1):
+    for b in range(1, n+1):
+        if graph[a][b] != INF:
+            print(graph[a][b], end=' ')
+        else:
+            print(0, end=' ')
+    print()
