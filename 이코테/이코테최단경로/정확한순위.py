@@ -15,7 +15,7 @@ for i in range(m):
 for a in range(1, n+1):
     for b in range(1, n+1):
         if a == b:
-            graph[a][b] = 1
+            graph[a][b] = 0
 
 for k in range(1, n+1):
     for a in range(1, n+1):
@@ -26,7 +26,7 @@ res = 0
 for i in range(1, n+1):
     count = 0
     for j in range(1, n+1):
-        if graph[i][j] != INF and graph[j][i] != INF:
+        if graph[i][j] != INF or graph[j][i] != INF:
             count += 1
     if count == n:
         res += 1
