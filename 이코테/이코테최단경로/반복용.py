@@ -5,32 +5,36 @@ input = sys.stdin.readline
 
 INF = int(1e9)
 
-n, m = map(int, input().split())
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
 
-graph = [[INF]*(n+1) for _ in range(n+1)]
+for t in range(int(input())):
+    n = int(input())
+    distance = [[INF]*n for _ in range(n)]
 
-# 최소거리만 찾으면 된다
-for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a][b] = 1
+    graph = []
+    for i in range(n):
+        graph.append(list(map(int, input().split())))
 
-for a in range(1, n+1):
-    for b in range(1, n+1):
-        if a == b:
-            graph[a][b] = 0
+    x, y = 0, 0
+    q = [(graph[x][y], x, y)]
+    distance[x][y] = graph[x][y]
 
-for k in range(1, n+1):
-    for a in range(1, n+1):
-        for b in range(1, n+1):
-            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
+    while q:
+        dist, x, y = heapq.heappop(q)
 
-res = 0
-for i in range(1, n+1):
-    count = 0
-    for j in range(1, n+1):
-        if graph[i][j] != INF or graph[j][i] != INF:
-            count += 1
-    if count == n:
-        res += 1
+        if distance[x][y] < dist:
+            continue
 
-print(res)
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n:
+                cost = dist + graph[nx][ny]
+
+                if distance[nx][ny] > cost:
+                    distance[nx][ny] = cost
+                    heapq.heappush(q, (cost, nx, ny))
+
+    print(distance[n-1][n-1])
