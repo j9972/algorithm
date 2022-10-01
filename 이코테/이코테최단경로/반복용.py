@@ -1,53 +1,34 @@
-# 정확한순위 - 플로이드
-import sys
-import heapq
-input = sys.stdin.readline
+# 미래 도시 - 플로이드
 
+import sys
+input = sys.stdin.readline
 
 INF = int(1e9)
 
-
 n, m = map(int, input().split())
 
-graph = [[] for _ in range(n+1)]
-distance = [INF]*(n+1)
-start = 1
+graph = [[INF] * (n+1) for _ in range(n+1)]
 
-for i in range(m):
+for _ in range(m):
     a, b = map(int, input().split())
-    graph[a].append((b, 1))
-    graph[b].append((a, 1))
+    graph[a][b] = 1
+    graph[b][a] = 1
 
+for a in range(1, n+1):
+    for b in range(1, n+1):
+        if a == b:
+            graph[a][b] = 0
 
-def dijkstra(start):
-    q = []
-    heapq.heappush(q, (0, start))
-    distance[start] = 0
+x, k = map(int, input().split())
 
-    while q:
-        dist, now = heapq.heappop(q)
+for k in range(1, n+1):
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
 
-        if distance[now] < dist:
-            continue
-        for i in graph[now]:
-            cost = dist + i[1]
-            if distance[i[0]] > cost:
-                distance[i[0]] = cost
-                heapq.heappush(q, (cost, i[0]))
+distance = graph[1][k] + graph[k][x]
 
-
-dijkstra(start)
-
-count = 0
-maxDistance = 0
-
-res = []
-for i in range(1, n+1):
-    if maxDistance < distance[i]:
-        maxNode = i
-        maxDistance = distance[i]
-        res = [maxNode]
-    elif maxDistance == distance[i]:
-        res.append(i)
-
-print(maxNode, maxDistance, len(res))
+if distance < INF:
+    print(distance)
+else:
+    print("-1")
