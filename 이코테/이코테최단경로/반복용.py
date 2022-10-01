@@ -1,34 +1,46 @@
-# 미래 도시 - 플로이드
-
+# 전보 - 개선된 우선순위 큐
 import sys
+import heapq
 input = sys.stdin.readline
 
 INF = int(1e9)
 
-n, m = map(int, input().split())
+n, m, start = map(int, input().split())
 
-graph = [[INF] * (n+1) for _ in range(n+1)]
+graph = [[] for _ in range(n+1)]
+distance = [INF] * (n+1)
 
 for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a][b] = 1
-    graph[b][a] = 1
+    x, y, z = map(int, input().split())
+    graph[x].append((y, z))
 
-for a in range(1, n+1):
-    for b in range(1, n+1):
-        if a == b:
-            graph[a][b] = 0
 
-x, k = map(int, input().split())
+def dijkstra(start):
+    q = []
+    distance[start] = 0
+    heapq.heappush(q, (0, start))
 
-for k in range(1, n+1):
-    for a in range(1, n+1):
-        for b in range(1, n+1):
-            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
+    while q:
+        dist, now = heapq.heappop(q)
 
-distance = graph[1][k] + graph[k][x]
+        if distance[now] < dist:
+            continue
+        for i in graph[now]:
+            # 바로 가는거
+            cost = dist + i[1]
+            if distance[i[0]] > cost:
+                # 현재 지점 찍고 가는거 더 가까운 경우
+                distance[i[0]] = cost
+                heapq.heappush(q, (cost, i[0]))
 
-if distance < INF:
-    print(distance)
-else:
-    print("-1")
+
+dijkstra(start)
+
+count = 0
+maxDistance = 0
+
+for d in distance:
+    if d != INF:
+        count += 1
+        maxDistance = max(maxDistance, d)
+print(count - 1, maxDistance)
