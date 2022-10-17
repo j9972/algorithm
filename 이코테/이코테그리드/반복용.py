@@ -1,5 +1,4 @@
-# 큰 수의 법치
-# 큰 수의 법치
+# 큰 수의 법칙
 import sys
 input = sys.stdin.readline
 
