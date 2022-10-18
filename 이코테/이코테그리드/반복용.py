@@ -1,22 +1,26 @@
-# 모험가 길드
-#import sys
-#input = sys.stdin.readline
+# 문자열 뒤집기
 
-# n = int(input())
+import sys
+input = sys.stdin.readline
 
-# data = list(map(int, input().split()))
-# data.sort()
+data = input()
 
-# while True:
 
-#  곱하기 혹은 더하기
-s = input()
-ans = int(s[0])
+zeroCount = 0
+oneCount = 0
 
-for i in range(1, len(s)):
-    if ans <= 1 or int(s[i]) <= 1:
-        ans += int(s[i])
-    else:
-        ans *= int(s[i])
+data_list = list(data)
 
-print(ans)
+if data[0] == '1':
+    oneCount += 1
+else:
+    zeroCount += 1
+
+
+for i in range(len(data_list)-1):
+    if data[i] != data[i+1]:  # i+1 때문에 처음 시작하는 데이터의 값을 알아야 한다.
+        if data[i+1] == '1':
+            oneCount += 1
+        else:
+            zeroCount += 1
+print(min(zeroCount, oneCount))
