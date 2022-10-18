@@ -1,16 +1,22 @@
-# 숫자 카드 게임
-import sys
-input = sys.stdin.readline
+# 모험가 길드
+#import sys
+#input = sys.stdin.readline
 
-n, m = map(int, input().split())
+# n = int(input())
 
-ans = 0
+# data = list(map(int, input().split()))
+# data.sort()
 
-for i in range(n):
-    data = map(int, input().split())
+# while True:
 
-    minValue = min(data)
+#  곱하기 혹은 더하기
+s = input()
+ans = int(s[0])
 
-    ans = max(ans, minValue)
+for i in range(1, len(s)):
+    if ans <= 1 or int(s[i]) <= 1:
+        ans += int(s[i])
+    else:
+        ans *= int(s[i])
 
 print(ans)
