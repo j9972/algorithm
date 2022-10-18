@@ -4,6 +4,7 @@ n, m = map(int, input().split())
 data = list(map(int, input().split()))
 
 res = list(combinations(data, 2))
+print("res:", res)
 
 count = 0
 for i in range(len(res)):

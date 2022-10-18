@@ -1,15 +1,16 @@
 # 만들 수 없는 금액
 import sys
+from itertools import combinations
 input = sys.stdin.readline
 
-n = int(input())
+n, m = map(int, input().split())
 data = list(map(int, input().split()))
 
-data.sort()
+choosing = list(combinations(data, 2))  # 2개 뽑는 모든 조합
 
-t = 1
-for i in data:
-    if t < i:  # i 가 새롭게 추가된 동전이라는 의미
-        break
-    t += i
-print(t)
+count = len(choosing)
+for i in range(len(choosing)):
+    if choosing[i][0] == choosing[i][1]:
+        count -= 1
+
+print(count)
