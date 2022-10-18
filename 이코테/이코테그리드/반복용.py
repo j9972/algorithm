@@ -1,16 +1,17 @@
 # 만들 수 없는 금액
 import sys
-from itertools import combinations
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+n = int(input())
 data = list(map(int, input().split()))
+data.sort()
 
-choosing = list(combinations(data, 2))  # 2개 뽑는 모든 조합
+count = 0
+group = 0
 
-count = len(choosing)
-for i in range(len(choosing)):
-    if choosing[i][0] == choosing[i][1]:
-        count -= 1
-
-print(count)
+for i in data:
+    count += 1
+    if count >= i:
+        group += 1
+        count = 0
+print(group)
