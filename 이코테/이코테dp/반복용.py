@@ -3,13 +3,15 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-data = list(map(int, input().split()))
 
-d = [0] * 100
-d[0] = data[0]
-d[1] = max(d[0], data[1])
+d = [0] * 1001
 
-for i in range(2, n):
-    d[i] = max(d[i-1], d[i-2]+data[i])
+d[0] = 0
+d[1] = 1
+d[2] = 3
+#d[3] = 5
 
-print(d[n-1])
+for i in range(3, n+1):
+    d[i] = d[i-1] + (d[i-2] * 2) % 796796
+
+print(d[n])
