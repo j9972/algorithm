@@ -1,30 +1,36 @@
-# 편집거리
+# 금광
 import sys
 input = sys.stdin.readline
 
-str1 = input()
-str2 = input()
+for tc in range(int(input())):
+    n, m = map(int, input().split())
+    data = list(map(int, input().split()))
 
+    dp = []
+    idx = 0
+    for i in range(m):
+        dp.append(data[idx:idx+m])
+        idx += m
 
-def edit(a, b):
-    n = len(a)
-    m = len(b)
-
-    dp = [[0]*(m+1) for _ in range(n+1)]
-
-    for i in range(1, n+1):
-        dp[i][0] = i
-    for i in range(1, m+1):
-        dp[0][i] = i
-
-    for i in range(1, n+1):
-        for j in range(1, m+1):
-            if a[i-1] == b[j-1]:
-                dp[i][j] = dp[i-1][j-1]
+    for j in range(1, m):
+        for i in range(n):
+            # up
+            if i == 0:
+                left_up = 0
             else:
-                dp[i][j] = 1 + min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j])
+                left_up = dp[i-1][j-1]
 
-    return dp[n][m]
+            # down
+            if i == n-1:
+                left_down = 0
+            else:
+                left_down = dp[i+1][j-1]
 
+            left = dp[i][j-1]
+            dp[i][j] += max(left, left_down, left_up)
 
-print(edit(str1, str2))
+    res = 0
+    for i in range(n):
+        res = max(res, dp[i][m-1])
+
+    print(res)
