@@ -2,24 +2,16 @@
 import sys
 input = sys.stdin.readline
 
+# LIS 증가하는 수열로 풀기
 n = int(input())
+data = list(map(int, input().split()))
+data.reverse()
 
-dp = [0] * (n+1)
+dp = [1] * n
 
-t = []
-p = []
+for i in range(1, n):
+    for j in range(0, i):
+        if data[j] < data[i]:
+            dp[i] = max(dp[i], dp[j]+1)
 
-for i in range(n):
-    time, price = map(int, input().split())
-    t.append(time)
-    p.append(price)
-
-mv = 0
-for i in range(n-1, -1, -1):
-    time = t[i] + i
-    if time <= n:
-        dp[i] = max(dp[time] + p[i], mv)
-        mv = dp[i]
-    else:
-        dp[i] = mv
-print(mv)
+print(n-max(dp))
