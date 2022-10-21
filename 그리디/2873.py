@@ -1,46 +1,63 @@
 import sys
 input = sys.stdin.readline
 
-r, c = map(int, input().split())
-ground = [list(map(int, input().split())) for _ in range(r)]
+row, column = map(int, input().split())
 
-if r % 2 == 1:
-    print(('R' * (c - 1) + 'D' + 'L' * (c - 1) + 'D') * (r // 2) + 'R' * (c - 1))
-elif c % 2 == 1:
-    print(('D' * (r - 1) + 'R' + 'U' * (r - 1) + 'R') * (c // 2) + 'D' * (r - 1))
-elif r % 2 == 0 and c % 2 == 0:
-    low = 1000
-    position = [-1, -1]
+# 2차원의 형태로 데이터 넣기
+data = []
+for i in range(row):
+    data.append(list(map(int, input().split())))
 
-    for i in range(r):
-        if i % 2 == 0:
-            for j in range(1, c, 2):
-                if low > ground[i][j]:
-                    low = ground[i][j]
-                    position = [i, j]
-        else:  # i % 2 == 1
-            for j in range(0, c, 2):
-                if low > ground[i][j]:
-                    low = ground[i][j]
-                    position = [i, j]
+# 행이 홀수이면, 2차원 배열을 전부 돌면된다 dp 생각안하고 그냥 갑 반환
+if row % 2 == 1:
+    # row가 3이면 1번, row가 5면 2번, row가 7이면 3번
+    print(('R' * (column - 1) + 'D' + 'L' * (column - 1) + 'D')
+          * (row // 2) + 'R' * (column - 1))
+# 행이 짝수일때
+else:
+    # 열도 짝수
+    if column % 2 == 0:
+        # 가장 낮은 기쁨 찾기 limit이 1000이므로
+        low = 1000
+        # 가장 왼쪽 칸에서 시작
+        position = [-1, -1]
 
-    res = ('D' * (r - 1) + 'R' + 'U' * (r - 1) + 'R') * (position[1] // 2)
-    x = 2 * (position[1] // 2)
-    y = 0
-    xbound = x + 1
+        # 피할 원 하나가 홀수 행에 있는지 짝수 행에 있는지 체크
+        for i in range(row):
+            if i % 2 == 0:
+                for j in range(1, column, 2):
+                    if low > data[i][j]:
+                        low = data[i][j]
+                        position = [i, j]
+            else:
+                for j in range(0, column, 2):
+                    if low > data[i][j]:
+                        low = data[i][j]
+                        position = [i, j]
 
-    while x != xbound or y != r - 1:
-        if x < xbound and [y, xbound] != position:
-            x += 1
-            res += 'R'
-        elif x == xbound and [y, xbound - 1] != position:
-            x -= 1
-            res += 'L'
-        if y != r - 1:
-            y += 1
-            res += 'D'
+        # 제외할칸을 기준으로 먼저 이동하기 ( 제외할칸은 position[1] // 2 )
+        res = ('D' * (row - 1) + 'R' + 'U' *
+               (row - 1) + 'R') * (position[1] // 2)
+        x = 2 * (position[1] // 2)
+        y = 0
+        xbound = 2 * (position[1] // 2) + 1
 
-    res += ('R' + 'U' * (r - 1) + 'R' + 'D' * (r - 1)) * \
-        ((c - position[1] - 1) // 2)
+        while x != xbound or y != row - 1:
+            if x < xbound and [y, xbound] != position:
+                x += 1
+                res += 'R'
+            elif x == xbound and [y, xbound - 1] != position:
+                x -= 1
+                res += 'L'
+            if y != row - 1:
+                y += 1
+                res += 'D'
 
-    print(res)
+        res += ('R' + 'U' * (row - 1) + 'R' + 'D' * (row - 1)) * \
+            ((column - position[1] - 1) // 2)
+        # ((column - position[1] - 1) // 2)는 이동해야하는 나머지 칸 // 2 한 값
+        print(res)
+    # 열은 홀수
+    else:
+        print(('D' * (row - 1) + 'R' + 'U' * (row - 1) + 'R')
+              * (column // 2) + 'D' * (row - 1))
