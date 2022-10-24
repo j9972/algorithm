@@ -1,29 +1,28 @@
-from collections import deque
+import sys
+sys.setrecursionlimit(10**9)
 
-n, m, k, x = map(int, input().split())
+n, m = map(int, input().split())
 
-board = [[] for _ in range(n+1)]
+data = []
+for i in range(n):
+    data.append(list(map(int, input())))
 
-for i in range(m):
-    a, b = map(int, input().split())
-    board[a].append(b)
 
-distance = [-1] * (n+1)
-distance[x] = 0
+def dfs(x, y):
+    if 0 <= x < n and 0 <= y < m and data[x][y] == 0:
+        data[x][y] = 1
+        dfs(x-1, y)
+        dfs(x+1, y)
+        dfs(x, y-1)
+        dfs(x, y+1)
+        return True
+    return False
 
-queue = deque([x])
 
-for i in range(1, n+1):
-    now = queue.popleft()
-    for next in board[now]:
-        if distance[next] == -1:
-            distance[next] = distance[now] + 1
-            queue.append(next)
+res = 0
+for i in range(n):
+    for j in range(m):
+        if dfs(i, j) == True:
+            res += 1
 
-check = False
-for i in range(1, n+1):
-    if distance[i] == k:
-        print(i)
-        check = True
-if check == False:
-    print(-1)
+print(res)
