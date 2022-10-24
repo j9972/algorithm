@@ -2,31 +2,36 @@ from collections import deque
 import sys
 sys.setrecursionlimit(10**9)
 
-n, m = map(int, input().split())
+n, m, k, x = map(int, input().split())
 
-data = []
-for i in range(n):
-    data.append(list(map(int, input())))
+data = [[] for _ in range(n+1)]
+
+for i in range(m):
+    a, b = map(int, input().split())
+    data[a].append(b)
+
+queue = deque([x])
 
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
+distance = [-1] * (n+1)
+distance[x] = 0
 
-def bfs(x, y):
-    queue = deque()
-    queue.append((x, y))
+while queue:
+    now = queue.popleft()
 
-    while queue:
-        x, y = queue.popleft()
+    for next in data[now]:
+        if distance[next] == -1:
+            distance[next] = distance[now] + 1
+            queue.append(next)
 
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+check = False
+# 1부터 n번까지의 도시를 이동하기에 range 범위가 이렇게 된다.
+for i in range(1, n+1):
+    if distance[i] == k:
+        print(i)
+        check = True
 
-            if 0 <= nx < n and 0 <= ny < m and data[nx][ny] == 1:
-                data[nx][ny] = data[x][y] + 1
-                queue.append((nx, ny))
-    return data[n-1][m-1]
-
-
-print(bfs(0, 0))
+if check == False:
+    print(-1)
