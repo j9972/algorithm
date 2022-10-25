@@ -9,8 +9,6 @@ for i in range(n):
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-res = 0
-
 
 def process(x, y, index):
     united = []

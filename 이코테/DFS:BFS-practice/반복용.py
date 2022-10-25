@@ -1,79 +1,55 @@
 from collections import deque
-from itertools import combinations
-import sys
-sys.setrecursionlimit(10**9)
 
-n = int(input())
+n, l, r = map(int, input().split())
 
-teacher = []
-space = []
 data = []
-
 for i in range(n):
-    data.append(list(map(str, input().split())))
-    for j in range(n):
-        if data[i][j] == 'T':
-            teacher.append((i, j))
-        elif data[i][j] == 'X':
-            space.append((i, j))
+    data.append(list(map(int, input().split())))
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
 
-def watch(x, y, direction):
-    # left -> right -> up -> down 순서
-    if direction == 0:
-        while y >= 0:
-            if data[x][y] == 'T':
-                return False
-            elif data[x][y] == 'S':
-                return True
-            y -= 1
-    if direction == 1:
-        while y < n:
-            if data[x][y] == 'T':
-                return False
-            elif data[x][y] == 'S':
-                return True
-            y += 1
-    if direction == 2:
-        while x >= 0:
-            if data[x][y] == 'T':
-                return False
-            elif data[x][y] == 'S':
-                return True
-            x -= 1
-    if direction == 3:
-        while x < n:
-            if data[x][y] == 'T':
-                return False
-            elif data[x][y] == 'S':
-                return True
-            x += 1
-    return False
+def bfs(x, y, index):
+    united = []
+    united.append((x, y))
 
+    queue = deque()
+    queue.append((x, y))
 
-def process():
-    for x, y in teacher:
+    union[x][y] = index
+    summary = data[x][y]
+    count = 1
+
+    while queue:
+        x, y = queue.popleft()
+
         for i in range(4):
-            if watch(x, y, i) == True:
-                return True
-    return False
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+                if l <= abs(data[nx][ny] - data[x][y]) <= r:
+                    united.append((nx, ny))
+                    queue.append((nx, ny))
+                    union[nx][ny] = index
+                    summary += data[nx][ny]
+                    count += 1
+    for i, j in united:
+        data[i][j] = summary // count
+    return count
 
 
-find = True
-
-for d in combinations(data, 3):
-    for x, y in d:
-        data[x][y] == 'O'
-
-    if process():
-        find = False
+total = 0
+while True:
+    union = [[-1]*n for _ in range(n)]
+    index = 0
+    for i in range(n):
+        for j in range(n):
+            if union[i][j] == -1:
+                bfs(i, j, index)
+                index += 1
+    if index == n*n:
         break
-
-    for x, y in d:
-        data[x][y] = 'X'
-
-
-if find == True:
-    print('YES')
-else:
-    print('NO')
+    total += 1
+print(total)
