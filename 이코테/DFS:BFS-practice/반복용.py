@@ -2,50 +2,42 @@ from collections import deque
 import sys
 sys.setrecursionlimit(10**9)
 
+n = int(input())
 
-def balance(p):
-    count = 0
-    for i in range(len(p)):
-        if p[i] == '(':
-            count += 1
-        else:
-            count -= 1
-        if count == 0:
-            return i
+data = list(map(int, input().split()))
+
+plus, minus, multi, div = map(int, input().split())
+
+minvalue = 10e9
+maxValue = -10e9
 
 
-def proper(p):
-    count = 0
-    for i in p:
-        if i == '(':
-            count += 1
-        else:
-            if count == 0:
-                return False
-            else:
-                count -= 1
-        return True
+def dfs(i, now):
+    global plus, minus, multi, div, maxValue, minvalue
 
-
-def solution(p):
-    ans = ''
-    if p == '':
-        print(ans)
-    idx = balance(p)
-    u = p[:idx+1]
-    v = p[idx+1:]
-
-    if proper(p):
-        ans = u + solution(v)
+    if i == n:
+        minvalue = min(minvalue, now)
+        maxValue = max(maxValue, now)
     else:
-        ans += '('
-        ans += u + solution(v)
-        ans += ')'
-        u = list(u[1:-1])
-        for i in range(len(u)):
-            if u[i] == ')':
-                u[i] = '('
-            else:
-                u[i] = ')'
-        ans += ''.join(u)
-    return ans
+        if plus > 0:
+            plus -= 1
+            dfs(i+1, now + data[i])
+            plus += 1
+        if minus > 0:
+            minus -= 1
+            dfs(i+1, now - data[i])
+            minus += 1
+        if multi > 0:
+            multi -= 1
+            dfs(i+1, now * data[i])
+            multi += 1
+        if div > 0:
+            div -= 1
+            dfs(i+1, now / int(data[i]))
+            div += 1
+
+
+dfs(1, data[0])
+
+print(maxValue)
+print(minvalue)
