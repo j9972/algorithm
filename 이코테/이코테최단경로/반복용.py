@@ -1,44 +1,34 @@
 # 전보
 import heapq
-from itertools import count
 import sys
 input = sys.stdin.readline
 
-n, m, start = map(int, input().split())  # 도시개수, 간선개수, 메시지를 보내고자 하는 도시
+n, m = map(int, input().split())
 INF = int(1e9)
 
-graph = [[] for _ in range(n+1)]
-distance = [INF] * (n+1)
+graph = [[INF]*(n+1) for _ in range(n+1)]
 
-for _ in range(m):
-    x, y, z = map(int, input().split())
-    graph[x].append((y, z))
+for i in range(m):
+    a, b = map(int, input().split())
+    graph[a][b] = 1
 
+for i in range(n+1):
+    for j in range(n+1):
+        if i == j:
+            graph[i][j] = 0
 
-def dij(start):
-    q = []
-    distance[start] = 0
-    heapq.heappush(q, (0, start))
+for k in range(1, n+1):
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
 
-    while q:
-        dist, now = heapq.heappop(q)
-        if dist > distance[now]:
-            continue
-        for i in graph[now]:
-            cost = dist + i[1]
-            if cost < distance[i[0]]:
-                distance[i[0]] = cost
-                heapq.heappush(q, (cost, i[0]))
+res = 0
+for a in range(1, n+1):
+    count = 0
+    for b in range(1, n+1):
+        if graph[a][b] != INF or graph[b][a] != INF:
+            count += 1
+    if count == n:
+        res += 1
 
-
-dij(start)
-
-count = 0
-maxD = 0
-
-for d in distance:
-    if d != INF:
-        count += 1
-        maxD = max(maxD, d)
-
-print(count-1, maxD)
+print(res)
