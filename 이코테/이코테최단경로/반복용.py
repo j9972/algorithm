@@ -3,32 +3,36 @@ import heapq
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
 INF = int(1e9)
 
-graph = [[INF]*(n+1) for _ in range(n+1)]
+for tc in range(int(input())):
+    n = int(input())
 
-for i in range(m):
-    a, b = map(int, input().split())
-    graph[a][b] = 1
+    graph = [[INF]*n for _ in range(n)]
 
-for i in range(n+1):
-    for j in range(n+1):
-        if i == j:
-            graph[i][j] = 0
+    data = []
+    for i in range(n):
+        data.append(list(map(int, input().split())))
 
-for k in range(1, n+1):
-    for a in range(1, n+1):
-        for b in range(1, n+1):
-            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
+    x, y = 0, 0
+    q = [(data[x][y], x, y)]
+    graph[x][y] = data[x][y]
 
-res = 0
-for a in range(1, n+1):
-    count = 0
-    for b in range(1, n+1):
-        if graph[a][b] != INF or graph[b][a] != INF:
-            count += 1
-    if count == n:
-        res += 1
+    while q:
+        dist, x, y = heapq.heappop(q)
 
-print(res)
+        if dist > graph[x][y]:
+            continue
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n:
+                cost = dist + data[nx][ny]
+                if cost < graph[nx][ny]:
+                    graph[nx][ny] = cost
+                    heapq.heappush(q, (cost, nx, ny))
+    print(graph[n-1][n-1])
