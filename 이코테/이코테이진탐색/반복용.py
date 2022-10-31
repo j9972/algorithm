@@ -1,35 +1,43 @@
-from bisect import bisect_left, bisect_right
+# 부품 찾기
 import sys
+from bisect import bisect_left, bisect_right
+
 input = sys.stdin.readline
 
+n = int(input())
+array = list(map(int, input().split()))
 
-def count_by_range(a, left_value, right_value):
-    left_index = bisect_left(a, left_value)
-    right_index = bisect_right(a, right_value)
-    return right_index - left_index
+array.sort()
+
+m = int(input())
+x = list(map(int, input().split()))
 
 
-def solution(words, queries):
-    answer = []
+def binary_search(a, target, start, end):
+    if start > end:
+        return None
+    mid = (start + end) // 2
+    if a[mid] == target:
+        return mid
+    elif a[mid] > target:
+        return binary_search(a, target, start, mid - 1)
+    else:
+        return binary_search(a, target, mid+1, end)
 
-    array = [[] for _ in range(10001)]
-    reverseArray = [[] for _ in range(10001)]
+    # while start <= end:
+    #     mid = (start + end) // 2
+    #     if a[mid] == target:
+    #         return mid
+    #     elif a[mid] > target:
+    #         end = mid - 1
+    #     else:
+    #         start = mid + 1
+    #     return None
 
-    for word in words:
-        array[len(word)].append(word)
-        reverseArray[len(word)].append(word[::-1])
 
-    for i in range(10001):
-        array[i].sort()
-        reverseArray[i].sort()
-
-    for q in queries:
-        if q[0] != '?':
-            res = count_by_range(array[len(q)], q.replace(
-                'a', '?'), q.replace('z', '?'))
-        else:
-            res = count_by_range(
-                reverseArray[len(q)], q[::-1].replace('a', '?'), q[::-1].replace('z', '?'))
-        answer.append(res)
-
-    print(answer)
+for i in x:
+    res = binary_search(array, i, 0, n-1)
+    if res != None:
+        print("yes", end=" ")
+    else:
+        print("no", end=" ")
