@@ -1,52 +1,34 @@
-# 고정점 찾기
-from array import array
-import sys
+# 가사 검색
 from bisect import bisect_left, bisect_right
 
-input = sys.stdin.readline
 
-n, c = map(int, input().split())
-data = []
-for i in range(n):
-    data.append(int(input()))
-
-data.sort()
-
-start = 1
-end = data[-1] - data[0]
-res = 0
+def count(a, left, right):
+    leftIdx = bisect_left(a, left)
+    rightIdx = bisect_right(a, right)
+    return rightIdx - leftIdx
 
 
-def count_range(a, left_value, right_value):
-    right_idx = bisect_right(a, right_value)
-    left_idx = bisect_left(a, left_value)
-    return right_idx - left_idx
+def solution(words, queries):
+    answer = []
 
+    array = [[] for _ in range(10001)]
+    reverArray = [[] for _ in range(10001)]
 
-# def binary_search(a, start, end):
-#     if start > end:
-#         return None
-#     mid = (start + end) // 2
-#     if a[mid] == mid:
-#         return mid
-#     elif a[mid] > mid:
-#         return binary_search(a, start, mid - 1)
-#     else:
-#         return binary_search(a, mid+1, end)
+    for word in words:
+        array[len(word)].append(word)
+        reverArray[len(word)].append(word[::-1])
 
-while start <= end:
-    count = 1
-    val = data[0]
-    mid = (start+end)//2
+    for i in range(10001):
+        array[i].sort()
+        reverArray[i].sort()
 
-    for i in range(1, n):
-        if data[i] >= val + mid:
-            val = data[i]
-            count += 1
-    if count >= c:
-        start = mid + 1
-        res = mid
-    else:
-        end = mid - 1
+    for q in queries:
+        if q[0] != '?':
+            res = count(array[len(q)], q.replace(
+                '?', 'a'), q.replace('?', 'z'))
+        else:
+            res = count(
+                reverArray[len(q)], q[::-1].replace('?', 'a'), q[::-1].replace('?', 'z'))
+        answer.append(res)
 
-print(res)
+    return answer
