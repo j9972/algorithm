@@ -1,4 +1,4 @@
-# 위에서 아래로
+# 성적이 낮은 순서로 학생 출력하기
 import sys
 input = sys.stdin.readline
 
@@ -6,9 +6,9 @@ n = int(input())
 
 data = []
 for i in range(n):
-    data.append(int(input()))
+    data.append(list(input().split()))
 
-dataArr = sorted(data, reverse=True)
+dataArr = sorted(data, key=lambda x: int(x[1]))
 
-for i in range(len(dataArr)):
-    print(dataArr[i], end=' ')
+for i in dataArr:
+    print(i[0], end=' ')
