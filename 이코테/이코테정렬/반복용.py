@@ -1,21 +1,15 @@
-# 카드 정렬하기
-import sys
-import heapq
-input = sys.stdin.readline
+# 실패율
+def solution(N, stages):
+    answer = []
+    stage = 1
+    fail = [0] * (N+1)
 
-n = int(input())
-res = []
+    for i in range(1, N+1):
+        notClear = stages.count(i)
+        reach = [i for i in stages if i >= stage]
+        fail = notClear / len(reach) if len(reach) != 0 else 0
+        stage += 1
+        answer.append((i, fail))
 
-heap = []
-for i in range(n):
-    data = int(input())
-    heapq.heappush(heap, data)
-
-while len(heap) != 1:
-    one = heapq.heappop(heap)
-    two = heapq.heappop(heap)
-    sumValue = one + two
-    res.append(sumValue)
-    heapq.heappush(heap, sumValue)
-
-print(sum(res))
+    answer = sorted(answer, key=lambda x: -x[1])
+    return [i[0] for i in answer]
