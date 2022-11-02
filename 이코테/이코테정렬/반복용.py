@@ -1,19 +1,15 @@
-# 성적이 낮은 순서로 학생 출력하기
+# 국영수
 import sys
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
-
-aArr = list(map(int, input().split()))
-bArr = list(map(int, input().split()))
-
-aArr.sort()
-bArr.sort(reverse=True)
+n = int(input())
 
 
-for i in range(k):
-    if aArr[i] >= bArr[i]:
-        break
-    else:
-        aArr[i], bArr[i] = bArr[i], aArr[i]
-print(sum(aArr))
+data = []
+for i in range(n):
+    data.append(list(input().split()))
+
+data = sorted(data, key=lambda x: (x[0], -int(x[1]), int(x[2]), -int(x[3])))
+
+for i in data:
+    print(i[0], end='\n')
