@@ -2,13 +2,18 @@
 import sys
 input = sys.stdin.readline
 
-n = int(input())
+n, k = map(int, input().split())
 
-data = []
-for i in range(n):
-    data.append(list(input().split()))
+aArr = list(map(int, input().split()))
+bArr = list(map(int, input().split()))
 
-dataArr = sorted(data, key=lambda x: int(x[1]))
+aArr.sort()
+bArr.sort(reverse=True)
 
-for i in dataArr:
-    print(i[0], end=' ')
+
+for i in range(k):
+    if aArr[i] >= bArr[i]:
+        break
+    else:
+        aArr[i], bArr[i] = bArr[i], aArr[i]
+print(sum(aArr))
