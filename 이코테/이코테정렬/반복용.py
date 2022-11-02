@@ -1,15 +1,21 @@
-# 국영수
+# 카드 정렬하기
 import sys
+import heapq
 input = sys.stdin.readline
 
 n = int(input())
+res = []
 
-
-data = []
+heap = []
 for i in range(n):
-    data.append(list(input().split()))
+    data = int(input())
+    heapq.heappush(heap, data)
 
-data = sorted(data, key=lambda x: (x[0], -int(x[1]), int(x[2]), -int(x[3])))
+while len(heap) != 1:
+    one = heapq.heappop(heap)
+    two = heapq.heappop(heap)
+    sumValue = one + two
+    res.append(sumValue)
+    heapq.heappush(heap, sumValue)
 
-for i in data:
-    print(i[0], end='\n')
+print(sum(res))
