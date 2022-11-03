@@ -1,3 +1,4 @@
+# 뉴스전하기
 import sys
 input = sys.stdin.readline
 
