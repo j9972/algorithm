@@ -8,7 +8,7 @@ res = 0
 
 jewel = []
 for i in range(n):
-    jewel.append(list(map(int, input().split())))
+    heapq.heappush(jewel, list(map(int, input().split())))
 
 bags = []
 for i in range(k):
@@ -22,8 +22,8 @@ for bag in bags:
     # jewel[0][0] => 첫번째 보석의 무게을 의미
     while jewel and bag >= jewel[0][0]:
         heapq.heappush(temp, -heapq.heappop(jewel)[1])
-    if len(temp) != 0:
+    if temp:
         res -= heapq.heappop(temp)
-    elif len(jewel) == 0:
+    elif not jewel:
         break
 print(res)

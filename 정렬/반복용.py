@@ -1,31 +1,26 @@
 # 뉴스전하기
 import sys
+import heapq
 input = sys.stdin.readline
 
-n = int(input())
-data = list(map(int, input().split()))
-tree = [[] for _ in range(n)]
-child_cnt = [0] * n
+n, k = map(int, input().split())
 
-for i in range(1, len(data)):
-    tree[data[i]].append(i)
+jewel = []
+for i in range(n):
+    heapq.heappush(jewel, list(map(int, input().split())))
 
+bags = []
+for i in range(k):
+    bags.append(int(input()))
+bags.sort()
 
-def go(x):
-    global child_cnt
-    child_node = []
-
-    if len(tree[x]) == 0:
-        child_cnt[x] = 0
-
-    else:
-        for child in tree[x]:
-            go(child)
-            child_node.append(child_cnt[child])
-        child_node.sort(reverse=True)
-        child_node = [child_node[i] + i + 1 for i in range(len(child_node))]
-        child_cnt[x] = max(child_node)
-
-
-go(0)
-print(child_cnt[0])
+res = 0
+temp = []
+for bag in bags:
+    while jewel and bag >= jewel[0][0]:
+        heapq.heappush(temp, -heapq.heappop(jewel)[1])
+        if temp:
+            res -= heapq.heappop(temp)
+        elif not jewel:
+            break
+print(res)
