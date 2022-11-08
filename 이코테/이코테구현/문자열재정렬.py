@@ -20,3 +20,23 @@ alphas.append(str(sum(number)))
 
 # 리스트를 문자열로 합치는 방법
 print(''.join(s for s in alphas))
+
+
+# 문자열 재정렬
+input = sys.stdin.readline
+
+n = input()
+str_list = []
+
+num = 0
+
+for i in n:
+    if i.isdigit():
+        num += int(i)
+    else:
+        str_list.append(i)
+
+str_list.sort()
+str_list.append(num)
+res = ''.join(str(s) for s in str_list)
+print(res)
