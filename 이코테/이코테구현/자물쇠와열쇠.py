@@ -1,60 +1,59 @@
-def rotate(array, d):
-    n = len(array)
-    res = [[0] * n for _ in range(n)]
+# 문자열 압축
+import sys
+input = sys.stdin.readline
 
-    # 90 degree
-    if d % 4 == 1:
-        for r in range(n):
-            for c in range(n):
-                res[c][n-r-1] = array[r][c]
-    # 180 degree
-    elif d % 4 == 2:
-        for r in range(n):
-            for c in range(n):
-                res[n-r-1][n-c-1] = array[r][c]
-    # 270 degree
-    elif d % 4 == 3:
-        for r in range(n):
-            for c in range(n):
-                res[n-c-1][r] = array[r][c]
-    # 360 degree
-    else:
-        for r in range(n):
-            for c in range(n):
-                res[r][c] = array[r][c]
+n, m = map(int, input().split())
+
+key = []
+for i in range(n):
+    key.append(list(map(int, input().split())))
+
+lock = []
+for i in range(m):
+    lock.append(list(map(int, input().split())))
+
+
+def rotate(array):
+    n = len(array)
+    m = len(array[0])
+    res = [[0]*n for _ in range(m)]
+    for i in range(n):
+        for j in range(m):
+            res[j][n-i-1] = array[i][j]
     return res
 
 
 def check(new_lock):
-    n = len(new_lock) // 3
-    for i in range(n, n*2):
-        for j in range(n, n*2):
+    length = len(new_lock) // 3
+    for i in range(length, length*2):
+        for j in range(length, length*2):
             if new_lock[i][j] != 1:
                 return False
     return True
 
 
 def solution(key, lock):
-    n = len(lock)
-    m = len(key)
-    new_lock = [[0]*(n*3) for _ in range(n*3)]
+    global n, m
+    new_lock = [[0] * (n*3) for _ in range(n*3)]
 
-    for i in range(1, n*2):
-        for j in range(1, n*2):
+    for i in range(n):
+        for j in range(n):
             new_lock[i+n][j+n] = lock[i][j]
 
-    for i in range(1, n*2):
-        for j in range(1, n*2):
-            for k in range(4):
-                k_key = rotate(new_lock, k)
-                for x in range(m):
-                    for y in range(m):
-                        new_lock[i+x][j+y] += k_key[x][y]
-
+    for d in range(4):
+        key = rotate(key)
+        for x in range(n*2):
+            for y in range(n*2):
+                for i in range(m):
+                    for j in range(m):
+                        new_lock[x+i][y+i] += key[i][j]
                 if check(new_lock):
                     return True
 
-                for x in range(m):
-                    for y in range(n):
-                        new_lock[i+x][j+y] -= k_key[x][y]
+                for i in range(m):
+                    for j in range(m):
+                        new_lock[x+i][y+i] -= key[i][j]
     return False
+
+
+print(solution(key, lock))
