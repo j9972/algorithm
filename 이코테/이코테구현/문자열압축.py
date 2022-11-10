@@ -16,3 +16,6 @@ def solution(s):
         answer = min(answer, len(sentense))
 
     return answer
+
+
+print(solution('asdasd'))

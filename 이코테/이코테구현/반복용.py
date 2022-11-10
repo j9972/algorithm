@@ -1,19 +1,26 @@
-# 문자열 재정렬
+# 문자열 압축
 import sys
 input = sys.stdin.readline
 
-n = input()
-str_list = []
+# s는 시작시 '\n' 이 있음
+s = input()
 
-num = 0
+length = len(s)
 
-for i in n:
-    if i.isdigit():
-        num += int(i)
-    else:
-        str_list.append(i)
+# 간격을 기준으로 해서 비교를 해야한다
+for step in range(1, len(s)//2 + 1):
+    count = 1
+    sentense = ""
+    prevStep = s[0:step]
 
-str_list.sort()
-str_list.append(num)
-res = ''.join(str(s) for s in str_list)
-print(res)
+    for nextStep in range(step, len(s), step):
+        if prevStep == s[nextStep:nextStep+step]:
+            count += 1
+        else:
+            sentense += str(count) + prevStep if count >= 2 else prevStep
+            prevStep = s[nextStep:nextStep+step]
+            count = 1
+    sentense += str(count) + prevStep if count >= 2 else prevStep
+    length = min(length, len(sentense))
+
+print(length - 1)
