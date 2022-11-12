@@ -1,38 +1,32 @@
-import sys
-
-
-import sys
+# 치킨 배달
 from itertools import combinations
+import sys
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
 
-house = []
+home = []
 chicken = []
 
-# check
-for r in range(n):
-    board = list(map(int, input().split()))
-    for c in range(n):
-        if board[c] == 1:
-            house.append((r, c))
-        elif board[c] == 2:
-            chicken.append((r, c))
-
-candidates = list(combinations(chicken, m))
-
-
-def getSum(candidate):
-    res = 0
-    for hx, hy in house:
-        temp = 1e9
-        for cx, cy in chicken:
-            temp = min(temp, abs(hx, cx)+abs(hy-cy))
-        res += temp
-    return res
-
-
 res = 1e9
-for c in candidates:
-    res = min(res, getSum(c))
+
+data = []
+for i in range(n):
+    data.append(list(map(int, input().split())))
+
+for i in range(n):
+    for j in range(n):
+        if data[i][j] == 1:
+            home.append([i, j])
+        elif data[i][j] == 2:
+            chicken.append([i, j])
+
+for ch in combinations(chicken, m):
+    temp = 0
+    for h in home:
+        ch_len = 999
+        for j in range(m):
+            ch_len = min(ch_len, abs(h[0] - ch[j][0]) + abs(h[1] - ch[j][1]))
+        temp += ch_len
+    res = min(res, temp)
 print(res)
