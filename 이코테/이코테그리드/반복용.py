@@ -2,12 +2,23 @@
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
-data = []
-for i in range(n):
-    data.append(list(map(int, input().split())))
+n, k = map(int, input().split())
 
-res = []
-for i in range(n):
-    res.append(min(data[i]))
-print(max(res))
+count = 0
+
+while True:
+    if n == 1:
+        break
+
+    if n % k == 0:
+        n = n // k
+    else:
+        n -= 1
+
+    if n < k:
+        break
+    count += 1
+
+count += (n-1)
+
+print(count)
