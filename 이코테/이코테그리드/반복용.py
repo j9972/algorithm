@@ -1,24 +1,24 @@
-# 숫자 카드 게임
+# 모험가 길드
 import sys
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
+n = int(input())
+data = list(map(int, input().split()))
 
-count = 0
+data.sort()
+res = []
+totalCount = 0
 
-while True:
-    if n == 1:
-        break
+for i in data:
+    res.append(i)
+    if i == res.count(i):
+        totalCount += 1
 
-    if n % k == 0:
-        n = n // k
-    else:
-        n -= 1
 
-    if n < k:
-        break
-    count += 1
+print(totalCount)
 
-count += (n-1)
-
-print(count)
+# for i in data:
+#     count += 1
+#     if count >= i:
+#         res += 1
+#         count = 0
