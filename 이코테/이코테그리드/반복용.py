@@ -1,22 +1,16 @@
-# 곱하기 혹은 더하기
+# 만들 수 없는 금액
+from itertools import combinations
 import sys
 input = sys.stdin.readline
 
-n = input()
-s = list(n)
+n = int(input())
+coin = list(map(int, input().split()))
 
-zero = 0
-one = 0
+coin.sort()
 
-if s[0] == '0':
-    one = 1
-elif s[0] == '1':
-    zero = 1
-
-for i in range(len(s)-1):
-    if s[i] != s[i+1]:
-        if s[i+1] == '1':
-            zero += 1
-        else:
-            one += 1
-print(min(zero, one))
+t = 1
+for i in coin:
+    if t < i:
+        break
+    t += i
+print(t)
