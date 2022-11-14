@@ -3,14 +3,14 @@ from itertools import combinations
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-coin = list(map(int, input().split()))
+n, m = map(int, input().split())
+data = list(map(int, input().split()))
 
-coin.sort()
+res = list(combinations(data, 2))
 
-t = 1
-for i in coin:
-    if t < i:
-        break
-    t += i
-print(t)
+count = 0
+for i in res:
+    if i[0] == i[1]:
+        count += 1
+
+print(len(res) - count)
