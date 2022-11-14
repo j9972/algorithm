@@ -1,17 +1,25 @@
-# 만들 수 없는 금액
+# 큰수의 법칙
 import sys
 input = sys.stdin.readline
 
-n = int(input())
+n, m, k = map(int, input().split())
+
 data = list(map(int, input().split()))
-data.sort()
 
+data.sort(reverse=True)
+
+res = 0
 count = 0
-group = 0
 
-for i in data:
+while True:
+    if m <= 0:
+        break
+    m -= 1
     count += 1
-    if count >= i:
-        group += 1
+    if count <= k:
+        res += data[0]
+    else:
+        res += data[1]
         count = 0
-print(group)
+
+print(res)
