@@ -5,43 +5,11 @@ n = int(input())
 price = list(map(int, input().split()))
 m = int(input())
 
-res = [0]
-priceMin = float('int')
-priceMinNum = 0
+d = [-float("inf") for _ in range(m+1)]
 
-for i in range(1, n):
-    if price[i] <= priceMin:
-        priceMin = price[i]
-        priceMinNum = i
-
-if priceMin > m:
-    print('0')
-    exit(0)
-
-res[0] = priceMinNum
-m -= priceMin
-
-if price[0] < priceMin:
-    priceMin = price[0]
-    priceMinNum = 0
-
-res += [priceMinNum for _ in range(m//priceMin)]
-remain = m % priceMin
-
-# 1번째 자리
-if remain != 0:
-    for i in range(n-1, res[0], -1):
-        if remain >= price[i] - price[res[0]]:
-            remain -= (price[i] - price[res[0]])
-            res[0] = i
-            break
-
-for i in range(1, len(res)):
-    if remain == 0:
-        break
-    for j in range(n-1, priceMinNum, -1):
-        if remain >= price[j] - priceMin:
-            res[i] = j
-            remain -= (price[j] - priceMin)
-            break
-print(''.join(map(str, res)))
+for i in range(n-1, -1, -1):
+    p = price[i]
+    for j in range(p, m+1):
+        d[j] = max(d[j], i, d[j-p]*10+i)
+        # i는 방번호ㅡ 숫자 d[j] -> 방번호, d[i] -> 가격
+print(d[m])
