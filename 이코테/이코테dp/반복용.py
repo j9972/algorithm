@@ -1,21 +1,17 @@
-# 1로 만들기
+# 개미 전사
 import sys
 input = sys.stdin.readline
 
-x = int(input())
+n = int(input())
+data = list(map(int, input().split()))
 
-d = [0] * 30001
-d[1] = 0
+d = [0] * 101
 
-for i in range(2, x+1):
-    d[i] = d[i-1] + 1
-    if i % 2 == 0:
-        d[i] = min(d[i], d[i//2] + 1)
+d[0] = data[0]
+d[1] = max(data[0], data[1])
 
-    elif i % 3 == 0:
-        d[i] = min(d[i], d[i//3] + 1)
 
-    elif i % 5 == 0:
-        d[i] = min(d[i], d[i//5] + 1)
+for i in range(2, n):
+    d[i] = max(d[i-1], d[i-2]+data[i])
 
-print(d[x])
+print(d[n-1])
