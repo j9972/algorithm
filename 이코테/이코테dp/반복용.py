@@ -1,23 +1,36 @@
-# 화폐 공사
+# 금광
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
 
-# data[i] 는 화폐 종류
-data = []
-for i in range(n):
-    data.append(int(input()))
+for tc in range(int(input())):
+    n, m = map(int, input().split())
 
-d = [10001] * (m+1)
+    arr = list(map(int, input().split()))
+    dp = []
+    index = 0
+    for i in range(n):
+        dp.append(arr[index:index+m])
+        index += m
 
-d[0] = 0
-for i in range(n):
-    for j in range(data[i], m+1):
-        if d[j-data[i]] != 10001:
-            d[j] = min(d[j], d[j-data[i]] + 1)
+    for j in range(1, m):
+        for i in range(n):
+            if i == 0:
+                left_up = 0
+            else:
+                left_up = dp[i - 1][j - 1]
 
-if d[m] == 10001:
-    print(-1)
-else:
-    print(d[m])
+            if i == n - 1:
+                left_down = 0
+            else:
+                left_down = dp[i + 1][j - 1]
+
+            left = dp[i][j - 1]
+            dp[i][j] += max(left_up, left_down, left)
+
+    # print(dp[n-1][m-1])
+
+    result = 0
+    for i in dp:
+        result = max(result, max(i))
+    print(result)
