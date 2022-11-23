@@ -1,18 +1,29 @@
-# 병사 배치하기
+# 못생긴 수
 import sys
 input = sys.stdin.readline
 
 n = int(input())
-arr = list(map(int, input().split()))
 
-arr.reverse()
+d = [0]*1000
+d[1] = 1
+d[2] = 2
+d[3] = 3
+d[4] = 4
+d[5] = 5
 
-# 1차원으로 리스트 초기화
-dp = [1] * n
+arr = []
 
-for i in range(1, n):
-    for j in range(i):
-        if arr[i] > arr[j]:
-            dp[i] = max(dp[i], dp[j]+1)
 
-print(n-max(dp))
+def check(i):
+    if i % 2 == 0 or i % 3 == 0 or i % 5 == 0:
+        return True
+    else:
+        return False
+
+
+for i in range(6, 1001):
+    if check(i) == True:
+        d[i] = i
+    else:
+        arr.append(i)
+print(d)
