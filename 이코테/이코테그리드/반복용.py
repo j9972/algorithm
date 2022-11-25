@@ -1,25 +1,15 @@
-# 큰 수의 법칙
+# 숫자 카드 게임
 import heapq
 import sys
 input = sys.stdin.readline
 
-n, m, k = map(int, input().split())
-data = list(map(int, input().split()))
+n, m = map(int, input().split())
+data = []
+for i in range(n):
+    data.append(list(map(int, input().split())))
 
-data.sort(reverse=True)
-first = data[0]
-second = data[1]
+d = []
+for i in range(n):
+    d.append(min(data[i]))
 
-ans = 0
-while True:
-    if m == 0:
-        print(ans)
-        break
-    for i in range(k):
-        ans += first
-        m -= 1
-        if m <= 0:
-            print(ans)
-            break
-    ans += second
-    m -= 1
+print(max(d))
