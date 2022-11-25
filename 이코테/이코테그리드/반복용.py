@@ -1,15 +1,18 @@
-# 숫자 카드 게임
+# 1이 될때까지
 import heapq
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
-data = []
-for i in range(n):
-    data.append(list(map(int, input().split())))
+n, k = map(int, input().split())
 
-d = []
-for i in range(n):
-    d.append(min(data[i]))
+count = 0
+while True:
+    if n == 1:
+        print(count)
+        break
 
-print(max(d))
+    if n % k == 0:
+        n //= k
+    else:
+        n -= 1
+    count += 1
