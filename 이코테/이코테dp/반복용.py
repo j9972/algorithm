@@ -2,30 +2,24 @@
 import sys
 input = sys.stdin.readline
 
-str1 = input()
-str2 = input()
+n = int(input())
 
+dp = [0] * (n+1)
 
-def edit(str1, str2):
-    n = len(str1)
-    m = len(str2)
+t = []
+p = []
 
-    dp = [[0] * (m+1) for _ in range(n+1)]
+for i in range(n):
+    time, price = map(int, input().split())
+    t.append(time)
+    p.append(price)
 
-    for i in range(1, n+1):
-        dp[i][0] = i
-
-    for j in range(1, m+1):
-        dp[0][j] = j
-
-    for i in range(1, n+1):
-        for j in range(1, m+1):
-            if str1[i-1] == str2[j-1]:
-                dp[i][j] = dp[i-1][j-1]
-            else:
-                dp[i][j] = min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1
-
-    return dp[n-1][m-1]
-
-
-print(edit(str1, str2))
+mv = 0
+for i in range(n-1, -1, -1):
+    time = t[i] + i
+    if time <= n:
+        dp[i] = max(mv, p[i] + dp[time])
+        mv = dp[i]
+    else:
+        dp[i] = mv
+print(mv)

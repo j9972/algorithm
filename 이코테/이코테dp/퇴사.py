@@ -12,7 +12,7 @@ for i in range(n):
 mv = 0
 
 for i in range(n-1, -1, -1):
-    time = t[i] + iㅇㅌㅊ
+    time = t[i] + i
     if time <= n:
         dp[i] = max(p[i] + dp[time], mv)
         mv = dp[i]
