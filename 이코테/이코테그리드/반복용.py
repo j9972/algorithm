@@ -1,22 +1,15 @@
-# 문자열 뒤집기
+# 만들 수  없는 금액
 import heapq
 import sys
 input = sys.stdin.readline
 
-s = input()
+n = int(input())
+data = list(map(int, input().split()))
+data.sort()
 
-zero = one = 0
-
-if s[0] == '0':
-    one += 1
-else:
-    zero += 1
-
-for i in range(len(s) - 1):
-    if s[i] == s[i+1]:
-        if s[i] == '0':
-            one += 1
-        else:
-            zero += 1
-
-print(min(one, zero))
+t = 1
+for i in data:
+    if t < i:
+        break
+    t += i
+print(t)
