@@ -2,34 +2,24 @@
 import sys
 input = sys.stdin.readline
 
-for tc in range(int(input())):
-    n, m = map(int, input().split())
+n = int(input())
 
-    arr = list(map(int, input().split()))
+dp = []
+for i in range(n):
+    dp.append(list(map(int, input().split())))
 
-    data = []
-    index = 0
-    for i in range(n):
-        data.append(arr[index:index+m])
-        index += m
+for i in range(1, n):
+    for j in range(i):
+        if i == 0:
+            left = 0
+        else:
+            left = dp[i-1][j-1]
 
-    for j in range(1, m):
-        for i in range(n):
-            if i == 0:
-                left_up = 0
-            else:
-                left_up = data[i-1][j-1]
+        if i == j:
+            up = 0
+        else:
+            up = dp[i-1][j]
 
-            if i == n-1:
-                left_down = 0
-            else:
-                left_down = data[i+1][j-1]
+        dp[i][j] += max(left, up)
 
-            left = data[i][j-1]
-
-            data[i][j] += max(left, left_down, left_up)
-
-    res = 0
-    for i in data:
-        res = max(res, max(i))
-    print(res)
+print(max(dp[n-1]))
