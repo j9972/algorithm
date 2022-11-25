@@ -1,19 +1,15 @@
-# 모험가 길드
+# 곱하기 혹은 더하기
 import heapq
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-data = list(map(int, input().split()))
+s = input()
 
-data.sort()
+count = 0
+for i in range(len(s)-1):
+    if s[i] == '0' or count == 0 or s[i] == '1':
+        count += int(s[i])
+    else:
+        count *= int(s[i])
 
-g = 0
-c = 0
-for i in data:
-    c += 1
-    if c >= i:
-        g += 1
-        c = 0
-
-print(g)
+print(count)
