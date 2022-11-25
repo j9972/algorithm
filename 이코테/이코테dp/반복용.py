@@ -1,29 +1,35 @@
-# 못생긴 수
+# 금광
 import sys
 input = sys.stdin.readline
 
-n = int(input())
+for tc in range(int(input())):
+    n, m = map(int, input().split())
 
-d = [0]*1000
-d[1] = 1
-d[2] = 2
-d[3] = 3
-d[4] = 4
-d[5] = 5
+    arr = list(map(int, input().split()))
 
-arr = []
+    data = []
+    index = 0
+    for i in range(n):
+        data.append(arr[index:index+m])
+        index += m
 
+    for j in range(1, m):
+        for i in range(n):
+            if i == 0:
+                left_up = 0
+            else:
+                left_up = data[i-1][j-1]
 
-def check(i):
-    if i % 2 == 0 or i % 3 == 0 or i % 5 == 0:
-        return True
-    else:
-        return False
+            if i == n-1:
+                left_down = 0
+            else:
+                left_down = data[i+1][j-1]
 
+            left = data[i][j-1]
 
-for i in range(6, 1001):
-    if check(i) == True:
-        d[i] = i
-    else:
-        arr.append(i)
-print(d)
+            data[i][j] += max(left, left_down, left_up)
+
+    res = 0
+    for i in data:
+        res = max(res, max(i))
+    print(res)
