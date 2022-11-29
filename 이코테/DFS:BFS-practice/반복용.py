@@ -1,36 +1,37 @@
-# 음료수 얼려먹기
+# 특정 거리의 도시 찾기
 # import sys
 # sys.setrecursionlimit(10**9)
 # input = sys.stdin.readline
 from collections import deque
+import sys
+input = sys.stdin.readline
 
-n, m = map(int, input().split())
+# N 도시 수, M 도로 수, K 거리 정보 X 출발 도시
+N, M, K, X = map(int, input().split(' '))
+graph = [[] for _ in range(N+1)]
 
-data = []
-for i in range(n):
-    data.append(list(map(int, input())))
+for _ in range(M):
+    a, b = map(int, input().split(' '))
+    graph[a].append(b)
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+distance = [-1] * (N+1)
+distance[X] = 0
 
+# BFS 부분
+q = deque([X])
+while q:
+    now = q.popleft()
 
-def dfs(x, y):
+    for next in graph[now]:
+        if distance[next] == -1:
+            distance[next] = distance[now]+1
+            q.append(next)
 
-    queue = deque()
-    queue.append((x, y))
-
-    while queue:
-        x, y = queue.popleft()
-
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-
-            if 0 <= nx < n and 0 <= ny < m:
-                if data[nx][ny] == 1:
-                    data[nx][ny] = data[x][y] + 1
-                    queue.append((nx, ny))
-    return data[n-1][m-1]
-
-
-print(dfs(0, 0))
+# K값이 distance에 있다면 i값출력 없다면 -1 출력
+if K in distance:
+    for i in range(1, N+1):
+        if distance[i] == K:
+            print(i)
+            check = True
+else:
+    print(-1)
