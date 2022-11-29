@@ -4,20 +4,6 @@ input = sys.stdin.readline
 
 n = int(input())
 
-# time = []
-# for i in range(n):
-#     time.append(list(map(int, input().split())))
-
-# dp = [0] * (n+1)
-
-# for i in range(len(time)):
-#     if time[i][1] == -1:
-#         dp[i] += time[i][0]
-#         print(dp[i])
-#     elif time[i][1] != -1:
-#         dp[i] = time[i][0] + dp[time[i][1]-1]
-#         print(dp[i])
-
 seq = [[] for _ in range(n+1)]
 inDegree = [0 for _ in range(n+1)]
 dp = [0 for _ in range(n+1)]
