@@ -1,4 +1,4 @@
-# 플로이드
+# 플로이드 - 플로이드 사용
 import heapq
 import sys
 input = sys.stdin.readline
