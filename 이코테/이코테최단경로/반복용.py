@@ -3,31 +3,52 @@ import heapq
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
 INF = int(1e9)
-data = [[INF] * (n+1) for _ in range(n+1)]
+
+n, m = map(int, input().split())
+
+data = [[] for _ in range(n+1)]
+distance = [INF] * (n+1)
+start = 1
 
 for i in range(m):
     a, b = map(int, input().split())
-    data[a][b] = 1
+    data[a].append((b, 1))
+    data[b].append((a, 1))
 
+
+def dik(start):
+    q = []
+    heapq.heappush(q, (0, start))
+    distance[start] = 0
+
+    while q:
+        dist, now = heapq.heappop(q)
+
+        if distance[now] < dist:
+            continue
+
+        for i in data[now]:
+            cost = dist + i[1]
+            if cost < distance[i[0]]:
+                distance[i[0]] = cost
+                heapq.heappush(q, (cost, i[0]))
+
+
+dik(start)
+
+maxNode = 0
+maxDistance = 0
+
+res = []
 for i in range(1, n+1):
-    for j in range(1, n+1):
-        if i == j:
-            data[i][j] = 0
-
-for k in range(1, n+1):
-    for i in range(1, n+1):
-        for j in range(1, n+1):
-            data[i][j] = min(data[i][j], data[i][k]+data[k][j])
-
-res = 0
-for i in range(1, n+1):
-    count = 0
-    for j in range(1, n+1):
-        if data[i][j] != INF or data[j][i] != INF:
-            count += 1
-    if count == n:
-        res += 1
-print(res)
+    if maxDistance < distance[i]:
+        maxNode = i
+        maxDistance = distance[i]
+        res = [maxNode]
+    elif maxDistance == distance[i]:
+        res.append(i)
+print(maxNode, maxDistance, len(res))
