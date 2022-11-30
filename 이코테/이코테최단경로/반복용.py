@@ -1,4 +1,4 @@
-# 전보 - 개선된 우선순위 큐
+# 전보
 import heapq
 import sys
 from turtle import distance
