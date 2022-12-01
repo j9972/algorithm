@@ -1,7 +1,6 @@
 # 플로이드 - 플로이드 사용
 import heapq
 import sys
-from turtle import distance
 input = sys.stdin.readline
 
 dx = [-1, 1, 0, 0]
@@ -9,28 +8,32 @@ dy = [0, 0, -1, 1]
 
 INF = int(1e9)
 
-n = int(input())
-m = int(input())
+for tc in range(int(input())):
+    n = int(input())
 
-graph = [[INF] * (n+1) for _ in range(n+1)]
+    graph = []
+    for i in range(n):
+        graph.append(list(map(int, input().split())))
 
-for i in range(m):
-    a, b, c = map(int, input().split())
-    if c < graph[a][b]:
-        graph[a][b] = c
+    distance = [[INF]*n for _ in range(n)]
 
-for i in range(1, n+1):
-    graph[i][i] = 0
+    x, y = 0, 0
+    q = [(graph[x][y], x, y)]
+    distance[x][y] = graph[x][y]
 
-for k in range(1, n+1):
-    for a in range(1, n+1):
-        for b in range(1, n+1):
-            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
+    while q:
+        dist, x, y = heapq.heappop(q)
 
-for i in range(1, n+1):
-    for j in range(1, n+1):
-        if graph[i][j] != INF:
-            print(graph[i][j], end=' ')
-        else:
-            print(0, end=' ')
-    print()
+        if distance[x][y] < dist:
+            continue
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n:
+                cost = dist + graph[nx][ny]
+                if cost < distance[nx][ny]:
+                    distance[nx][ny] = cost
+                    heapq.heappush(q, (cost, nx, ny))
+
+    print(distance[n-1][n-1])
