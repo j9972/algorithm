@@ -8,32 +8,48 @@ dy = [0, 0, -1, 1]
 
 INF = int(1e9)
 
-for tc in range(int(input())):
-    n = int(input())
+n, m = map(int, input().split())
 
-    graph = []
-    for i in range(n):
-        graph.append(list(map(int, input().split())))
+graph = [[] for _ in range(n+1)]
+distance = [INF] * (n+1)
 
-    distance = [[INF]*n for _ in range(n)]
+start = 1
 
-    x, y = 0, 0
-    q = [(graph[x][y], x, y)]
-    distance[x][y] = graph[x][y]
+for i in range(m):
+    a, b = map(int, input().split())
+    graph[a].append((b, 1))
+    graph[b].append((a, 1))
+
+
+def dik(start):
+    q = []
+    distance[start] = 0
+    heapq.heappush(q, (0, start))
 
     while q:
-        dist, x, y = heapq.heappop(q)
+        dist, now = heapq.heappop(q)
 
-        if distance[x][y] < dist:
+        if distance[now] < dist:
             continue
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+        for i in graph[now]:
+            cost = dist + i[1]
+            if cost < distance[i[0]]:
+                distance[i[0]] = cost
+                heapq.heappush(q, (cost, i[0]))
 
-            if 0 <= nx < n and 0 <= ny < n:
-                cost = dist + graph[nx][ny]
-                if cost < distance[nx][ny]:
-                    distance[nx][ny] = cost
-                    heapq.heappush(q, (cost, nx, ny))
 
-    print(distance[n-1][n-1])
+dik(start)
+
+maxNode = 0
+maxDist = 0
+res = []
+
+for i in range(1, n+1):
+    if maxDist < distance[i]:
+        maxDist = distance[i]
+        maxNode = i
+        res = [maxNode]
+    elif maxDist == distance[i]:
+        res.append(i)
+
+print(maxNode, maxDist, len(res))
