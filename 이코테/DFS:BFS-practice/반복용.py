@@ -1,38 +1,56 @@
 from collections import deque
-import sys
-input = sys.stdin.readline
 
-n, k = map(int, input().split())
+n, l, r = map(int, input().split())
+
+data = []
+for i in range(n):
+    data.append(list(map(int, input().split())))
 
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-graph = []
-data = []
 
-for i in range(n):
-    graph.append(list(map(int, input().split())))
-    for j in range(n):
-        if graph[i][j] != 0:
-            data.append((graph[i][j], 0, i, j))
+def bfs(x, y, index):
+    united = []
+    united.append((x, y))
 
-data.sort()
-q = deque(data)
+    q = deque()
+    q.append((x, y))
 
-s, x, y = map(int, input().split())
+    union[x][y] = index
+    summary = data[x][y]
+    count = 1
 
-while q:
-    v, ts, tx, ty = q.popleft()
+    while q:
+        x, y = q.popleft()
 
-    if s == ts:
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+                if l <= abs(data[nx][ny] - data[x][y]) <= r:
+                    union[nx][ny] = index
+                    summary += data[nx][ny]
+                    count += 1
+                    united.append((nx, ny))
+                    q.append((nx, ny))
+    for x, y in united:
+        data[x][y] = summary // count
+    return count
+
+
+tot = 0
+while True:
+    union = [[-1] * (n+1) for _ in range(n+1)]
+    index = 0
+    for i in range(n):
+        for j in range(n):
+            if union[i][j] == -1:
+                bfs(i, j, index)
+                index += 1
+    if index == n*n:
         break
-    for i in range(4):
-        nx = tx + dx[i]
-        ny = ty + dy[i]
+    tot += 1
 
-        if 0 <= nx < n and 0 <= ny < n:
-            if graph[nx][ny] == 0:
-                graph[nx][ny] = v
-                q.append((v, ts+1, nx, ny))
-
-print(graph[x-1][y-1])
+print(tot)
