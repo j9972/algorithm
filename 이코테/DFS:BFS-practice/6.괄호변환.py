@@ -47,3 +47,37 @@ def solution(p):
                 u[i] = '('
         ans += ''.join(u)
     return ans
+
+
+def solution(p):
+    ans = ' '
+    if not p:
+        return p
+
+    res, cnt = True, 0
+    for i in range(len(p)):
+        if p[i] == '(':
+            cnt -= 1
+        else:
+            cnt += 1
+
+        if cnt > 0:
+            res = False     # 올바른 괄호 문자열아 아니다.
+
+        u = p[:i+1]
+        v = p[i+1:]
+
+        if cnt == 0:
+            if res:
+                ans = u + solution(v)
+            else:
+                ans += '(' + solution(v) + ')'
+                u = list(u[1:-1])
+                for i in range(len(u)):
+                    if u[i] == '(':
+                        u[i] = ')'
+                    else:
+                        u[i] = '('
+                ans += ''.join(u)
+            return ans
+    #ans += ''.join(list(map(lambda x: '(' if x == ')' else ')', p[1:i])))
