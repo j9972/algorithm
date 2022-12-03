@@ -1,15 +1,17 @@
-# 실패율
-def solution(N, stages):
-    answer = []
-    stage = 1
-    fail = [0] * (N+1)
+import sys
+from tkinter.tix import Tree
+input = sys.stdin.readline
 
-    for i in range(1, N+1):
-        notClear = stages.count(i)
-        reach = [i for i in stages if i >= stage]
-        fail = notClear / len(reach) if len(reach) != 0 else 0
-        stage += 1
-        answer.append((i, fail))
+n, k = map(int, input().split())
 
-    answer = sorted(answer, key=lambda x: -x[1])
-    return [i[0] for i in answer]
+a = list(map(int, input().split()))
+b = list(map(int, input().split()))
+
+a.sort()
+b.sort(reverse=True)
+
+for i in range(k):
+    if a[i] < b[i]:
+        a[i] = b[i]
+
+print(sum(a))
