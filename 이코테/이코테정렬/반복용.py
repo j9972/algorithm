@@ -1,17 +1,12 @@
 import sys
-from tkinter.tix import Tree
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
+n = int(input())
+data = []
+for i in range(n):
+    data.append(list(map(str, input().split())))
 
-a = list(map(int, input().split()))
-b = list(map(int, input().split()))
+data.sort(key=lambda x: (-int(x[1]), int(x[2]), -int(x[3]), x[0]))
 
-a.sort()
-b.sort(reverse=True)
-
-for i in range(k):
-    if a[i] < b[i]:
-        a[i] = b[i]
-
-print(sum(a))
+for i in data:
+    print(i[0], end='\n')
