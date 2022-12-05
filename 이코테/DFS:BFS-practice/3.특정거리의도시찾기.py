@@ -10,6 +10,8 @@ for i in range(m):
     a, b = map(int, input().split())
     board[a].append(b)
 
+print(board)
+
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
