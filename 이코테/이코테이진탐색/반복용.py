@@ -3,29 +3,24 @@ from bisect import bisect_left, bisect_right
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-data_n = list(map(int, input().split()))
-m = int(input())
-data_m = list(map(int, input().split()))
+n, m = map(int, input().split())
+data = list(map(int, input().split()))
 
-data_n.sort()
+s = 0
+e = max(data)
+res = 0
 
+while s <= e:
+    m = (s+e) // 2
+    tot = 0
 
-def binary(arr, tar, s, e):
-    while s <= e:
-        m = (s+e) // 2
-        if arr[m] == tar:
-            return m
-        elif arr[m] > tar:
-            e = m - 1
-        else:
-            s = m + 1
-    return None
+    for x in data:
+        if x > m:
+            tot += x - m
 
-
-for i in data_m:
-    res = binary(data_n, i, 0, n-1)
-    if res != None:
-        print("yes", end=' ')
+    if tot < m:
+        e = m - 1
     else:
-        print("no", end=' ')
+        s = m + 1
+        res = tot
+print(res)
