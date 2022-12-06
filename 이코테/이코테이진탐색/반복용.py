@@ -6,21 +6,16 @@ input = sys.stdin.readline
 n, m = map(int, input().split())
 data = list(map(int, input().split()))
 
-s = 0
-e = max(data)
-res = 0
+data.sort()
 
-while s <= e:
-    m = (s+e) // 2
-    tot = 0
 
-    for x in data:
-        if x > m:
-            tot += x - m
+def count(a, find):
+    return bisect_right(a, find) - bisect_left(a, find)
 
-    if tot < m:
-        e = m - 1
-    else:
-        s = m + 1
-        res = tot
-print(res)
+
+res = count(data, m)
+
+if res != 0:
+    print(res)
+else:
+    print(-1)
