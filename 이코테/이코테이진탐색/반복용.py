@@ -1,21 +1,33 @@
-# 부품 찾기
+# 공유기 설치
 from bisect import bisect_left, bisect_right
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
-data = list(map(int, input().split()))
+n, c = map(int, input().split())
+
+data = []
+for i in range(n):
+    data.append(int(input()))
 
 data.sort()
+# 거리를 기준으로 이진 탐색하기
+s = 1
+e = data[-1] - data[0]
+res = 0
 
+while s <= e:
+    m = (s+e) // 2
+    val = data[0]
+    cnt = 1
 
-def count(a, find):
-    return bisect_right(a, find) - bisect_left(a, find)
+    for i in range(1, n):
+        if data[i] >= m + val:
+            val = data[i]
+            cnt += 1
 
-
-res = count(data, m)
-
-if res != 0:
-    print(res)
-else:
-    print(-1)
+    if cnt >= c:
+        s = m + 1
+        res = m
+    else:
+        e = m - 1
+print(res)
