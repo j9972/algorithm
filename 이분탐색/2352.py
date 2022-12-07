@@ -6,8 +6,6 @@ n = int(input())
 data = list(map(int, input().split()))
 res = []
 
-2
-
 # 교체를 하기 위한 함수
 
 
