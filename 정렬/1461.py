@@ -32,3 +32,4 @@ cnt = abs(mv)
 for r in res:
     cnt += abs(r) * 2
 print(cnt)
+# 출력
