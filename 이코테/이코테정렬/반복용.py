@@ -1,20 +1,13 @@
-import heapq
+# 국영수
 import sys
 input = sys.stdin.readline
 
 n = int(input())
-heap = []
-
+data = []
 for i in range(n):
-    data = int(input())
-    heapq.heappush(heap, data)
+    data.append(list(map(str, input().split())))
 
-res = 0
+data.sort(key=lambda x: (-int(x[1]), int(x[2]), -int(x[3]), x[0]))
 
-while len(heap) != 1:
-    first = heapq.heappop(heap)
-    second = heapq.heappop(heap)
-    sumV = first + second
-    res += sumV
-    heapq.heappush(heap, sumV)
-print(res)
+for i in data:
+    print(i[0], end='\n')
