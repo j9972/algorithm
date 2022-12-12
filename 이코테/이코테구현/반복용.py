@@ -1,32 +1,12 @@
-# 치킨 배달
-from itertools import combinations
+# 상하좌우
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+n = int(input())
+data = [[0] * (n+1) for _ in range(n+1)]
 
-home = []
-chicken = []
+direction = list(map(str, input().split()))
 
-res = 1e9
-
-data = []
-for i in range(n):
-    data.append(list(map(int, input().split())))
-
-for i in range(n):
-    for j in range(n):
-        if data[i][j] == 1:
-            home.append([i, j])
-        elif data[i][j] == 2:
-            chicken.append([i, j])
-
-for ch in combinations(chicken, m):
-    temp = 0
-    for h in home:
-        ch_len = 999
-        for j in range(m):
-            ch_len = min(ch_len, abs(h[0] - ch[j][0]) + abs(h[1] - ch[j][1]))
-        temp += ch_len
-    res = min(res, temp)
-print(res)
+x, y = 1, 1
+for i in range(len(direction)):
+    data[x][y] = 1
