@@ -1,17 +1,17 @@
-# 럭키
+# 재정렬
 import sys
 input = sys.stdin.readline
 
-n = input().rstrip()
+s = input().rstrip()
 
 cnt = 0
-for i in range(0, len(n)//2):
-    cnt += int(n[i])
-val = 0
-for i in range(len(n)//2, len(n)):
-    val += int(n[i])
+ans = []
+for i in range(len(s)):
+    if s[i].isalpha():
+        ans.append(s[i])
+    else:
+        cnt += int(s[i])
+ans.sort()
+ans.append(str(cnt))
 
-if cnt == val:
-    print('LUCKY')
-else:
-    print('READY')
+print(''.join(ans))
