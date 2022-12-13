@@ -1,18 +1,53 @@
-# 왕실의 나이트
+# 게임 개발
 import sys
 input = sys.stdin.readline
 
-data = input()
-col = int(ord(data[0])) - int(ord('a')) + 1
-row = int(data[1])
+n, m = map(int, input().split())
+x, y, d = map(int, input().split())
 
-step = [(-2, -1), (-2, 1), (2, -1), (2, 1), (-1, -2), (1, -2), (-1, 2), (1, 2)]
+data = []
+for i in range(n):
+    data.append(list(map(int, input().split())))
 
-res = 0
+visited = [[0] * m for _ in range(n)]
+visited[x][y] = 1
 
-for s in step:
-    next_row = row + s[1]
-    next_col = col + s[0]
-    if 1 <= next_row <= 8 and 1 <= next_col <= 8:
-        res += 1
-print(res)
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+
+def turing():
+    global d
+    d -= 1
+    if d == -1:
+        d = 3
+
+
+cnt = 1
+turingPoint = 0
+
+while True:
+    turing()
+    nx = x + dx[d]
+    ny = y + dy[d]
+
+    if visited[nx][ny] == 0 and data[nx][ny] == 0:  # data의 값을 변동시키지 않는 이유는 돌아갈수 있기 때문임
+        visited[nx][ny] = 1  # 방문 처리
+        x, y = nx, ny  # 이동
+        cnt += 1
+        turingPoint = 0
+        continue
+    else:
+        turingPoint += 1
+
+    if turingPoint == 4:
+        nx = x - dx[d]
+        ny = y - dy[d]
+
+        if data[nx][ny] == 0:
+            x, y = nx, ny
+        else:
+            break
+        turingPoint = 0
+
+print(cnt)
