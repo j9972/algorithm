@@ -1,13 +1,18 @@
-# 상하좌우
+# 왕실의 나이트
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-count = 0
+data = input()
+col = int(ord(data[0])) - int(ord('a')) + 1
+row = int(data[1])
 
-for i in range(n+1):
-    for j in range(60):
-        for k in range(60):
-            if '3' in str(i) + str(k) + str(j):
-                count += 1
-print(count)
+step = [(-2, -1), (-2, 1), (2, -1), (2, 1), (-1, -2), (1, -2), (-1, 2), (1, 2)]
+
+res = 0
+
+for s in step:
+    next_row = row + s[1]
+    next_col = col + s[0]
+    if 1 <= next_row <= 8 and 1 <= next_col <= 8:
+        res += 1
+print(res)
