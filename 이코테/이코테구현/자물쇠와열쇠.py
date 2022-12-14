@@ -1,59 +1,44 @@
-# 문자열 압축
-import sys
-input = sys.stdin.readline
-
-n, m = map(int, input().split())
-
-key = []
-for i in range(n):
-    key.append(list(map(int, input().split())))
-
-lock = []
-for i in range(m):
-    lock.append(list(map(int, input().split())))
+def rotate(arr):
+    return list(zip(*arr[::-1]))
 
 
-def rotate(array):
-    n = len(array)
-    m = len(array[0])
-    res = [[0]*n for _ in range(m)]
-    for i in range(n):
+def attach(x, y, m, new_lock, key):
+    for i in range(m):
         for j in range(m):
-            res[j][n-i-1] = array[i][j]
-    return res
+            new_lock[x+i][j+y] += key[i][j]
 
 
-def check(new_lock):
-    length = len(new_lock) // 3
-    for i in range(length, length*2):
-        for j in range(length, length*2):
-            if new_lock[i][j] != 1:
+def detach(x, y, m, new_lock, key):
+    for i in range(m):
+        for j in range(m):
+            new_lock[x+i][j+y] -= key[i][j]
+
+
+def check(new_lock, n, m):
+    for i in range(n):
+        for j in range(n):
+            if new_lock[i+m][j+m] != 1:
                 return False
     return True
 
 
 def solution(key, lock):
-    global n, m
-    new_lock = [[0] * (n*3) for _ in range(n*3)]
+    n, m = len(lock), len(key)
+
+    new_lock = [[0]*(2*m+n) for _ in range(m*2+n)]
 
     for i in range(n):
         for j in range(n):
-            new_lock[i+n][j+n] = lock[i][j]
+            new_lock[m+i][m+j] = lock[i][j]
 
-    for d in range(4):
+    for _ in range(4):
         key = rotate(key)
-        for x in range(n*2):
-            for y in range(n*2):
-                for i in range(m):
-                    for j in range(m):
-                        new_lock[x+i][y+i] += key[i][j]
-                if check(new_lock):
+        for x in range(1, m+n):
+            for y in range(1, m+n):
+                attach(x, y, m, new_lock, key)
+
+                if check(new_lock, n, m):
                     return True
 
-                for i in range(m):
-                    for j in range(m):
-                        new_lock[x+i][y+i] -= key[i][j]
+                detach(x, y, m, new_lock, key)
     return False
-
-
-print(solution(key, lock))
