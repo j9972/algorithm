@@ -7,6 +7,15 @@ k = int(input())
 board = [[0]*(n+1) for _ in range(n+1)]
 info = []
 
+# 아래 1을 넣는 과정을 다르게 표현
+# k_list = []
+# for _ in range(k):
+#     x, y = map(int, input().split())
+#     k_list.append([x, y])
+
+# for i in range(len(k_list)):
+#     data[k_list[i][0]][k_list[i][1]] = 1
+
 for i in range(k):
     a, b = map(int, input().split())
     board[a][b] = 1
@@ -15,6 +24,7 @@ l = int(input())
 for i in range(l):
     x, c = input().split()
     info.append((int(x), c))
+
 
 # 동 남 서 북
 dx = [0, 1, 0, -1]
