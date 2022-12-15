@@ -1,29 +1,27 @@
-from itertools import permutations
+def possible(ans):
+    for x, y, a in ans:
+        if a == 0:
+            if y == 0 or [x-1, y, 1] in ans or [x, y, 1] in ans or [x, y-1, 0] in ans:
+                continue
+            return False
+
+        elif a == 1:
+            if ([x-1, y, 1] in ans and [x+1, y, 1] in ans) or [x, y-1, 0] in ans or [x+1, y-1, 0] in ans:
+                continue
+            return False
+    return True
 
 
-def solution(n, weak, dist):
-
-    dist.sort(reverse=True)
-    length = len(weak)
-    ans = len(dist) + 1
-
-    for i in range(length):
-        weak.append(weak[i]+n)
-
-    for start in range(length):
-        for friends in list(permutations(dist, len(dist))):
-            cnt = 1
-            position = weak[start] + friends[cnt - 1]
-
-            for index in range(start, start+length):
-                if weak[index] > position:
-                    cnt += 1
-                    if cnt > len(dist):
-                        break
-                    position = weak[index] + friends[cnt - 1]
-
-            ans = min(ans, cnt)
-    if ans > len(dist):
-        return -1
-
-    return ans
+def solution(n, bf):
+    ans = []
+    for f in bf:
+        x, y, a, oper = f
+        if oper == 0:
+            ans.remove([x, y, a])
+            if not possible(ans):
+                ans.append([x, y, a])
+        elif oper == 1:
+            ans.append([x, y, a])
+            if not possible(ans):
+                ans.remove([x, y, a])
+    return sorted(ans)
