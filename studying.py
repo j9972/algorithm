@@ -1,33 +1,55 @@
-# 1507
+# 뿌요 뿌요
+from collections import deque
 import sys
 input = sys.stdin.readline
 
-n = int(input())
+data = []
+for _ in range(12):
+    data.append(list(input().rstrip()))
+cnt = 0
 
-INF = int(1e9)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
-graph = []
-for i in range(n):
-    graph.append(list(map(int, input().split())))
 
-road = [[True] * n for _ in range(n)]
+def bfs(x, y):
+    q = deque([(x, y)])
+    pos = []
 
-res = 0
+    while q:
+        x, y = q.popleft()
 
-for k in range(n):
-    for a in range(n):
-        for b in range(n):
-            if k == a or a == b or b == k:
-                continue
-            if graph[a][b] == graph[a][k]+graph[k][b]:
-                road[a][b] = False
-            elif graph[a][b] > graph[a][k]+graph[k][b]:
-                res = -1
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if 0 <= nx < 12 and 0 <= ny < 6 and visited[nx][ny] == False:
+                if data[nx][ny] == data[x][y]:
+                    pos.append((nx, ny))
+                    q.append((nx, ny))
+                    visited[nx][ny] = True
+    if len(pos) >= 4:
+        pos.sort(key=lambda x: (x[1], x[0]))
+        for i, j in pos:
+            data[i][j] = '_'
+            bomb.append([i, j])
 
-# 최솟값이라면
-if res != -1:
-    for i in range(n):
-        for j in range(i, n):
-            if road[i][j]:
-                res += graph[i][j]
-print(res)
+
+while True:
+    visited = [[False] * 6 for _ in range(12)]
+    bomb = []
+
+    for i in range(12):
+        for j in range(6):
+            if data[i][j] != '.' and data[i][j] != '_' and visited[i][j] == False:
+                bfs(i, j)
+
+    if len(bomb) == 0:
+        break
+
+    for b in bomb:
+        x, y = b[0], b[1]
+        for i in range(x, 0, -1):
+            data[i][y] = data[i-1][y]
+        data[0][y] = '.'
+    cnt += 1
+print(cnt)
