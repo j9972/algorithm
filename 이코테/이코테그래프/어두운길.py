@@ -1,5 +1,4 @@
 # 신장트리
-from re import I
 import sys
 input = sys.stdin.readline
 
