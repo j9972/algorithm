@@ -24,7 +24,7 @@ edge = []
 parent = [0] * (n+1)
 res = 0
 
-for i in range(1, n+1):
+for i in range(1, n+1):  # 부모테이블 자기 자신으로 초기화시 범위 조심
     parent[i] = i
 
 for _ in range(m):

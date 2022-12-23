@@ -48,7 +48,7 @@ for i in range(n-1):
     edges.append((y[i+1][0]-y[i][0], y[i][1], y[i+1][1]))
     edges.append((z[i+1][0]-z[i][0], z[i][1], z[i+1][1]))
 
-edges.sort()
+edges.sort()  # x y z 를 각자 정렬을 했더라도 정렬이 필요하다
 
 for e in edges:  # 간선을 1개씩 확인
     cost, a, b = e

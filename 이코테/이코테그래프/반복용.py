@@ -18,26 +18,39 @@ def union(parent, a, b):
         parent[a] = b
 
 
-n, m = map(int, input().split())
+n = int(input())
 parent = [0] * (n+1)
 
 for i in range(1, n+1):
     parent[i] = i
 
+x = []
+y = []
+z = []
+
+for i in range(n):
+    data = list(map(int, input().split()))
+    x.append((data[0], i))
+    y.append((data[1], i))
+    z.append((data[2], i))
+
+x.sort()
+y.sort()
+z.sort()
+
 res = 0
 edges = []
-tot = 0
 
-for i in range(m):
-    x, y, cost = map(int, input().split())
-    edges.append((cost, x, y))
+for i in range(n-1):
+    edges.append((x[i+1][0]-x[i][0], x[i][1], x[i+1][1]))
+    edges.append((y[i+1][0]-y[i][0], y[i][1], y[i+1][1]))
+    edges.append((z[i+1][0]-z[i][0], z[i][1], z[i+1][1]))
 edges.sort()
 
 for e in edges:
     cost, x, y = e
-    tot += cost
     if find(parent, x) != find(parent, y):
         union(parent, x, y)
         res += cost
 
-print(tot - res)
+print(res)
