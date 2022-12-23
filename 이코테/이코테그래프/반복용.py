@@ -18,26 +18,18 @@ def union(parent, a, b):
         parent[a] = b
 
 
-n, m = map(int, input().split())
-parent = [0] * (n+1)
+g = int(input())
+p = int(input())
+parent = [0] * (g+1)
 
-for i in range(1, n+1):
+for i in range(1, g+1):
     parent[i] = i
 
-data = []
-for i in range(n):
-    data = list(map(int, input().split()))
-    for j in range(n):
-        if data[j] == 1:
-            union(parent, i+1, j+1)
-
-ans = list(map(int, input().split()))
-
-res = True
-for i in range(m-1):
-    if find(parent, ans[i]) != find(parent, ans[i+1]): 
-        res = False
-if res:
-    print('YES')
-else:
-    print('NO')
+res = 0
+for i in range(p):
+    data = find(parent, int(input()))
+    if data == 0:
+        break
+    union(parent, data, data-1)
+    res += 1
+print(res)

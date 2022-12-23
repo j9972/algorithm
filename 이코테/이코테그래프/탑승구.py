@@ -28,7 +28,7 @@ for i in range(1, g+1):
 
 res = 0
 for i in range(p):
-    data = find(parent, int(input()))
+    data = find(parent, int(input()))  # 받아오는 데이터가 한개일때 그거에 대해서만 parent 찾기
     if data == 0:
         break
     union(parent, data, data - 1)
