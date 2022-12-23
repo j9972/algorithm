@@ -11,7 +11,7 @@ for tc in range(int(input())):
 
     # 작년 순위 정보 입력
     data = list(map(int, input().split()))
-    # 방향 그래프의 간선 정보 초기화
+    # 방향 그래프의 간선 정보 초기화 -> 작년 팀의 순서대로 이미 정해져 있기에 i+1 ~ n 까지이다
     for i in range(n):
         for j in range(i + 1, n):
             graph[data[i]][data[j]] = True
@@ -21,7 +21,7 @@ for tc in range(int(input())):
     m = int(input())
     for i in range(m):
         a, b = map(int, input().split())
-        # 간선의 방향 뒤집기
+        # 간선의 방향 뒤집기 ( 이유는 등수가 뒤집히니까 )
         if graph[a][b]:
             graph[a][b] = False
             graph[b][a] = True
@@ -38,7 +38,7 @@ for tc in range(int(input())):
     q = deque()  # 큐 기능을 위한 deque 라이브러리 사용
 
     # 처음 시작할 때는 진입차수가 0인 노드를 큐에 삽입
-    for i in range(1, n + 1):
+    for i in range(1, n + 1):  # n개 팀인데 팀 번호가 1부터 이므로!!
         if indegree[i] == 0:
             q.append(i)
 
