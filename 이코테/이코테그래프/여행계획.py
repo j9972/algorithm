@@ -35,6 +35,7 @@ d = list(map(int, input().split()))
 
 res = True
 for i in range(m-1):
+    # i+1 을 하기 위해서 range 범위가 m-1 이다.
     if find_parent(parent, d[i]) != find_parent(parent, d[i+1]):
         res = False
 
