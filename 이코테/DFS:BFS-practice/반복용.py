@@ -2,36 +2,44 @@ from collections import deque
 import sys
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
-
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
+n = int(input())
 
-virusData = []
+maxValue = -10e9
+minValue = 10e9
 
-data = []
-for i in range(n):
-    data.append(list(map(int, input().split())))
-    for j in range(n):
-        if data[i][j] != 0:
-            virusData.append((data[i][j], 0, i, j))
-virusData.sort()
-q = deque(virusData)
+data = list(map(int, input().split()))
 
-tar_s, tar_x, tar_y = map(int, input().split())
+add, minus, multi, div = map(int, input().split())
 
-while q:
-    virus, s, x, y = q.popleft()
 
-    if s == tar_s:
-        break
+def dfs(i, now):
+    global maxValue, minValue, add, minus, multi, div
+    if i == n:
+        maxValue = max(maxValue, now)
+        minValue = min(minValue, now)
+    else:
+        if add > 0:
+            add -= 1
+            dfs(i+1, now + data[i])
+            add += 1
+        if minus > 0:
+            minus -= 1
+            dfs(i+1, now - data[i])
+            minus += 1
+        if multi > 0:
+            multi -= 1
+            dfs(i+1, now * data[i])
+            multi += 1
+        if div > 0:
+            div -= 1
+            dfs(i+1, int(now / data[i]))
+            div += 1
 
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
-        if 0 <= nx < n and 0 <= ny < n:
-            if data[nx][ny] == 0:
-                data[nx][ny] = virus
-                q.append((virus, s+1, nx, ny))
-print(data[tar_x-1][tar_y-1])
+
+dfs(1, data[0])
+
+print(maxValue)
+print(minValue)
