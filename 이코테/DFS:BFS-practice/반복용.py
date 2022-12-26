@@ -6,78 +6,53 @@ input = sys.stdin.readline
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-n = int(input())
+n, l, r = map(int, input().split())
 
 data = []
-teacher = []
-space = []
-
 for i in range(n):
-    data.append(list(map(str, input().split())))
-    for j in range(n):
-        if data[i][j] == 'T':
-            teacher.append((i, j))
-        elif data[i][j] == 'X':
-            space.append((i, j))
+    data.append(list(map(int, input().split())))
 
 
-def watch(direction, x, y):
-    # left
-    if direction == 0:
-        while y >= 0:
-            if data[x][y] == 'O':
-                return False
-            elif data[x][y] == 'S':
-                return True
-            y -= 1
-    # right
-    if direction == 1:
-        while y < n:
-            if data[x][y] == 'O':
-                return False
-            if data[x][y] == 'S':
-                return True
-            y += 1
-    # up
-    if direction == 2:
-        while x >= 0:
-            if data[x][y] == 'O':
-                return False
-            if data[x][y] == 'S':
-                return True
-            x -= 1
-    # down
-    if direction == 3:
-        while x < n:
-            if data[x][y] == 'O':
-                return False
-            if data[x][y] == 'S':
-                return True
-            x += 1
-    return False
+def bfs(x, y, index):
+    q = deque()
+    q.append((x, y))
 
+    united = []
+    united.append((x, y))
 
-def process():
-    for x, y in teacher:
+    union[x][y] = index
+    summary = data[x][y]
+    count = 1
+
+    while q:
+        x, y = q.popleft()
+
         for i in range(4):
-            if watch(i, x, y):
-                return True
-    return False
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+                if l <= abs(data[nx][ny] - data[x][y]) <= r:
+                    union[nx][ny] = index
+                    summary += data[nx][ny]
+                    united.append((nx, ny))
+                    q.append((nx, ny))
+                    count += 1
+    for x, y in united:
+        data[x][y] = summary // count
+    return count
 
 
-find = False
-for wall in cb(space, 3):
-    for x, y in wall:
-        data[x][y] = 'O'
-
-    if not process():
-        find = True
+tot = 0
+while True:
+    union = [[-1] * (n+1) for _ in range(n+1)]
+    index = 0
+    for i in range(n):
+        for j in range(n):
+            if union[i][j] == -1:
+                index += 1
+                bfs(i, j, index)
+    if index == n*n:
         break
-
-    for x, y in wall:
-        data[x][y] = 'X'
-
-if find:
-    print('YES')
-else:
-    print('NO')
+    tot += 1
+print(tot)
