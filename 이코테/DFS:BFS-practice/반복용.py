@@ -1,4 +1,5 @@
 from collections import deque
+from itertools import combinations as cb
 import sys
 input = sys.stdin.readline
 
@@ -7,39 +8,76 @@ dy = [0, 0, -1, 1]
 
 n = int(input())
 
-maxValue = -10e9
-minValue = 10e9
+data = []
+teacher = []
+space = []
 
-data = list(map(int, input().split()))
-
-add, minus, multi, div = map(int, input().split())
-
-
-def dfs(i, now):
-    global maxValue, minValue, add, minus, multi, div
-    if i == n:
-        maxValue = max(maxValue, now)
-        minValue = min(minValue, now)
-    else:
-        if add > 0:
-            add -= 1
-            dfs(i+1, now + data[i])
-            add += 1
-        if minus > 0:
-            minus -= 1
-            dfs(i+1, now - data[i])
-            minus += 1
-        if multi > 0:
-            multi -= 1
-            dfs(i+1, now * data[i])
-            multi += 1
-        if div > 0:
-            div -= 1
-            dfs(i+1, int(now / data[i]))
-            div += 1
+for i in range(n):
+    data.append(list(map(str, input().split())))
+    for j in range(n):
+        if data[i][j] == 'T':
+            teacher.append((i, j))
+        elif data[i][j] == 'X':
+            space.append((i, j))
 
 
-dfs(1, data[0])
+def watch(direction, x, y):
+    # left
+    if direction == 0:
+        while y >= 0:
+            if data[x][y] == 'O':
+                return False
+            elif data[x][y] == 'S':
+                return True
+            y -= 1
+    # right
+    if direction == 1:
+        while y < n:
+            if data[x][y] == 'O':
+                return False
+            if data[x][y] == 'S':
+                return True
+            y += 1
+    # up
+    if direction == 2:
+        while x >= 0:
+            if data[x][y] == 'O':
+                return False
+            if data[x][y] == 'S':
+                return True
+            x -= 1
+    # down
+    if direction == 3:
+        while x < n:
+            if data[x][y] == 'O':
+                return False
+            if data[x][y] == 'S':
+                return True
+            x += 1
+    return False
 
-print(maxValue)
-print(minValue)
+
+def process():
+    for x, y in teacher:
+        for i in range(4):
+            if watch(i, x, y):
+                return True
+    return False
+
+
+find = False
+for wall in cb(space, 3):
+    for x, y in wall:
+        data[x][y] = 'O'
+
+    if not process():
+        find = True
+        break
+
+    for x, y in wall:
+        data[x][y] = 'X'
+
+if find:
+    print('YES')
+else:
+    print('NO')
