@@ -20,7 +20,7 @@ def proper(p):
                 return False
             else:
                 count -= 1
-        return True
+    return True
 
 
 def solution(p):
@@ -37,7 +37,7 @@ def solution(p):
         ans = u + solution(v)
     else:
         ans += '('
-        ans += u + solution(v)
+        ans += solution(v)
         ans += ')'
         u = list(u[1:-1])
         for i in range(len(u)):
