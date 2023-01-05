@@ -1,38 +1,34 @@
-import heapq
+import copy
+from collections import deque
 import sys
 input = sys.stdin.readline
 
-for tc in range(int(input())):
-    n = int(input())
+n = int(input())
+indegree = [0] * (n+1)
+graph = [[] for _ in range(n+1)]
+time = [0] * (n+1)
 
-    INF = int(1e9)
+for i in range(1, n+1):
+    data = list(map(int, input().split()))
+    time[i] = data[0]
+    for x in data[1:-1]:
+        graph[x].append(i)
+        indegree[i] += 1
 
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
 
-    graph = [[INF]*(n+1) for _ in range(n+1)]
+res = copy.deepcopy(time)  # time에 대한 정보를 복사
 
-    costData = []
-    for i in range(n):
-        costData.append(list(map(int, input().split())))
+q = deque()
+for i in range(1, n+1):
+    if indegree[i] == 0:
+        q.append(i)
 
-    q = []
-    x, y = 0, 0
-    heapq.heappush(q, (costData[x][y], x, y))
-    graph[x][y] = costData[x][y]
-
-    while q:
-        dist, x, y = heapq.heappop(q)
-
-        if dist > graph[x][y]:
-            continue
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-
-            if 0 <= nx < n and 0 <= ny < n:
-                cost = dist + costData[nx][ny]
-                if cost < graph[nx][ny]:
-                    graph[nx][ny] = cost
-                    heapq.heappush(q, (graph[nx][ny], nx, ny))
-    print(graph[n-1][n-1])
+while q:
+    now = q.popleft()
+    for i in graph[now]:
+        res[i] = max(res[i], res[now] + time[i])
+        indegree[i] -= 1
+        if indegree[i] == 0:
+            q.append(i)
+for i in range(1, n+1):
+    print(res[i])
