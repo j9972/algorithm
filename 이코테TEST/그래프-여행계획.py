@@ -23,11 +23,12 @@ def union(parent, a, b):
 for i in range(1, n+1):
     parent[i] = i
 
-for i in range(1, n+1):
+
+for i in range(n):
     data = list(map(int, input().split()))
-    for j in range(1, n+1):
-        if data[j-1] == 0:
-            union(parent, i, j)
+    for j in range(n):
+        if data[j] == 0:
+            union(parent, i+1, j+1)
 
 plan = list(map(int, input().split()))
 
@@ -35,6 +36,7 @@ res = False
 for i in range(m-1):
     if find(parent, plan[i]) == find(parent, plan[i+1]):
         res = True
+
 if res:
     print('YES')
 else:
