@@ -14,12 +14,14 @@ def find(parent, x):
 def union(parent, a, b):
     a = find(parent, a)
     b = find(parent, b)
+
     if a < b:
         parent[b] = a
     else:
         parent[a] = b
 
 
+# 테이블 나 자신으로 초기화
 for i in range(n):
     parent[i] = i
 
@@ -27,15 +29,14 @@ x = []
 y = []
 z = []
 
-for i in range(n):
-    a, b, c = map(int, input().split())
-    x.append((a, i))
-    y.append((b, i))
-    z.append((c, i))
-
 edges = []
 res = 0
 
+for i in range(n):
+    a, b, c = map(int, input().split())
+    x.append((a, i))  # 지점, 노드 번호넣기
+    y.append((b, i))
+    z.append((c, i))
 x.sort()
 y.sort()
 z.sort()
