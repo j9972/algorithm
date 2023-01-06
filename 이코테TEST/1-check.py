@@ -5,31 +5,31 @@ input = sys.stdin.readline
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-n, m, distInfo, start = map(int, input().split())
+n, k = map(int, input().split())
 
-graph = [[] for _ in range(n+1)]
+data = []
+graph = []
 
-for i in range(m):
-    a, b = map(int, input().split())
-    graph[a].append(b)
+for i in range(n):
+    graph.append(list(map(int, input().split())))
+    for j in range(n):
+        if graph[i][j] != 0:
+            data.append((graph[i][j], 0, i, j))
 
-distance = [-1] * (n+1)
-distance[start] = 0
+data.sort()
+q = deque(data)
 
-q = deque([start])
+tar_s, tar_x, tar_y = map(int, input().split())
 
 while q:
-    now = q.popleft()
+    virus, s, x, y = q.popleft()
 
-    for next in graph[now]:
-        if distance[next] == -1:
-            distance[next] = distance[now] + 1
-            q.append(next)
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
 
-flag = False
-for i in range(1, n+1):
-    if distance[i] == distInfo:
-        print(i)
-        flag = False
-if flag:
-    print(-1)
+        if 0 <= nx < n and 0 <= ny < n:
+            if graph[nx][ny] == 0:
+                graph[nx][ny] = virus
+                q.append((virus, s+1, nx, ny))
+print(graph[tar_x-1][tar_y-1])
