@@ -23,7 +23,7 @@ while q:
             q.append(next)
 
 flag = False
-for i in range(1, n+1):
+for i in range(1, n+1):  # 노드가 1 ~ n 까지니까 이 범위가 나오는게 맞다
     if distance[i] == k:
         print(i)
         flag = True

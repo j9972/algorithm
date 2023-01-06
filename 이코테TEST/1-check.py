@@ -2,64 +2,34 @@ from collections import deque
 import sys
 input = sys.stdin.readline
 
-for tc in range(int(input())):
-    n = int(input())
-    data = list(map(int, input().split()))
-    m = int(input())
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
-    indegree = [0] * (n+1)
-    graph = [[False] * (n+1) for _ in range(n+1)]
+n, m, distInfo, start = map(int, input().split())
 
-    for i in range(n):
-        for j in range(i+1, n):
-            graph[data[i]][data[j]] = True
-            indegree[data[j]] += 1
+graph = [[] for _ in range(n+1)]
 
-    for i in range(m):
-        a, b = map(int, input().split())
-        if graph[a][b]:
-            graph[a][b] = False
-            graph[b][a] = True
-            indegree[a] += 1
-            indegree[b] -= 1
-        else:
-            graph[a][b] = True
-            graph[b][a] = False
-            indegree[a] -= 1
-            indegree[b] += 1
+for i in range(m):
+    a, b = map(int, input().split())
+    graph[a].append(b)
 
-    cycle = False
-    certain = True
+distance = [-1] * (n+1)
+distance[start] = 0
 
-    res = []
-    q = deque()
+q = deque([start])
 
-    for i in range(1, n+1):
-        if indegree[i] == 0:
-            q.append(i)
+while q:
+    now = q.popleft()
 
-    for i in range(n):
-        if len(q) == 0:
-            cycle = True
-            break
-        if len(q) >= 2:
-            certain = False
-            break
+    for next in graph[now]:
+        if distance[next] == -1:
+            distance[next] = distance[now] + 1
+            q.append(next)
 
-        now = q.popleft()
-        res.append(now)
-
-        for j in range(n):
-            if graph[now][j]:
-                indegree[j] -= 1
-                if indegree[j] == 0:
-                    q.append(j)
-
-    if cycle:
-        print('IMPOSSIBLE')
-    elif not certain:
-        print('?')
-    else:
-        for i in res:
-            print(i, end=' ')
-        print()
+flag = False
+for i in range(1, n+1):
+    if distance[i] == distInfo:
+        print(i)
+        flag = False
+if flag:
+    print(-1)
