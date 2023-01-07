@@ -22,6 +22,7 @@ for i in range(n):
 
 
 def bfs():
+    # 지나갈 수 있는지 없는지를 체크
     # dist는 도달할 수 없음을 나타냄
     dist = [[-1] * n for _ in range(n)]
     q = deque([(now_x, now_y)])
@@ -42,6 +43,7 @@ def bfs():
 
 
 def find(dist):
+    # 먹을 수 있는지 없는지를 체크하는 함수
     x, y = 0, 0
     min_dist = INF
     for i in range(n):
