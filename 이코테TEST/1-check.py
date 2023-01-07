@@ -2,58 +2,63 @@ from collections import deque
 import sys
 input = sys.stdin.readline
 
-n, l, r = map(int, input().split())
-
-data = []
-for i in range(n):
-    data.append(list(map(int, input().split())))
-
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 
-def process(x, y, index):
-    united = []
-    united.append((x, y))
+def nextPos(pos, board):
+    pos = list(pos)
 
-    q = deque()
-    q.append((x, y))
+    postList = []
 
-    union[x][y] = index
-    cnt = 1
-    population = data[x][y]
+    pos_x1 = pos[0][0]
+    pos_y1 = pos[0][1]
+    pos_x2 = pos[1][0]
+    pos_y2 = pos[1][1]
 
-    while q:
-        x, y = q.popleft()
+    for i in range(4):
+        next_pos_x1 = pos_x1 + dx[i]
+        next_pos_y1 = pos_y1 + dy[i]
+        next_pos_x2 = pos_x2 + dx[i]
+        next_pos_y2 = pos_y2 + dy[i]
 
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+        if board[next_pos_x1][next_pos_y1] == 0 and board[next_pos_x2][next_pos_y2] == 0:
+            postList.append({(next_pos_x1, next_pos_y1),
+                            (next_pos_x2, next_pos_y2)})
 
-            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
-                if l <= abs(data[nx][ny] - data[x][y]) <= r:
-                    population += data[nx][ny]
-                    cnt += 1
-                    union[nx][ny] = index
-                    united.append((nx, ny))
-                    q.append((nx, ny))
-    for x, y in united:
-        data[x][y] = population // cnt
-    return cnt
+    if pos_x1 == pos_x2:
+        for i in [1, -1]:
+            if board[pos_x1 + i][pos_y1] == 0 and board[pos_x2 + i][pos_y2] == 0:
+                board.append({(pos_x1, pos_y1), (pos_x1+1, pos_y1)})
+                board.append({(pos_x2, pos_y2), (pos_x2+1, pos_y2)})
+    elif pos_y1 == pos_y2:
+        for i in [1, -1]:
+            if board[pos_x1][pos_y1 + i] == 0 and board[pos_x2][pos_y2 + i] == 0:
+                board.append({(pos_x1, pos_y1), (pos_x1, pos_y1+1)})
+                board.append({(pos_x2, pos_y2), (pos_x2, pos_y2+1)})
+    return postList
 
 
-time = 0
-while True:
-    union = [[-1]*n for i in range(n)]
-    index = 0  # 해당 연합 국가의 번호
-
+def solution(board):
+    n = len(board)
+    new_board = [[1]*(n+2) for _ in range(n+2)]
     for i in range(n):
         for j in range(n):
-            if union[i][j] == -1:
-                index += 1
-                process(i, j, index)
+            new_board[i+1][j+1] = board[i][j]
 
-    if index == n*n:
-        break
-    time += 1
-print(time)
+    q = deque([])
+    visited = []
+    pos = {(0, 0), (0, 1)}
+    visited.append(pos)
+    q.append((pos, 0))
+
+    while q:
+        pos, cost = q.popleft()
+
+        for (n, n) in pos:
+            return cost
+
+        for next in nextPos(pos, new_board):
+            if next not in visited:
+                visited.append(next)
+                q.append((next, cost+1))
