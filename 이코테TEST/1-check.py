@@ -1,64 +1,82 @@
-from collections import deque
+import copy
 import sys
 input = sys.stdin.readline
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+dx = [-1, -1, 0, 1, 1, 1, 0, -1]
+dy = [0, -1, -1, -1, 0, 1, 1, 1]
+
+data = [[None]*4 for _ in range(4)]
+for i in range(4):
+    info = list(map(int, input().split()))
+    for j in range(4):
+        data[i][j] = [info[j*2], info[j*2+1]-1]
 
 
-def nextPos(pos, board):
-    pos = list(pos)
+def turning(direction):
+    return (direction+1) % 8
 
-    postList = []
 
-    pos_x1 = pos[0][0]
-    pos_y1 = pos[0][1]
-    pos_x2 = pos[1][0]
-    pos_y2 = pos[1][1]
+def finding(array, index):
+    for x in range(4):
+        for y in range(4):
+            if array[x][y][0] == index:
+                return (x, y)
+    return None
+
+
+def moving(array, now_x, now_y):
+    for i in range(1, 17):
+        pos = finding(array, i)
+
+        if pos != None:
+            x, y = pos[0], pos[1]
+            direction = array[x][y][1]
+            for _ in range(8):
+                nx = x + dx[direction]
+                ny = y + dy[direction]
+
+                if 0 <= nx < 4 and 0 <= ny < 4:
+                    if not (nx == now_x and ny == now_y):
+                        array[x][y][1] = direction
+                        array[x][y], array[nx][ny] = array[nx][ny], array[x][y]
+                        break
+                direction = turning(direction)
+
+
+def eating(array, x, y):
+    posList = []
+    direction = array[x][y][1]
 
     for i in range(4):
-        next_pos_x1 = pos_x1 + dx[i]
-        next_pos_y1 = pos_y1 + dy[i]
-        next_pos_x2 = pos_x2 + dx[i]
-        next_pos_y2 = pos_y2 + dy[i]
+        x += dx[direction]
+        y += dy[direction]
 
-        if board[next_pos_x1][next_pos_y1] == 0 and board[next_pos_x2][next_pos_y2] == 0:
-            postList.append({(next_pos_x1, next_pos_y1),
-                            (next_pos_x2, next_pos_y2)})
-
-    if pos_x1 == pos_x2:
-        for i in [1, -1]:
-            if board[pos_x1 + i][pos_y1] == 0 and board[pos_x2 + i][pos_y2] == 0:
-                board.append({(pos_x1, pos_y1), (pos_x1+1, pos_y1)})
-                board.append({(pos_x2, pos_y2), (pos_x2+1, pos_y2)})
-    elif pos_y1 == pos_y2:
-        for i in [1, -1]:
-            if board[pos_x1][pos_y1 + i] == 0 and board[pos_x2][pos_y2 + i] == 0:
-                board.append({(pos_x1, pos_y1), (pos_x1, pos_y1+1)})
-                board.append({(pos_x2, pos_y2), (pos_x2, pos_y2+1)})
-    return postList
+        if 0 <= x < 4 and 0 <= y < 4:
+            if array[x][y][0] != -1:
+                posList.append((x, y))
+    return posList
 
 
-def solution(board):
-    n = len(board)
-    new_board = [[1]*(n+2) for _ in range(n+2)]
-    for i in range(n):
-        for j in range(n):
-            new_board[i+1][j+1] = board[i][j]
+res = 0
 
-    q = deque([])
-    visited = []
-    pos = {(0, 0), (0, 1)}
-    visited.append(pos)
-    q.append((pos, 0))
 
-    while q:
-        pos, cost = q.popleft()
+def dfs(array, x, y, tot):
+    global res
+    array = copy.deepcopy(array)
 
-        for (n, n) in pos:
-            return cost
+    tot += array[x][y][0]
+    array[x][y][0] = -1
 
-        for next in nextPos(pos, new_board):
-            if next not in visited:
-                visited.append(next)
-                q.append((next, cost+1))
+    moving(array, x, y)
+    pos = eating(array, x, y)
+
+    if len(pos) == 0:
+        res = max(res, tot)
+        return
+
+    for next_x, next_y in pos:
+        dfs(array, next_x, next_y, tot)
+
+
+dfs(data, 0, 0, 0)
+print(res)
