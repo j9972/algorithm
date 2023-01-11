@@ -16,6 +16,7 @@ def solution(n, weak, dist):
 
     for start in range(length):
         for friends in list(permutations(dist, len(dist))):
+            # 친구 명수
             count = 1
 
             # 점검 가능한 마지막 위치
