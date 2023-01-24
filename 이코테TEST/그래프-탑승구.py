@@ -17,11 +17,10 @@ def union(parent, a, b):
         parent[a] = b
 
 
-g = int(input())  # node 개수
+g = int(input())
 p = int(input())
 
 parent = [0] * (g+1)
-
 for i in range(1, g+1):
     parent[i] = i
 
@@ -30,6 +29,6 @@ for i in range(p):
     data = find(parent, int(input()))
     if data == 0:
         break
-    union(parent, data, data - 1)
+    union(parent, data, data-1)
     cnt += 1
 print(cnt)

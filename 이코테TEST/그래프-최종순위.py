@@ -4,59 +4,60 @@ input = sys.stdin.readline
 
 for tc in range(int(input())):
     n = int(input())
-    data = list(map(int, input().split()))  # 작년 등수
+    inDegree = [0]*(n+1)
+    graph = [[False]*(n+1) for _ in range(n+1)]
 
-    indegree = [0] * (n+1)
-    graph = [[False] * (n+1) for _ in range(n+1)]
-
+    data = list(map(int, input().split()))
     for i in range(n):
         for j in range(i+1, n):
             graph[data[i]][data[j]] = True
-            indegree[data[j]] += 1
+            inDegree[data[j]] += 1
 
-    m = int(input())  # 등수 체인지
+    m = int(input())
 
     for i in range(m):
         a, b = map(int, input().split())
         if graph[a][b]:
             graph[a][b] = False
             graph[b][a] = True
-            indegree[a] += 1
-            indegree[b] -= 1
+            inDegree[a] += 1
+            inDegree[b] -= 1
         else:
             graph[a][b] = True
             graph[b][a] = False
-            indegree[a] -= 1
-            indegree[b] += 1
+            inDegree[a] -= 1
+            inDegree[b] += 1
 
-    q = deque()
     res = []
+    q = deque()
 
     for i in range(1, n+1):
-        if indegree[i] == 0:
+        if inDegree[i] == 0:
             q.append(i)
 
-    cycle = False  # 사이클이 있다
-    check = True  # 정답이 여러개 있다
+    cycle = False
+    certain = True
 
     for i in range(n):
         if len(q) == 0:
             cycle = True
             break
         if len(q) >= 2:
-            check = False
+            certain = False
             break
+
         now = q.popleft()
         res.append(now)
+
         for j in range(1, n+1):
             if graph[now][j]:
-                indegree[j] -= 1
-                if indegree[j] == 0:
+                inDegree[j] -= 1
+                if inDegree[j] == 0:
                     q.append(j)
 
     if cycle:
-        print("IMPOSSIBLE")
-    elif not check:
+        print('IMPOSSIBLE')
+    elif not certain:
         print('?')
     else:
         for i in res:
