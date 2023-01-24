@@ -1,35 +1,28 @@
-from collections import deque
-import copy
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-inDegree = [0] * (n+1)
-time = [0] * (n+1)
-graph = [[] for _ in range(n+1)]
+INF = int(1e9)
+n, m = map(int, input().split())
+graph = [[INF]*(n+1) for _ in range(n+1)]
 
 for i in range(1, n+1):
-    data = list(map(int, input().split()))
-    time[i] = data[0]
-    for x in data[1:-1]:
-        inDegree[i] += 1
-        graph[x].append(i)
+    graph[i][i] = 0
 
-q = deque()
-res = copy.deepcopy(time)
+for i in range(m):
+    a, b = map(int, input().split())
+    graph[a][b] = 1
 
+for k in range(1, n+1):
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            graph[a][b] = min(graph[a][b], graph[a][k]+graph[k][b])
+
+res = 0
 for i in range(1, n+1):
-    if inDegree[i] == 0:
-        q.append(i)
-
-while q:
-    now = q.popleft()
-
-    for i in graph[now]:
-        res[i] = max(res[i], res[now] + time[i])
-        inDegree[i] -= 1
-        if inDegree[i] == 0:
-            q.append(i)
-
-for i in range(1, n+1):
-    print(res[i])
+    cnt = 0
+    for j in range(1, n+1):
+        if graph[i][j] != INF or graph[j][i] != INF:
+            cnt += 1
+    if cnt == n:
+        res += 1
+print(res)
