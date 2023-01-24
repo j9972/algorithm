@@ -1,16 +1,16 @@
-# 다시 다시 다시 다시 -,.-
 import sys
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
+
 x, y, direction = map(int, input().split())
+
+dx = [-1, 0, 1, 0]
+dy = [0, -1, 0, 1]
 
 data = []
 for i in range(n):
     data.append(list(map(int, input().split())))
-
-visited = [[False]*m for _ in range(n)]
-visited[x][y] = True
 
 
 def turning():
@@ -21,32 +21,31 @@ def turning():
 
 
 cnt = 1
-turnCnt = 0
-
-dx = [-1, 0, 1, 0]
-dy = [0, -1, 0, 1]
+turningCnt = 0
+data[x][y] = 2
 
 while True:
     turning()
     nx = x + dx[direction]
     ny = y + dy[direction]
 
-    if visited[nx][ny] == False and data[nx][ny] == 0:
-        visited[nx][ny] = True
-        x, y = nx, ny
+    if 0 <= nx < n and 0 <= ny < m and data[nx][ny] == 0:
+        data[nx][ny] = 2
+        x = nx
+        y = ny
+        turningCnt = 0
         cnt += 1
-        turnCnt = 0
-        continue
     else:
-        turnCnt += 1
+        turningCnt += 1
 
-    if turnCnt == 4:
+    if turningCnt == 4:
         nx = x - dx[direction]
         ny = y - dy[direction]
 
-        if data[nx][ny] == 0:
-            x, y = nx, ny
+        if data[nx][ny] == 2:
+            x = nx
+            y = ny
+            turningCnt = 0
         else:
             break
-        turnCnt = 0
 print(cnt)
