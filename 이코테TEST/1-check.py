@@ -1,40 +1,35 @@
+from collections import deque
+import copy
 import sys
-import heapq
 input = sys.stdin.readline
 
-n, m, start = map(int, input().split())
-INF = int(1e9)
+n = int(input())
+inDegree = [0] * (n+1)
+time = [0] * (n+1)
 graph = [[] for _ in range(n+1)]
-distance = [INF] * (n+1)
 
-for i in range(m):
-    a, b, c = map(int, input().split())
-    graph[a].append((b, c))
+for i in range(1, n+1):
+    data = list(map(int, input().split()))
+    time[i] = data[0]
+    for x in data[1:-1]:
+        inDegree[i] += 1
+        graph[x].append(i)
 
+q = deque()
+res = copy.deepcopy(time)
 
-def dik(start):
-    q = []
-    heapq.heappush(q, (0, start))
-    distance[start] = 0
+for i in range(1, n+1):
+    if inDegree[i] == 0:
+        q.append(i)
 
-    while q:
-        dist, now = heapq.heappop(q)
-        if distance[now] < dist:
-            continue
-        for i in graph[now]:
-            cost = dist + i[1]
-            if distance[i[0]] > cost:
-                distance[i[0]] = cost
-                heapq.heappush(q, (cost, i[0]))
+while q:
+    now = q.popleft()
 
+    for i in graph[now]:
+        res[i] = max(res[i], res[now] + time[i])
+        inDegree[i] -= 1
+        if inDegree[i] == 0:
+            q.append(i)
 
-dik(start)
-cnt = 0
-max_distance = 0
-
-for d in distance:
-    if d != INF:
-        cnt += 1
-        max_distance = max(d, max_distance)
-
-print(cnt-1, max_distance)
+for i in range(1, n+1):
+    print(res[i])
