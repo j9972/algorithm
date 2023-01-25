@@ -1,38 +1,43 @@
 import sys
-from collections import deque
-import heapq
 input = sys.stdin.readline
 
-INF = int(1e9)
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+n, m = map(int, input().split())
 
-for tc in range(int(input())):
-    n = int(input())
 
-    data = []
-    for i in range(n):
-        data.append(list(map(int, input().split())))
+def find(parent, x):
+    if parent[x] != x:
+        parent[x] = find(parent, parent[x])
+    return parent[x]
 
-    distance = [[INF] * (n+1) for _ in range(n+1)]
 
-    x, y = 0, 0
-    q = [(data[x][y], x, y)]
-    distance[x][y] = data[x][y]
+def union(parent, a, b):
+    b = find(parent, b)
+    a = find(parent, a)
 
-    while q:
-        dist, x, y = heapq.heappop(q)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
 
-        if distance[x][y] < dist:
-            continue
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
 
-            if 0 <= nx < n and 0 <= ny < n:
-                cost = dist + data[nx][ny]
-                if distance[nx][ny] > cost:
-                    distance[nx][ny] = cost
-                    heapq.heappush(q, (cost, nx, ny))
+parent = [0] * (n+1)
+for i in range(1, n+1):
+    parent[i] = i
 
-    print(distance[n-1][n-1])
+data = []
+for i in range(n):
+    data.append(list(map(int, input().split())))
+
+for i in range(n):
+    for j in range(n):
+        if data[i][j] == 1:
+            union(parent, i+1, j+1)
+
+info = list(map(int, input().split()))
+
+for i in range(m-1):
+    if find(parent, info[i]) != find(parent, info[i+1]):
+        print('NO')
+    else:
+        print('YES')
+    break
