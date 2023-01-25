@@ -3,35 +3,40 @@ import sys
 input = sys.stdin.readline
 
 INF = int(1e9)
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+n, m, start = map(int, input().split())
+graph = [[] for _ in range(n+1)]
+distance = [INF] * (n+1)
 
-for tc in range(int(input())):
-    n = int(input())
+for _ in range(m):
+    x, y, z = map(int, input().split())
+    graph[x].append((y, z))
 
-    data = []
-    for i in range(n):
-        data.append(list(map(int, input().split())))
 
-    distance = [[INF] * n for i in range(n)]
-
-    x, y = 0, 0
-    distance[x][y] = data[x][y]
-    q = [(data[x][y], x, y)]
+def dik(start):
+    q = []
+    heapq.heappush(q, (0, start))
+    distance[start] = 0
 
     while q:
-        dist, x, y = heapq.heappop(q)
+        dist, now = heapq.heappop(q)
 
-        if distance[x][y] < dist:
+        if distance[now] < dist:
             continue
 
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+        for i in graph[now]:
+            cost = dist + i[1]
+            if distance[i[0]] > cost:
+                distance[i[0]] = cost
+                heapq.heappush(q, (cost, i[0]))
 
-            if 0 <= nx < n and 0 <= ny < n:
-                cost = dist + data[nx][ny]
-                if cost < distance[nx][ny]:
-                    distance[nx][ny] = cost
-                    heapq.heappush(q, (cost, nx, ny))
-    print(distance[n-1][n-1])
+
+dik(start)
+
+cnt = 0
+max_distance = 0
+
+for d in distance:
+    if d != INF:
+        max_distance = max(d, max_distance)
+        cnt += 1
+print(cnt-1, max_distance)
