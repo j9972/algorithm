@@ -10,7 +10,7 @@ def solution(s):
                 cnt += 1
             else:
                 ans += str(cnt) + prev if cnt >= 2 else prev
-                cnt = 0
+                cnt = 1
                 prev = s[i:i+step]
         ans += str(cnt) + prev if cnt >= 2 else prev
         length = min(len(ans), length)
