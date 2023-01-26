@@ -15,10 +15,9 @@ for i in range(n):
         elif data[j] == 2:
             chicken.append((i, j))
 
-
 distance = 1e9
 for ch in cb(chicken, m):
-    temp = 0
+    temp = 0  # 시도 횟수
     for h in home:
         ch_len = 999
         for i in range(m):
