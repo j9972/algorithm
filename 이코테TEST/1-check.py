@@ -4,29 +4,21 @@ import sys
 input = sys.stdin.readline
 
 
-def sol(food, k):
-    length = len(food)
+def solution(s):
+    length = len(s)
 
-    if sum(food) <= k:
-        return -1
+    for step in range(1, len(s)//2 + 1):
+        cnt = 1
+        prev = s[:step]
+        ans = ""
 
-    q = []
-    res = []
-
-    for i in range(length):
-        heapq.heappush(q, (food[i], i+1))  # 음식번호, 음식 시간 순서
-
-    previous = 0
-    sum_value = 0
-
-    while sum_value + ((q[0][0] - previous) * length) < k:
-        now = heapq.heappop(q)[0]
-        sum_value += (now - previous) * length
-        previous = now
-        length -= 1
-
-    res = sorted(q, key=lambda x: x[1])
-    return res[(k-sum_value) % length][1]
-
-
-print(sol([3, 1, 2], 5))
+        for i in range(step, len(s), step):
+            if prev == s[i:i+step]:
+                cnt += 1
+            else:
+                ans += str(cnt) + prev if cnt >= 2 else prev
+                cnt = 1
+                prev = s[i:i+step]
+        ans += str(cnt) + prev if cnt >= 2 else prev
+        length = min(length, len(ans))
+    return length
