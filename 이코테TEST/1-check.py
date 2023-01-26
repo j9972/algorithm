@@ -5,10 +5,9 @@ input = sys.stdin.readline
 for tc in range(int(input())):
     n = int(input())
     data = list(map(int, input().split()))
-    graph = [[False] * (n+1) for _ in range(n+1)]
-
     inDegree = [0] * (n+1)
-    q = deque()
+
+    graph = [[False] * (n+1) for _ in range(n+1)]
 
     for i in range(n):
         for j in range(i+1, n):
@@ -28,13 +27,16 @@ for tc in range(int(input())):
             graph[b][a] = False
             inDegree[b] += 1
             inDegree[a] -= 1
+
+    q = deque()
+
     for i in range(1, n+1):
         if inDegree[i] == 0:
             q.append(i)
-    res = []
 
     cycle = False
     certain = True
+    res = []
 
     for i in range(n):
         if len(q) == 0:
@@ -52,6 +54,7 @@ for tc in range(int(input())):
                 inDegree[j] -= 1
                 if inDegree[j] == 0:
                     q.append(j)
+
     if cycle:
         print('IMPOSSIBLE')
     elif not certain:
