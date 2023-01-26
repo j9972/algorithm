@@ -1,10 +1,10 @@
 def satisfy(arr):
-    for x, y, stuff in arr:
-        if stuff == 0:
-            if y == 0 or [x-1, y, 1] in arr or [x, y, 1] in arr or [x, y-1, 0] in arr:
+    for x, y, frame in arr:
+        if frame == 0:
+            if y == 0 or [x, y-1, 0] in arr or [x-1, y, 1] in arr or [x, y, 1] in arr:
                 continue
             return False
-        elif stuff == 1:
+        elif frame == 1:
             if ([x-1, y, 1] in arr and [x+1, y, 1] in arr) or [x, y-1, 0] in arr or [x+1, y-1, 0] in arr:
                 continue
             return False
