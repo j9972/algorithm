@@ -7,32 +7,31 @@ dy = [0, 0, -1, 1]
 
 n, k = map(int, input().split())
 
-graph = []
-data = []  # 처음 입력을 받는 파트
-for x in range(n):
-    data.append(list(map(int, input().split())))
-    for y in range(n):
-        if data[x][y] != 0:
-            graph.append((data[x][y], 0, x, y))  # 바이러스 , 시간, x, y 좌표 넣기
+board = []
+data = []
+for i in range(n):
+    board.append(list(map(int, input().split())))
+    for j in range(n):
+        if board[i][j] != 0:
+            data.append((board[i][j], 0, i, j))
 
-graph.sort()
-q = deque(graph)
+tarS, tarX, tarY = map(int, input().split())
 
-tar_s, tar_x, tar_y = map(int, input().split())
+data.sort()
+q = deque(data)
 
 while q:
     virus, s, x, y = q.popleft()
 
-    if s == tar_s:
+    if s == tarS:
         break
 
     for i in range(4):
         nx = x + dx[i]
         ny = y + dy[i]
 
-        if 0 <= nx < n and 0 <= ny < n:
-            if data[nx][ny] == 0:
-                data[nx][ny] = virus
-                q.append((virus, s+1, nx, ny))
+        if 0 <= nx < n and 0 <= ny < n and board[nx][ny] == 0:
+            board[nx][ny] = virus
+            q.append((virus, s+1, nx, ny))
 
-print(data[tar_x-1][tar_y-1])
+print(board[tarX-1][tarY-1])
