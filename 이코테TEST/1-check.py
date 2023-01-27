@@ -1,29 +1,28 @@
-from itertools import combinations as cb
-import sys
-input = sys.stdin.readline
+from itertools import permutations as pm
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
 
-n, m = map(int, input().split())
-data = []
-chicken = []
-home = []
-for i in range(n):
-    data.append(list(map(int, input().split())))
-    for j in range(n):
-        if data[i][j] == 1:
-            home.append((i, j))
-        elif data[i][j] == 2:
-            chicken.append((i, j))
+def solution(n, weak, dist):
 
-res = 1e9
-for i in cb(chicken, m):
-    temp = 0
-    for h in home:
-        ch_len = 999
-        for j in range(m):
-            ch_len = min(ch_len, abs(h[0] - i[j][0]) + abs(h[1] - i[j][1]))
-        temp += ch_len
-    res = min(res, temp)
-print(res)
+    ans = len(dist) + 1
+    dist.sort(reverse=True)
+
+    length = len(weak)
+
+    for i in range(length):
+        weak.append(weak[i]+n)
+
+    for start in range(length):
+        for friend in list(pm(dist, len(dist))):
+            friendCnt = 1
+            pos = weak[start] + friend[friendCnt-1]
+
+            for idx in range(start, start+length):
+                if pos < weak[idx]:
+                    friendCnt += 1
+                    if friendCnt > len(dist):
+                        break
+                    pos = weak[idx] + friend[friendCnt - 1]
+            ans = min(ans, friendCnt)
+    if ans > len(dist):
+        return -1
+    return ans
