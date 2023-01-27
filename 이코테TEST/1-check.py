@@ -1,66 +1,29 @@
-
+from itertools import combinations as cb
 import sys
 input = sys.stdin.readline
 
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-n = int(input())
-k = int(input())
+n, m = map(int, input().split())
+data = []
+chicken = []
+home = []
+for i in range(n):
+    data.append(list(map(int, input().split())))
+    for j in range(n):
+        if data[i][j] == 1:
+            home.append((i, j))
+        elif data[i][j] == 2:
+            chicken.append((i, j))
 
-board = [[0] * (n+1) for _ in range(n+1)]
-
-for i in range(k):
-    x, y = map(int, input().split())
-    board[x][y] = 1
-
-l = int(input())
-info = []
-for i in range(l):
-    t, direction = input().split()
-    info.append((int(t), direction))
-
-
-def turning(direction, c):
-    if c == 'L':
-        direction = (direction - 1) % 4
-    else:
-        direction = (direction + 1) % 4
-    return direction
-
-
-def process():
-    x, y = 1, 1
-    board[x][y] = 2
-    q = [(x, y)]
-    direction = 0
-    time = 0
-    cnt = 0
-
-    while True:
-        nx = x + dx[direction]
-        ny = y + dy[direction]
-
-        if 1 <= nx <= n and 1 <= ny <= n and board[nx][ny] != 2:
-            if board[nx][ny] == 0:
-                board[nx][ny] = 2
-                q.append((nx, ny))
-                hx, hy = q.pop(0)
-                board[hx][hy] = 0
-
-            elif board[nx][ny] == 1:
-                board[nx][ny] = 2
-                q.append((nx, ny))
-        else:
-            time += 1
-            break
-        time += 1
-        x, y = nx, ny
-
-        if cnt < l and info[cnt][0] == time:
-            direction = turning(direction, info[cnt][1])
-            cnt += 1
-    return time
-
-
-print(process())
+res = 1e9
+for i in cb(chicken, m):
+    temp = 0
+    for h in home:
+        ch_len = 999
+        for j in range(m):
+            ch_len = min(ch_len, abs(h[0] - i[j][0]) + abs(h[1] - i[j][1]))
+        temp += ch_len
+    res = min(res, temp)
+print(res)
