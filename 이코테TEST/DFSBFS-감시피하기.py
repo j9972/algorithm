@@ -2,31 +2,32 @@ from itertools import combinations as cb
 import sys
 input = sys.stdin.readline
 
-n = int(input())
-
-space = []
-teacher = []
-data = []
-
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
+teacher = []
+space = []
+
+n = int(input())
+data = []
 for i in range(n):
-    data.append(list(map(str, input().split())))
+    data.append(list(input().split()))
     for j in range(n):
         if data[i][j] == 'T':
             teacher.append((i, j))
         elif data[i][j] == 'X':
             space.append((i, j))
 
+# 학생 찾기
 
-def watch(x, y, direction):
+
+def watch(direction, x, y):
     # left
     if direction == 0:
         while y >= 0:
-            if data[x][y] == 'O':
+            if data[x][y] == 'O':  # 이 부분 T가 아니라 O 다. 장애물에 걸리는지 체크하는 부분이다.
                 return False
-            elif data[x][y] == 'S':
+            if data[x][y] == 'S':
                 return True
             y -= 1
     # right
@@ -34,7 +35,7 @@ def watch(x, y, direction):
         while y < n:
             if data[x][y] == 'O':
                 return False
-            elif data[x][y] == 'S':
+            if data[x][y] == 'S':
                 return True
             y += 1
     # up
@@ -42,7 +43,7 @@ def watch(x, y, direction):
         while x >= 0:
             if data[x][y] == 'O':
                 return False
-            elif data[x][y] == 'S':
+            if data[x][y] == 'S':
                 return True
             x -= 1
     # down
@@ -50,34 +51,33 @@ def watch(x, y, direction):
         while x < n:
             if data[x][y] == 'O':
                 return False
-            elif data[x][y] == 'S':
+            if data[x][y] == 'S':
                 return True
             x += 1
     return False
 
 
-def check():
+def process():
     for x, y in teacher:
         for i in range(4):
-            if watch(x, y, i):
+            if watch(i, x, y):
                 return True
     return False
 
 
-escape = False
+flag = False
 for wall in cb(space, 3):
     for x, y in wall:
         data[x][y] = 'O'
 
-    if not check():
-        # 감시를 피하는게 목적임을 잊으면 안된다
-        escape = True
+    if not process():
+        flag = True  # 들켰다는 의미
         break
 
     for x, y in wall:
         data[x][y] = 'X'
 
-if escape:
+if flag:
     print('YES')
 else:
     print('NO')
