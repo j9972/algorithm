@@ -13,30 +13,27 @@ dy = [0, 0, -1, 1]
 
 
 def process(x, y, index):
-
     united = []
     united.append((x, y))
 
     q = deque()
     q.append((x, y))
 
-    summary = data[x][y]
     union[x][y] = index
+    summary = data[x][y]
     cnt = 1
 
-    while q:
-        x, y = q.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
 
-            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
-                if l <= abs(data[nx][ny] - data[x][y]) <= r:
-                    cnt += 1
-                    summary += data[nx][ny]
-                    union[nx][ny] = index
-                    united.append((nx, ny))
-                    q.append((nx, ny))
+        if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+            if l <= abs(data[nx][ny] - data[x][y]) <= r:
+                union[nx][ny] = index
+                summary += data[nx][ny]
+                cnt += 1
+                united.append((nx, ny))
+                q.append((nx, ny))
     for x, y in united:
         data[x][y] = summary // cnt
     return cnt
@@ -45,7 +42,7 @@ def process(x, y, index):
 tot = 0
 while True:
     index = 0
-    union = [[-1] * (n+1) for _ in range(n+1)]
+    union = [[-1]*(n+1) for _ in range(n+1)]
     for i in range(n):
         for j in range(n):
             if union[i][j] == -1:
@@ -54,5 +51,4 @@ while True:
     if index == n*n:
         break
     tot += 1
-
 print(tot)
