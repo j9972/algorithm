@@ -1,14 +1,20 @@
 import sys
 input = sys.stdin.readline
 
-for tc in range(int(input())):
-    n = int(input())
+n = int(input().rstrip())
 
-    d = [0] * 11
-    d[1] = 1
-    d[2] = 2
-    d[3] = 4
-    for i in range(4, n+1):
-        d[i] = d[i-1] + d[i-2] + d[i-3]
+data = []
+for i in range(n):
+    rgb = list(map(int, input().rstrip().split()))
+    data.append(rgb)
 
-    print(d[n])
+dp = [[] for _ in range(n)]
+dp[0] = data[0]
+
+for i in range(1, n):
+    dp[i] = [
+        data[i][0] + min(data[i-1][1], data[i-1][2]),
+        data[i][1] + min(data[i-1][0], data[i-1][2]),
+        data[i][2] + min(data[i-1][1], data[i-1][0])
+    ]
+print(min(dp[n-1]))
