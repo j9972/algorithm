@@ -3,17 +3,11 @@ import sys
 input = sys.stdin.readline
 
 x = int(input())
-cnt = 0
-
-while x == 1:
-    if x % 3 == 0:
-        x %= 3
-        cnt += 1
-    elif x % 2 == 0:
-        x %= 2
-        cnt += 1
-    else:
-        x -= 1
-        cnt += 1
-
-print(cnt)
+d = [0] * (x+1)
+for i in range(2, x+1):
+    d[i] = d[i-1] + 1
+    if i % 3 == 0:
+        d[i] = min(d[i], d[i//3] + 1)
+    if i % 2 == 0:
+        d[i] = min(d[i], d[i//2] + 1)
+print(d[x])
