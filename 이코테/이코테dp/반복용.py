@@ -1,25 +1,21 @@
-# 편집 거리
+# 1로 만들기
 import sys
 input = sys.stdin.readline
 
-n = int(input())
+x = int(input())
 
-dp = [0] * (n+1)
+dp = [0] * (x+1)
+dp[1] = 0
+dp[2] = 1
+dp[3] = 1
 
-t = []
-p = []
+for i in range(4, x+1):
+    dp[i] = dp[i-1] + 1
+    if i % 5 == 0:
+        dp[i] = min(dp[i], dp[i//5] + 1)
+    if i % 3 == 0:
+        dp[i] = min(dp[i], dp[i//3] + 1)
+    if i % 2 == 0:
+        dp[i] = min(dp[i], dp[i//2] + 1)
 
-for i in range(n):
-    time, price = map(int, input().split())
-    t.append(time)
-    p.append(price)
-
-mv = 0
-for i in range(n-1, -1, -1):
-    time = t[i] + i
-    if time <= n:
-        dp[i] = max(mv, p[i] + dp[time])
-        mv = dp[i]
-    else:
-        dp[i] = mv
-print(mv)
+print(dp[x])
