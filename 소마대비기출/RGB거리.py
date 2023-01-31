@@ -2,11 +2,11 @@
 import sys
 input = sys.stdin.readline
 
-n = int(input().rstrip())
+n = int(input())
 colors = []
 
 for i in range(n):
-    RGB = list(map(int, input().rstrip().split()))
+    RGB = list(map(int, input().split()))
     colors.append(RGB)
 
 memo = [[] for _ in range(n)]
