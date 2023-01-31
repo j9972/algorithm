@@ -2,14 +2,21 @@
 import sys
 input = sys.stdin.readline
 
-x = int(input())
+n, m = map(int, input().split())
+coin = []
+for i in range(n):
+    coin.append(int(input()))
+coin.sort()
 
-dp = [0] * 1001
+d = [10001] * (m+1)  # 1<=m<=10000
+d[0] = 0
 
-dp[1] = 1
-dp[2] = 3
-#dp[3] = 5
+for i in range(n):
+    for j in range(coin[i], m+1):
+        if d[j-coin[i]] != 10001:
+            d[j] = min(d[j], d[j-coin[i]]+1)
 
-for i in range(3, x+1):
-    dp[i] = (dp[i-1] + dp[i-2]*2) % 796796
-print(dp[x])
+if d[m] != 10001:
+    print(d[m])
+else:
+    print(-1)
