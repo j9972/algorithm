@@ -1,4 +1,4 @@
-# 골드5
+# 골드5 - 2293
 import sys
 input = sys.stdin.readline
 

@@ -1,6 +1,3 @@
-from turtle import left
-
-
 n = int(input())
 
 dp = []

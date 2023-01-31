@@ -7,10 +7,17 @@ data = []
 for i in range(n):
     data.append(list(map(int, input().split())))
 
-dp = [0] * (n+1)
+for i in range(1, n):
+    for j in range(i+1):
+        if j == 0:
+            left_up = 0
+        else:
+            left_up = data[i-1][j-1]
 
-for i in range(n, 0, -1):
-    for j in range(n, 0, -1):
-        dp[i][j] = data[i][j] + max(data[i-1][j], data[i-1][j-1])
+        if j == i:
+            up = 0
+        else:
+            up = data[i-1][j]
+        data[i][j] += max(up, left_up)
 
-print(dp[n-1][n-1])
+print(max(data[n-1]))
