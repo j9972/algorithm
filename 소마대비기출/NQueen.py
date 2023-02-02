@@ -1,40 +1,30 @@
 # 골드4 - 9663
 import sys
 input = sys.stdin.readline
-
 n = int(input())
-board = [[0]*(n) for i in range(n)]
 
-dx = [-1, 1, 0, 0, -1, -1, 1, 1]
-dy = [0, 0, -1, 1, -1, 1, -1, 1]
+res = 0
+row = [0] * (n)
 
 
-def check(x, y):
-    for i in range(8):
-        nx = x + dx[i]
-        ny = y + dy[i]
-
-        if board[nx][ny] == 1:
+def promising(x):
+    for i in range(x):
+        if row[x] == row[i] or abs(row[x]-row[i]) == abs(x-i):
             return False
     return True
 
 
-cnt = 0
+def dfs(queenCnt):
+    global res
+    if queenCnt == n:
+        res += 1
+    else:
+        for i in range(n):
+            # [queenCnt, i] 에 퀸을 놓겠다
+            row[queenCnt] = i
+            if promising(queenCnt):
+                dfs(queenCnt+1)
 
 
-def bfs(n):
-    global cnt
-    for i in range(n):
-        for j in range(n):
-            board[i][j] = 1
-
-            if check(i, j):
-                cnt += 1
-
-    for i in range(n):
-        for j in range(n):
-            board[i][j] = 0
-    return cnt
-
-
-print(bfs(n))
+dfs(0)
+print(res)
