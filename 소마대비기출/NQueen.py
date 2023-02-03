@@ -1,4 +1,4 @@
-# 골드4 - 9663
+# 골드4 - 9663 - 다시
 import sys
 input = sys.stdin.readline
 n = int(input())
