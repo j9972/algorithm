@@ -3,17 +3,14 @@ import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**9)
 
-n, k = map(int, input().split())
+n = int(input())
+d = [0] * 1001
 
-coin = []
-for i in range(n):
-    coin.append(int(input()))
+d[0] = 0
+d[1] = 1
+d[2] = 2
 
-d = [0] * (k+1)
-d[0] = 1
+for i in range(3, n+1):
+    d[i] = (d[i-1] + d[i-2]) % 10007
 
-for i in coin:
-    for j in range(1, k+1):
-        if j - i >= 0:
-            d[j] += d[j-i]
-print(d[k])
+print(d[n])
