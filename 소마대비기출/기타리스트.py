@@ -11,7 +11,7 @@ d[0][start] = True
 for song in range(n):
     for vol in range(m+1):
         if d[song][vol] == True:
-            for next in [vol + v[song], vol - v[song]]:
+            for next in [vol - v[song], vol + v[song]]:
                 if 0 <= next <= m:
                     d[song+1][next] = True
 
