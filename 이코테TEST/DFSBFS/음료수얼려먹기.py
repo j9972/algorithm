@@ -5,7 +5,7 @@ n, m = map(int, input().split())
 
 data = []
 for i in range(n):
-    data.append(list(map(int, input())))
+    data.append(list(map(int, input().rstrip())))
 
 
 def dfs(x, y):
