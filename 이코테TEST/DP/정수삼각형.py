@@ -1,5 +1,4 @@
 import sys
-from turtle import left
 input = sys.stdin.readline
 sys.setrecursionlimit(10**9)
 
