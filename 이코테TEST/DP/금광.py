@@ -6,9 +6,10 @@ for tc in range(int(input())):
     n, m = map(int, input().split())
 
     data = list(map(int, input().split()))
-    d = []
     idx = 0
-    for i in range(n):
+
+    d = []
+    for i in range(m):
         d.append(data[idx:idx+m])
         idx += m
 
@@ -26,8 +27,8 @@ for tc in range(int(input())):
             left = d[i][j-1]
 
             d[i][j] += max(left, left_down, left_up)
+    res = 0
+    for i in range(n):
+        res = max(res, d[i][m-1])  # 맨 마지막줄에서 맨 위부터 맨 아래 까지 체크
 
-    result = 0
-    for i in d:
-        result = max(result, max(i))
-    print(result)
+    print(res)
