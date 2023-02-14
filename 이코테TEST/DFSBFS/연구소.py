@@ -1,13 +1,13 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
+# sys.setrecursionlimit(10**9)
 
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 n, m = map(int, input().split())
 
-graph = [[0]*m for _ in range(n)]
+graph = [[0]*(m+1) for _ in range(n+1)]
 data = []
 for i in range(n):
     data.append(list(map(int, input().split())))
@@ -19,6 +19,7 @@ def virus(x, y):
         ny = y + dy[i]
         if 0 <= nx < n and 0 <= ny < m:
             if graph[nx][ny] == 0:  # 0인가 2인가?
+                graph[nx][ny] = 2
                 virus(nx, ny)
 
 
