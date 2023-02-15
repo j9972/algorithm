@@ -21,7 +21,7 @@ def turing():
     return direction
 
 
-visited = [[False] * (m+1) for _ in range(n+1)]
+visited = [[False] * m for _ in range(n)]
 visited[x][y] = True
 
 cnt = 1
@@ -37,8 +37,8 @@ while True:
         visited[nx][ny] = True
         x, y = nx, ny
         cnt += 1
+        turn = 0
         continue
-
     else:
         turn += 1
 
