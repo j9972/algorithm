@@ -3,36 +3,36 @@ input = sys.stdin.readline
 
 n = int(input())
 data = list(map(int, input().split()))
-plus, minus, multi, div = map(int, input().split())
+p, m, mu, d = map(int, input().split())
 
-maxValue = int(-1e9)
-minValue = int(1e9)
+maxv = int(-1e9)
+minv = int(1e9)
 
 
 def dfs(i, now):
-    global maxValue, minValue, plus, minus, multi, div
+    global maxv, minv, p, m, mu, d
     if i == n:
-        maxValue = max(maxValue, now)
-        minValue = min(minValue, now)
+        maxv = max(maxv, now)
+        minv = min(minv, now)
     else:
-        if plus > 0:
-            plus -= 1
+        if p > 0:
+            p -= 1
             dfs(i+1, now + data[i])
-            plus += 1
-        elif minus > 0:
-            minus -= 1
+            p += 1
+        elif m > 0:
+            m -= 1
             dfs(i+1, now - data[i])
-            minus += 1
-        elif multi > 0:
-            multi -= 1
+            m += 1
+        elif mu > 0:
+            mu -= 1
             dfs(i+1, now * data[i])
-            multi += 1
-        elif div > 0:
-            div -= 1
-            dfs(i+1,  int(now / data[i]))
-            div += 1
+            mu += 1
+        elif d > 0:
+            d -= 1
+            dfs(i+1, int(now / data[i]))
+            d += 1
 
 
 dfs(1, data[0])
-print(maxValue)
-print(minValue)
+print(maxv)
+print(minv)
