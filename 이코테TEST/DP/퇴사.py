@@ -12,7 +12,7 @@ for i in range(n):
     p.append(b)
 
 mv = 0
-for i in range(1, n):
+for i in range(n-1, -1, -1):
     time = t[i] + i
     if time <= n:
         d[i] = max(p[i]+d[time], mv)
