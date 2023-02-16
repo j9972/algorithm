@@ -2,8 +2,8 @@ from collections import deque
 import sys
 input = sys.stdin.readline
 
-n, l, r = map(int, input().split())
 
+n, l, r = map(int, input().split())
 data = []
 for i in range(n):
     data.append(list(map(int, input().split())))
@@ -12,16 +12,17 @@ dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 
-def process(x, y, index):
-    united = []
-    united.append((x, y))
-
+def bfs(x, y, index):
     q = deque()
     q.append((x, y))
 
-    union[x][y] = index
+    united = []
+    united.append((x, y))
+
     summary = data[x][y]
     cnt = 1
+    union[x][y] = index  # 연합국가 할당
+
     while q:
         x, y = q.popleft()
         for i in range(4):
@@ -43,12 +44,12 @@ def process(x, y, index):
 tot = 0
 while True:
     index = 0
-    union = [[-1]*(n+1) for _ in range(n+1)]
+    union = [[-1] * (n+1) for _ in range(n+1)]
     for i in range(n):
         for j in range(n):
             if union[i][j] == -1:
                 index += 1
-                process(i, j, index)
+                bfs(i, j, index)
     if index == n*n:
         break
     tot += 1

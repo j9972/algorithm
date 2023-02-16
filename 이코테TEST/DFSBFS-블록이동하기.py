@@ -46,7 +46,7 @@ def solution(board):
         for j in range(n):
             new_board[i+1][j+1] = board[i][j]
 
-    pos = {(0, 0), (0, 1)}
+    pos = {(1, 1), (1, 2)}
     q = deque([])
     visited = []
 

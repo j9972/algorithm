@@ -61,3 +61,7 @@ def solution(board):
                 visited.append(next_pos)
                 robot_queue.append((next_pos, cost + 1))
     return cost
+
+
+print(solution([[0, 0, 0, 1, 1], [0, 0, 0, 1, 0], [
+      0, 1, 0, 1, 1], [1, 1, 0, 0, 1], [0, 0, 0, 0, 0]]))
