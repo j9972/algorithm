@@ -17,11 +17,11 @@ for i in range(n):
 
 distance = 1e9
 for ch in cb(chicken, m):
-    temp = 0  # 시도 횟수
-    for h in home:
-        ch_len = 999
+    res = 0  # 중간 점검을 위한 길이
+    for hx, hy in home:
+        ch_len = 1e9  # 가장 가까운 치킨집 찾기
         for i in range(m):
-            ch_len = min(ch_len, abs(h[0] - ch[i][0]) + abs(h[1] - ch[i][1]))
-        temp += ch_len
-    distance = min(distance, temp)
+            ch_len = min(ch_len, abs(hx - ch[i][0]) + abs(hy - ch[i][1]))
+        res += ch_len  # 가장 가까운 치킨집 거리 더하기
+    distance = min(distance, res)
 print(distance)
