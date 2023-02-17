@@ -1,13 +1,21 @@
 def solution(s):
-    for i in range(len(s)//2+1):
-        prev = ""
+    ans = len(s)
+    for step in range(1, len(s)//2+1):
+        prev = s[:step]
         cnt = 1
-        ans = ""
+        res = ""
 
-        for step in s:
-            if ans == prev:
+        for i in range(step, len(s), step):
+            if prev == s[i:i+step]:
+                cnt += 1
+            else:
+                res += str(cnt) + prev if cnt >= 2 else prev
+                cnt = 1
+                prev = s[i:i+step]
+        res += str(cnt) + prev if cnt >= 2 else prev
+        ans = min(ans, len(res))
 
     return ans
 
 
-solution("abcabcabcabcdededededede")  # 14
+print(solution("abcabcabcabcdededededede"))  # 14
