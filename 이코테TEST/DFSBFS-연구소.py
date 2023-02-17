@@ -29,7 +29,7 @@ def virus(x, y):
 def score():
     score = 0
     for i in range(n):
-        for j in range(n):
+        for j in range(m):
             if graph[i][j] == 0:
                 score += 1
     return score
