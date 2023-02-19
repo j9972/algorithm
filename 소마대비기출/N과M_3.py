@@ -1,4 +1,4 @@
-# 실버 3 - 15649
+#실버 3 - 15651
 import sys
 input = sys.stdin.readline
 
@@ -7,14 +7,12 @@ n,m = map(int,input().split())
 res = []
 
 def dfs():
-    # 종료시점
     if len(res) == m:
         print(' '.join(map(str,res)))
         return
     else:
         for i in range(1,n+1):
-            if i not in res:
-                res.append(i)
-                dfs()
-                res.pop()
+            res.append(i)
+            dfs()
+            res.pop()
 dfs()
