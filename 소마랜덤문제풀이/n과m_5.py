@@ -7,6 +7,7 @@ data = list(map(int,input().split()))
 data.sort()
 
 res = []
+visit = [False] * n
 
 def dfs():
     if len(res) == m:
@@ -14,8 +15,10 @@ def dfs():
         return
     else:
         for i in range(n):
-            if i not in res:
+            if not visit[i]:
                 res.append(data[i])
+                visit[i] = True
                 dfs()
+                visit[i] = False
                 res.pop()
 dfs()
