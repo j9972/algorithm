@@ -13,7 +13,7 @@ d = [[0] * (1+k) for _ in range(n+1)]
 for i in range(1,n+1):
     for j in range(1,k+1):
         w,v = product[i]
-        if j >= w: # 감당가능
+        if w <= j: # 감당가능
             d[i][j] = max(d[i-1][j], d[i-1][j-w] + v)
         else:
             d[i][j] = d[i-1][j]
