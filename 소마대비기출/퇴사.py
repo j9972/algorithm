@@ -17,8 +17,8 @@ mv = 0
 for i in range(n-1,-1,-1):
     time = t[i] + i
     if time <= n:
-        mv = max(mv, d[time]+ p[i])
-        d[i] = mv
-    else:
+        d[i] = max(mv, d[time]+ p[i])
         mv = d[i]
+    else:
+        d[i] = mv
 print(mv)
