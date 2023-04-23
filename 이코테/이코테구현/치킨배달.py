@@ -16,8 +16,6 @@ for i in range(n):
             chicken.append([i, j])
 
 res = 1e9
-
-
 for ch in cb(chicken, m):
     temp = 0
     for h in home:
