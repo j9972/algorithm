@@ -1,26 +1,27 @@
-def possible(ans):
-    for x,y,frame in ans:
-        if frame ==0:
-            if y == 0 or [x-1,y,1] in ans or [x,y,1] in ans or [x,y-1,0] in ans:
+def possible(arr):
+    for x,y,frame in arr:
+        if frame == 0: # 기둥
+            if (y == 0) or [x,y-1,0] in arr or [x-1,y,1] in arr or [x,y,1] in arr:
                 continue
             return False
-        elif frame == 1:
-            if([x-1,y,1] in ans and [x+1,y,1] in ans) or [x,y-1,0] in ans or [x+1,y-1,0] in ans:
+        elif frame == 1: # 보
+            if [x+1,y-1,0] in arr or ([x+1,y,1] in arr and  [x-1,y,1] in arr) or [x, y-1, 0] in arr:
                 continue
             return False
     return True
 
 def solution(n, build_frame):
-    ans = []
+    answer = []
+    
     for frame in build_frame:
-        x,y,build,oper = frame
-        if oper == 1:
-            ans.remove([x,y,build])
-            if not possible(ans):
-                ans.append([x,y,build])
-        elif oper == 0:
-            ans.append([x,y,build])
-            if not possible(ans):
-                ans.remove([x,y,build])
-
-    return sorted(ans)
+        x,y,a,oper = frame
+        if oper == 0: # 삭제
+            answer.remove([x,y,a])
+            if not possible(answer):
+                answer.append([x,y,a])
+        elif oper == 1: # 설치
+            answer.append([x,y,a])
+            if not possible(answer):
+                answer.remove([x,y,a])
+    
+    return sorted(answer)

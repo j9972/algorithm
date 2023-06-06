@@ -6,9 +6,6 @@ def solution(n, weak, dist):
     answer = len(dist) + 1
 
     # 내림 차순으로 해서 거리가 가장 긴 거리친구부터 배치
-    dist.sort(reverse=True)
-
-    length = len(weak)
 
     # 배열 확장 -> 반시계 / 시계 방향 체크 할 필요가 없음
     for i in range(length):

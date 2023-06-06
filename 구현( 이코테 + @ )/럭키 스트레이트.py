@@ -1,17 +1,19 @@
+# 18406
 import sys
 input = sys.stdin.readline
 
 n = input().rstrip()
-l,r= 0,0
-length = len(n) 
-for i in range(length):
-    if i < length//2:
-        l += int(n[i])
-    else:
-        r += int(n[i])
+left = 0
+right = 0
 
-if l == r:
-    print("LUCKY")
+cnt = 0
+for i in range(len(n)//2):
+    left += int(n[i])
+for i in range(len(n)//2,len(n)):
+    right += int(n[i])
+    
+
+if left == right:
+    print('LUCKY')
 else:
-    print("READY")
-
+    print('READY')

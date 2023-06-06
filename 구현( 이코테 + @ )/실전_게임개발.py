@@ -2,50 +2,51 @@ import sys
 input = sys.stdin.readline
 
 dx = [-1,0,1,0]
-dy = [0,-1,0,1]
+dy = [0,1,0,-1]
 
 n,m = map(int,input().split())
 
 x,y,direction = map(int,input().split())
 
-board = []
-for i in range(n):
-    board.append(list(map(int,input().split())))
-
 visited = [[False] * m for _ in range(n)]
 visited[x][y] = True
-res = 1
 
-turn = 0
-
-def direct():
+def rotate():
     global direction
     direction -= 1
     if direction == -1:
         direction = 3
 
-while True:
-    direct()
+board = []
+for i in range(n):
+    board.append(list(map(int,input().split())))
 
+turnCnt = 0 # 4번의 방향을 돌았는지 체크
+cnt = 1 # 방문한 칸의 수
+while True:
+    
+    rotate()
     nx = x + dx[direction]
     ny = y + dy[direction]
 
-    if visited[nx][ny] == False and board[nx][ny] == 0:
+    if board[nx][ny] == 0 and visited[nx][ny] == False:
+        turnCnt = 0
         visited[nx][ny] = True
-        res += 1
-        x,y = nx,ny
-        turn = 0
+        cnt += 1
+        x = nx
+        y = ny
         continue
     else:
-        turn += 1
+        turnCnt += 1
     
-    if turn == 4:
+    if turnCnt == 4:
         nx = x - dx[direction]
         ny = y - dy[direction]
 
         if board[nx][ny] == 0:
-            x,y = nx,ny
+            x = nx
+            y = ny
         else:
             break
-        turn = 0
-print(res)
+        turnCnt = 0
+print(cnt)
