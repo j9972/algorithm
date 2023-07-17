@@ -17,7 +17,8 @@ def solution(sequence, k):
                 left, right = ans
                 if end - start < right - left:
                     ans = [start, end]
-                    
+        
+        # 이렇게 처음 시작 위치의 값을 빼주면서 투 포인터를 이어가는거다
         interval_sum -= sequence[start]
 
     return ans
