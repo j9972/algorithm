@@ -28,11 +28,6 @@ def solution(x, y, n):
 
 def solution(x, y, n):
     INF = int(1e9)
-    if x == y:
-        return 0
-
-    if (n > y-x) and (y % 2 != 0) and (y % 3 != 0):
-        return -1
 
     d = [INF] * (y+1)
     d[x] = 0
@@ -46,6 +41,7 @@ def solution(x, y, n):
             d[i*2] = min(d[i*2], d[i] + 1)
         if i * 3 <= y:
             d[i*3] = min(d[i*3], d[i] + 1)
+
     if d[y] == INF:
         return -1
 
