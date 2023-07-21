@@ -46,7 +46,7 @@ def solution(expression):
                 if data == op:
                     last = tk.pop()
                     val = q.popleft()
-                    print("last {} oper {} op {}".format(last, val, op))
+                    print("last {} val {} op {}".format(last, val, op))
                     tk.append(cal(last,val,op))
                 else:
                     tk.append(data)
