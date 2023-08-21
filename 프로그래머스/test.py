@@ -1,39 +1,22 @@
-from collections import deque
-def solution(rows, cols, queries):
-    ans = []
-    cnt = 1
-    board = [[0]*(cols+1) for _ in range(rows+1)]
-    for i in range(1,rows+1):
-        for j in range(1,cols+1):
-            board[i][j] = cnt
-            cnt += 1
+def solution(n):
+    board = [[0] * i for i in range(1, n+1)]
     
-    for x1,y1,x2,y2 in queries:
-        tmp = board[x1][y1]
-        mini = tmp 
-        
-        for k in range(x1,x2):
-            test = board[k+1][y1]
-            board[k][y1] = test
-            mini = min(mini, test)
+    x,y = -1,0 # x는 처음에 아래 방향으로 움직이니까 -1
+    cnt = 1
 
-        for k in range(y1,y2):
-            test = board[x2][k+1]
-            board[x2][k] = test
-            mini = min(mini, test)
-
-        for k in range(x2,x1,-1):
-            test = board[k-1][y2]
-            board[k][y2] = test
-            mini = min(mini, test)
-
-        for k in range(y2,y1,-1):
-            test = board[x1][k-1]
-            board[x1][k] = test
-            mini = min(mini, test)
-
-        board[x1][y1+1] = tmp
-        ans.append(mini)
-    print(ans)   
-    return ans
-solution(3, 3, [[1, 1, 2, 2], [1, 2, 2, 3], [2, 1, 3, 2], [2, 2, 3, 3]])
+    for i in range(n):
+        for _ in range(i,n):
+            if i % 3 == 0: # 아래 방향
+                x += 1
+            elif i % 3 == 1: # 오른쪽
+                y += 1
+            elif i % 3 == 2: # 왼쪽 대각
+                y -= 1
+                x -= 1
+            
+            board[x][y] = cnt
+            cnt += 1
+    print(board)
+    print(sum(board,[]))
+    return sum(board,[])
+solution(3)
