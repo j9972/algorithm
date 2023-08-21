@@ -21,4 +21,3 @@ def solution(n):
     return sum(board,[])
 solution(3)
 
-#test
