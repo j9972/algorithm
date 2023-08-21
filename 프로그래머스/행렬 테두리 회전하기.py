@@ -51,16 +51,15 @@ def solution(rows, columns, queries):
     ans = deque()
     res = []
 
-    board = [[i+columns*j for i in range(1,columns+1)] for j in range(rows)]
+    board = [[0]*(columns+1) for _ in range(rows+1)]
 
-    # cnt = 1
-    # for i in range(1,rows+1):
-    #     for j in range(1,columns+1):
-    #         board[i][j] = cnt
-    #         cnt += 1
+    cnt = 1
+    for i in range(1,rows+1):
+        for j in range(1,columns+1):
+            board[i][j] = cnt
+            cnt += 1
     
-    for i in queries:
-        x1, y1, x2, y2 = i[0]-1,i[1]-1,i[2]-1,i[3]-1
+    for x1, y1, x2, y2 in queries:
         for x in range(y2-y1):
             ans.append(board[x1][x2+x])
         for y in range(x2-x1):

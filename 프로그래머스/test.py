@@ -1,6 +1,6 @@
+from collections import deque
 def solution(rows, cols, queries):
     ans = []
-    
     cnt = 1
     board = [[0]*(cols+1) for _ in range(rows+1)]
     for i in range(1,rows+1):
