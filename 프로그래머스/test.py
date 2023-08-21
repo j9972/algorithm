@@ -20,3 +20,5 @@ def solution(n):
     print(sum(board,[]))
     return sum(board,[])
 solution(3)
+
+#test
