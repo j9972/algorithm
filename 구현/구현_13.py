@@ -27,4 +27,28 @@ for i in range(n-1,-1,-1):
         break
 for i in arr:
     print(*i)
+
+
+# 다른 방법
+
+idx = 0
+for i in range(n):
+    flag = True
+    
+    for j in range(k,k+m):
+        if arr[i][j]:
+            flag = False
+            break
+
+    if flag:
+        idx = i
+    else:
+        break
+
+
+for j in range(k,k+m):
+    arr[idx][j] = 1
+
+for i in arr:
+    print(*i)
         
