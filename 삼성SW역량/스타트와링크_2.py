@@ -16,7 +16,7 @@ mem = [sum(i) + sum(j) for i,j in zip(arr, zip(*arr))]
 #     print(i,j)
 #     print(sum(i) , sum(j))
 
-print(mem)
+#print(mem)
 
 tot = sum(mem) // 2
 
