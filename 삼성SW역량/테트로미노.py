@@ -24,32 +24,31 @@ def can_go(x,y):
     return in_range(x,y) and not visited[x][y]
 
 def dfs(x,y,idx,total):
-    global ans 
+    global ans
 
-    if ans >= total + max_val * (3-idx):
+    if ans >= total + max_val * (3 - idx):
         return
     if idx == 3:
         ans = max(ans, total)
         return
     else:
         for i in range(4):
-            nx,ny = x + dxs[i],y + dys[i]
+            nx,ny = x + dxs[i], y + dys[i]
 
             if can_go(nx,ny):
                 if idx == 1:
                     visited[nx][ny] = True
-                    dfs(nx,ny,idx+1, total + arr[nx][ny])
+                    dfs(x,y,idx+1, total + arr[nx][ny])
                     visited[nx][ny] = False
 
                 visited[nx][ny] = True
                 dfs(nx,ny,idx+1, total + arr[nx][ny])
                 visited[nx][ny] = False
 
-            
-
 for i in range(n):
     for j in range(m):
         visited[i][j] = True
         dfs(i,j,0,arr[i][j])
         visited[i][j] = False
+
 print(ans)
