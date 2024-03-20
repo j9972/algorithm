@@ -32,39 +32,40 @@ for _ in range(m):
 def in_range(x,y):
     return 0<=x<n and 0<=y<n
 
-def spring_summer():
+def ss():
     for i in range(n):
         for j in range(n):
-            dead_amount = 0
+            dead = 0
             new_tree = deque()
             for age in tree[i][j]:
+
                 if feed[i][j] >= age:
                     feed[i][j] -= age
-                    new_tree.append(age + 1)
+                    new_tree.append(age+1)
                 else:
-                    dead_amount += (age // 2)
+                    dead += age // 2
+            
+            feed[i][j] += dead
             tree[i][j] = new_tree
-            feed[i][j] += dead_amount
 
-def fall_winter():
-    tmp_trees = []
+def fw():
+    tmp_tree = []
     for x in range(n):
         for y in range(n):
             for age in tree[x][y]:
                 if age % 5 == 0:
-                    for dx,dy in zip(dxs, dys):
+                    for dx, dy in zip(dxs, dys):
                         nx,ny = x + dx, y + dy
 
                         if not in_range(nx,ny):
                             continue
-                        
-                        tmp_trees.append((nx,ny))
+
+                        tmp_tree.append((nx,ny))
                 else:
                     continue
+            feed[x][y]  += extra_feed[x][y]
             
-            feed[x][y] += extra_feed[x][y]
-    
-    for pos in tmp_trees:
+    for pos in tmp_tree:
         x,y = pos
         tree[x][y].appendleft(1)
 
@@ -77,9 +78,8 @@ def count_tree():
             ans += len(tree[i][j])
 
 for _ in range(k):
-    spring_summer()
-    fall_winter()
+    ss()
+    fw()
 
 count_tree()
-print(ans)
-            
+print(ans)        
