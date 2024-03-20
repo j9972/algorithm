@@ -38,15 +38,18 @@ def bfs(x,y):
     population = arr[x][y]
     visited[x][y] = True
 
-    for dx,dy in zip(dxs,dys):
-        nx,ny = x + dx, y + dy
+    while q:
+        x,y = q.popleft()
+        
+        for dx,dy in zip(dxs,dys):
+            nx,ny = x + dx, y + dy
 
-        if can_go(nx,ny):
-            if L <= abs(arr[nx][ny] - arr[x][y]) <= R:
-                population += arr[nx][ny]
-                visited[nx][ny] = True
-                q.append((nx,ny))
-                united.append((nx,ny))
+            if can_go(nx,ny):
+                if L <= abs(arr[nx][ny] - arr[x][y]) <= R:
+                    population += arr[nx][ny]
+                    visited[nx][ny] = True
+                    q.append((nx,ny))
+                    united.append((nx,ny))
     
     for x,y in united:
         arr[x][y] = population // len(united)
