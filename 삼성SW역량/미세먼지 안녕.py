@@ -105,3 +105,5 @@ for i in range(n):
             tot_dirty += arr[i][j]
 
 print(tot_dirty)
+
+
