@@ -16,12 +16,20 @@ temp = [
     for _ in range(n)
 ]
 
+left = 0
+
 virus = []
 for i in range(n):
     for j in range(n):
         if arr[i][j] == 2:
             virus.append((i,j))
-#print(virus)
+        elif arr[i][j] == 0:
+            left += 1
+
+visited = [
+    [False for _ in range(n)]
+    for _ in range(n)
+]
 
 dxs,dys = [-1,1,0,0], [0,0,-1,1]
 ans = []
@@ -30,54 +38,53 @@ def in_range(x,y):
     return 0<=x<n and 0<=y<n
 
 def can_go(x,y):
-    return in_range(x,y) and temp[x][y] != '-'
+    return in_range(x,y) and arr[x][y] != 1 and not visited[x][y]
 
-def init_temp():
-    for i in range(n):
-        for j in range(n):
-            if arr[i][j] == 1:
-                temp[i][j] = '-'
-            elif arr[i][j] == 2:
-                temp[i][j] = '*'
-            else:
-                temp[i][j] = -1
+def init_visited():
+    for x in range(n):
+        for y in range(n):
+            visited[x][y] = False
 
-def find_max_val():
-    max_val = 0
+def calc(left):
 
-    for i in range(n):
-        for j in range(n):
-            if temp[i][j] != '-' and temp[i][j] != '*':
-                if temp[i][j] == 0:
-                    return -1
-                max_val = max(max_val, temp[i][j])
+    q = deque(ans)
+    init_visited()
+    time = 0
 
-    return max_val
+    for x,y in ans:
+        visited[x][y] = True
 
-def calc():
+    while q:
+
+        if not left:
+            break
+
+        time += 1
+
+        for _ in range(len(q)):
+            x,y = q.popleft()
+
+            for dx,dy in zip(dxs, dys):
+                nx,ny = x + dx, y + dy
+
+                if can_go(nx,ny):
+                    visited[nx][ny] = True
+                    q.append((nx,ny))
+                    if arr[nx][ny] == 0:
+                        left -= 1
     
-    for i in ans:
-        x,y = i
-        
-        for dx,dy in zip(dxs,dys):
-            nx,ny = x + dx, y + dy
-
-            if can_go(nx,ny):
-                if temp[nx][ny] == -1:
-                    if temp[x][y].isdigit():
-                        temp[nx][ny] = temp[x][y] + 1
-                    elif temp[x][y] == '*':
-                        temp[nx][ny] = 1
-
-    return find_max_val()
+    if not left:
+        return time
+    else:
+        return sys.maxsize
+    
                 
 
 def choose(idx, cnt):
     global min_val
 
-
     if cnt == m:
-        min_val = min(min_val, calc())
+        min_val = min(min_val, calc(left))
         return
     if idx >= len(virus):
         return
@@ -87,7 +94,7 @@ def choose(idx, cnt):
     ans.pop()
     choose(idx+1, cnt)
 
-init_temp()
+
 
 choose(0,0)
 
