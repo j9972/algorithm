@@ -30,7 +30,7 @@ def choose(val, cnt):
             multi += 1
         if div > 0:
             div -= 1
-            choose(val // arr[cnt], cnt+1)
+            choose(int(val / arr[cnt]), cnt+1)
             div += 1
 
 choose(arr[0],1)
