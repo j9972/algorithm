@@ -1,38 +1,37 @@
 import sys
 
 n = int(input())
+A = list(map(int,input().split()))
+plus, minus, multi, div = map(int,input().split())
 
-arr = list(map(int,input().split()))
+max_val, min_val = -sys.maxsize, sys.maxsize
 
-add,minus,multi,div = map(int,input().split())
-
-max_val = -sys.maxsize
-min_val = sys.maxsize
-
-def choose(val, cnt):
-    global add,minus,multi,div, max_val, min_val
+def choose(cnt, data):
+    global plus, minus, multi, div, max_val, min_val
 
     if cnt == n:
-        max_val = max(max_val ,val)
-        min_val = min(min_val ,val)
+        min_val = min(min_val, data)
+        max_val = max(max_val, data)
+        return
     else:
-        if add > 0:
-            add -= 1
-            choose(val + arr[cnt], cnt+1)
-            add += 1
+        if plus > 0:
+            plus -= 1
+            choose(cnt+1, data + A[cnt])
+            plus += 1
         if minus > 0:
             minus -= 1
-            choose(val - arr[cnt], cnt+1)
+            choose(cnt+1, data - A[cnt])
             minus += 1
         if multi > 0:
             multi -= 1
-            choose(val * arr[cnt], cnt+1)
+            choose(cnt+1, data * A[cnt])
             multi += 1
         if div > 0:
             div -= 1
-            choose(int(val / arr[cnt]), cnt+1)
+            choose(cnt+1, int(data / A[cnt]))
             div += 1
 
-choose(arr[0],1)
+
+choose(1, A[0])
 print(max_val)
 print(min_val)
