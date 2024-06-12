@@ -14,8 +14,6 @@ for i in range(w):
         flag = True
         cur_height = blocks[i]
 
-    print("blocks[i] : {}, among_block : {}".format(blocks[i], among_block))
-
     if i == w-1:
         flag = True
     
@@ -27,4 +25,16 @@ for i in range(w):
 
 print(amount)
     
-    
+# h,w = map(int,input().split())
+# blocks = list(map(int,input().split()))
+# ans = 0
+
+# for i in range(1,w-1):
+#     left = max(blocks[:i])
+#     right = max(blocks[i+1:])
+
+#     wall = min(left, right)
+
+#     if blocks[i] < wall:
+#         ans += wall - blocks[i]
+# print(ans)
