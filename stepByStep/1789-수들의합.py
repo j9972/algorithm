@@ -1,9 +1,8 @@
 s = int(input())
 
-max_val = 0
-idx = 1
+idx = 0
 
-while s > idx:
+while s >= idx:
     s -= idx
     idx += 1
 

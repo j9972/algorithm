@@ -5,45 +5,58 @@ arr = [
     for _ in range(n)
 ]
 
+dxs, dys = [-1,1,0,0],[0,0,-1,1]
 
-def in_range(x, y):
-    return 0 <= x < n and 0 <= y < n
+def in_range(x,y):
+    return 0<=x<n and 0<=y<n
 
+def change(x,y, nx,ny):
+    if not in_range(nx,ny):
+        return False
+    
+    if arr[x][y] != arr[nx][ny]:
+        return True
+    return False
 
-ans = 1
+def calc():
+    res = 0
 
-
-
-def checkCurMaxNum():
-    max_cnt = 1  # total_max_cnt
+    # 행
     for i in range(n):
-        # 가로 먼저 확인
-        cnt = 1
+        tmp = 1  
         for j in range(1, n):
-            if arr[i][j] == arr[i][j - 1]:
-                cnt += 1
+            if arr[i][j] == arr[i][j-1]:
+                tmp += 1
+                res = max(res, tmp)
             else:
-                cnt = 1
-            max_cnt = max(cnt, max_cnt)
-        # 세로 확인
-        cnt = 1
-        for j in range(1, n):
-            if arr[j][i] == arr[j - 1][i]:
-                cnt += 1
+                tmp = 1
+
+    # 열
+    for j in range(n):
+        tmp = 1  
+        for i in range(1, n):
+            if arr[i][j] == arr[i-1][j]:
+                tmp += 1
+                res = max(res, tmp)
             else:
-                cnt = 1
-            max_cnt = max(cnt, max_cnt)
+                tmp = 1
 
-    return max_cnt
+    return res
 
-for i in range(n):
-    for j in range(n - 1):
-        if in_range(i, j + 1) and arr[i][j] != arr[i][j + 1]:
-            arr[i][j], arr[i][j + 1] = arr[i][j + 1], arr[i][j]
-            ans = max(ans, counting())
-            arr[i][j], arr[i][j + 1] = arr[i][j + 1], arr[i][j]
-        elif in_range(i + 1, j) and arr[i][j] != arr[i + 1][j]:
-            arr[i][j], arr[i + 1][j] = arr[i + 1][j], arr[i][j]
-            ans = max(ans, counting())
-            arr[i][j], arr[i + 1][j] = arr[i + 1][j], arr[i][j]
-print(ans)
+
+max_val = 0
+for x in range(n):
+    for y in range(n):
+        for dx,dy in zip(dxs, dys):
+            nx,ny = x + dx, y + dy
+
+            if not change(x,y, nx,ny):
+                continue
+
+            arr[x][y], arr[nx][ny] = arr[nx][ny], arr[x][y]
+
+            max_val = max(max_val, calc())
+
+            arr[nx][ny], arr[x][y] = arr[x][y], arr[nx][ny]
+
+print(max_val)
