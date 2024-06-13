@@ -1,10 +1,10 @@
 s = int(input())
 
-cnt = 0
+max_val = 0
+idx = 1
 
-while s >= cnt:
-    s -= cnt
-    cnt += 1
-    print("s: {}, cnt : {}".format(s, cnt))
+while s > idx:
+    s -= idx
+    idx += 1
 
-print(cnt-1)
+print(idx-1)
