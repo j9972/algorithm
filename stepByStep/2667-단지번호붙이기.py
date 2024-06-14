@@ -5,8 +5,10 @@ arr = [
     for _ in range(n)
 ]
 
-size_home = []
+dxs,dys = [-1,1,0,0], [0,0,-1,1]
+
 size = 0
+home_size = []
 
 def in_range(x,y):
     return 0<=x<n and 0<=y<n
@@ -14,23 +16,23 @@ def in_range(x,y):
 def dfs(x,y):
     global size
 
-    if in_range(x,y) and arr[x][y] == 1:
+    if in_range(x,y) and arr[x][y]:
         arr[x][y] = 0
         size += 1
-        dfs(x-1,y)
-        dfs(x+1,y)
-        dfs(x,y-1)
-        dfs(x,y+1)
+
+        for dx,dy in zip(dxs, dys):
+            nx,ny = x + dx, y + dy
+
+            dfs(nx,ny)
+        
         return True
     return False
 
 for i in range(n):
     for j in range(n):
         if dfs(i,j):
-            size_home.append(size)
+            home_size.append(size)
             size = 0
-
-length = len(size_home)
-print(length)
-for i in sorted(size_home):
+print(len(home_size))
+for i in sorted(home_size):
     print(i)
