@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(10**9)
+
 n,m,k = map(int,input().split())
 
 arr = [
@@ -41,7 +44,5 @@ for i in range(n):
         if dfs(i,j):
             _list.append(max_size)
             max_size = 0
-
-print(_list)
 
 print(max(_list))
