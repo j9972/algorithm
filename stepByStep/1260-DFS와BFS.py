@@ -1,6 +1,4 @@
 from collections import deque
-import sys
-sys.setrecursionlimit(10**9)
 
 n,m,v = map(int,input().split())
 
@@ -14,7 +12,7 @@ for i in range(m):
     graph[a].append(b)
     graph[b].append(a)
 
-for i in range(n):
+for i in range(1,n+1):
     graph[i].sort()
 
 visited1 = [False] * (n+1)
@@ -38,8 +36,9 @@ def bfs(start):
 
         for i in graph[data]:
             if not visited2[i]:
-                visited2[i] = True
                 q.append(i)
+                visited2[i] = True
+                
 
 
 dfs(v)
