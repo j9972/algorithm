@@ -1,49 +1,34 @@
-n,k = map(int,input().split())
+n = int(input())
 
-words = [
-    input()[4:-4]
+arr = [
+    list(map(int,input().split()))
     for _ in range(n)
 ]
 
-max_val = 0
+d = [
+    [
+        [0 for _ in range(n)]
+        for _ in range(n)
+    ]
+    for _ in range(3)
+]
 
-alpha = ['a', 'n', 't', 'i', 'c']
-alpha_list = ['b', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'o', 'p'
-            ,'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z']
+# 0가로, 1세로, 2대각
+d[0][0][1] = 1
+for i in range(2,n):
+    if arr[0][i] == 0:
+        d[0][0][i] = d[0][0][i-1]
 
-def choose(cnt, start):
-    global max_val
+for i in range(1,n):
+    for j in range(1,n):
 
-    if cnt == 0:
-        max_val = max(max_val, calc())
-        return
+        # 대각
+        if arr[i][j] == 0 and arr[i][j-1] == 0 and arr[i-1][j] == 0:
+            d[2][i][j] = d[0][i-1][j-1] + d[1][i-1][j-1] + d[2][i-1][j-1]
 
-    for i in range(start, len(alpha_list)):
-        if alpha_list[i] not in alpha:
-            alpha.append(alpha_list[i])
-            choose(cnt-1, i + 1)
-            alpha.pop()
+        # 세로, 가로
+        if arr[i][j] == 0:
+            d[0][i][j] = d[0][i][j-1] + d[2][i][j-1]
+            d[1][i][j] = d[1][i-1][j] + d[2][i-1][j]
 
-def calc():
-    res = 0
-
-    for i in words:
-        flag = True
-
-        for j in i:
-            if j not in alpha:
-                flag = False
-                break
-    
-        if flag:
-            res += 1
-    return res
-
-
-if k < 5:
-    print(0)
-elif k == 26:
-    print(n)
-else:
-    choose(k-5, 0)
-    print(max_val)
+print(d[0][n-1][n-1] + d[1][n-1][n-1] + d[2][n-1][n-1])
