@@ -1,27 +1,25 @@
-import sys
 from collections import deque
 
-n,k = map(int,input().split())
-
-d = [-1] * 100001
-
+n, k = map(int, input().split()) 
 q = deque()
-q.append(n)
+q.append(n) 
+d = [-1 for _ in range(100001)]
 d[n] = 0
 
 while q:
     now = q.popleft()
-
     if now == k:
+        print(d[now])
         break
+    
+    if 0 <= now-1 < 100001 and d[now-1] == -1:
+        d[now-1] = d[now] + 1
+        q.append(now-1)
 
-    for i in [now+1, now-1, now*2]:
-        if 0 <= i < 100001 and d[i] == -1:
-            if i == now * 2:
-                d[i] = d[now]
-                q.appendleft(i)
-            else:
-                d[i] = d[now] + 1
-                q.append(i)
-
-print(d[k])
+    if 0 < now*2 < 100001 and d[now*2] == -1:
+        d[now*2] = d[now]
+        q.appendleft(now*2)  
+        
+    if 0 <= now+1 < 100001 and d[now+1] == -1:
+        d[now+1] = d[now] + 1
+        q.append(now+1)
