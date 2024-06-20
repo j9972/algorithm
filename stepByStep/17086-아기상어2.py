@@ -31,7 +31,7 @@ def bfs():
             if arr[nx][ny] == 0:
                 q.append((nx,ny))
                 arr[nx][ny] = arr[x][y] + 1
-    #return 
+    
 bfs()
 max_dist = 0
 for i in range(n):
