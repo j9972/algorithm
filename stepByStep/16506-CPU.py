@@ -2,33 +2,33 @@ n = int(input())
 
 asemble = []
 for _ in range(n):
-    op, rD, rA, smth = map(str, input().split())
+    op, rD, rA, smth = input().split()
     asemble.append([op, int(rD), int(rA), int(smth)])
 
 dic = {
-    "ADD" : '00000',
-    "ADDC" : '00001',
-    "SUB" : "00010",
-    "SUBC" : "00011",
-    "MOV" : "00100",
-    "MOVC" : "00101",
-    "AND" : "00110",
-    "ANDC" : "00111",
-    "OR" : "01000",
-    "ORC" : "01001",
-    "NOT" : "01010",
-    "MULT" : "01100",
-    "MULTC" : "01101",
-    "LSTFL" : "01110",
-    "LSTFLC" : "01111",
-    "LSTFR" : "10000",
-    "LSTFRC" : "10001",
-    "ASFTR" : "10010",
-    "ASFTRC" : "10011",
-    "RL" : "10100",
-    "RLC" : "10101",
-    "RR" : "10110",
-    "RRC" : "10111"
+    "ADD": '00000',
+    "ADDC": '00001',
+    "SUB": '00010',
+    "SUBC": '00011',
+    "MOV": '00100',
+    "MOVC": '00101',
+    "AND": '00110',
+    "ANDC": '00111',
+    "OR": '01000',
+    "ORC": '01001',
+    "NOT": '01010',
+    "MULT": '01100',
+    "MULTC": '01101',
+    "LSFTL": '01110',
+    "LSFTLC": '01111',
+    "LSFTR": '10000',
+    "LSFTRC": '10001',
+    "ASFTR": '10010',
+    "ASFTRC": '10011',
+    "RL": '10100',
+    "RLC": '10101',
+    "RR": '10110',
+    "RRC": '10111'
 }
 
 ans = []
