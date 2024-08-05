@@ -42,3 +42,12 @@ for i in range(1,min(1000000, time)+1):
         cnt = i
         break
 print(cnt)
+
+# 2번
+for i in range(m):
+    d, t = input().split()
+    t = int(t)
+
+    for _ in range(t):
+        B[a_idx] = B[a_idx - 1] + (1 if d == 'R' else -1)
+        a_idx += 1
