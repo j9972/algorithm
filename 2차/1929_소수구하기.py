@@ -10,6 +10,6 @@ def is_prime(n):
     return True
 
 for i in range(m,n+1):
-    if is_prime(i):
+    if i != 1 and is_prime(i):
         print(i)
     
