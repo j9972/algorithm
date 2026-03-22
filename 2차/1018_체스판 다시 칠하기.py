@@ -57,6 +57,5 @@ for i in range(x-7):
                 new_arr[a][b] = arr[i+a][j+b]
         
         min_cnt = min(min_cnt, counting(new_arr))
-        print("counting(new_arr) : " , counting(new_arr))
 
 print(min_cnt)
