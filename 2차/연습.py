@@ -3,37 +3,23 @@ input = sys.stdin.readline
 sys.setrecursionlimit(10**9)
 from collections import deque
 
-n,m = map(int,input().split())
+n,k = map(int,input().split())
 
-arr = [i for i in range(101)]
-visited = [False for i in range(101)]
+dp = [0] * 100001
 
-for _ in range(n+m):
-    s,e = map(int,input().split())
+def bfs(start):
+    q = deque()
+    q.append(start)
 
-    arr[s] = e
+    while q:
+        cur = q.popleft()
 
-q = deque()
-q.append((1,0))
-visited[1] = True
+        if cur == k:
+            return dp[k]
 
-while q:
-    now, cnt = q.popleft()
-
-    if now == 100:
-        print(cnt)
-        break
-
-    for i in range(1,7):
-        nx = now + i
-
-        if nx > 100:
-            continue
-
-        nx = arr[nx]
-
-        if not visited[nx]:
-            visited[nx] = True
-            q.append((nx, cnt + 1))
-
+        for i in (cur+1, cur-1, cur*2):
+            if 0<=i<=100000 and dp[i] == 0:
+                dp[i] = dp[cur] + 1
+                q.append(i)
+print(bfs(n))
 
