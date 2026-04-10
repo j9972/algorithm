@@ -1,26 +1,35 @@
 import sys
 input = sys.stdin.readline
 
-n = int(input())
+n,x,y = map(int,input().split())
 
-arr = []
-for i in range(n):
-    s,e = map(int,input().split())
-    arr.append([s,e])
+ans = 0
 
+while n > 0:
 
-arr.sort(key=lambda x : (x[1],x[0]))
+    half = 2 ** (n-1)
+    area = half ** 2
 
-cnt = 1
-cur = arr[0][1]
+    # 제 1사분면
+    if x < 2 ** (n-1) and y < 2 ** (n-1):
+        ans += 0 * area
 
-for i in range(1,len(arr)):
-    #print(arr[i][0])
-    s,e = arr[i][0], arr[i][1]
+    # 제 2사분면
+    elif x < 2 ** (n-1) and y >= 2 ** (n-1):
+        ans += 1 * area
+        y -= half
 
-    if s >= cur:
-        cnt += 1
-        cur = e
+    # 제 3사분면
+    elif x >= 2 ** (n-1) and y < 2 ** (n-1):
+        ans += 2 * area
+        x -= half
 
-print(cnt)
+    # 제 4사분면
+    elif x >= 2 ** (n-1) and y >= 2 ** (n-1):
+        ans += 3 * area
+        x -= half
+        y -= half
+    
+    n -= 1
 
+print(ans)
