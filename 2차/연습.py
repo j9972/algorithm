@@ -1,35 +1,39 @@
 import sys
 input = sys.stdin.readline
 
-n,x,y = map(int,input().split())
+from collections import deque
 
-ans = 0
+for _ in range(int(input())):
 
-while n > 0:
+    char = input().rstrip()
+    n = int(input())
+    temp = input().rstrip()[1:-1]
 
-    half = 2 ** (n-1)
-    area = half ** 2
+    if n == 0 or len(temp) == 0:
+        q = deque()
+    else:
+        q = deque(map(str,temp.split(',')))
 
-    # 제 1사분면
-    if x < 2 ** (n-1) and y < 2 ** (n-1):
-        ans += 0 * area
+    flag, reversed_flag = False, False
 
-    # 제 2사분면
-    elif x < 2 ** (n-1) and y >= 2 ** (n-1):
-        ans += 1 * area
-        y -= half
-
-    # 제 3사분면
-    elif x >= 2 ** (n-1) and y < 2 ** (n-1):
-        ans += 2 * area
-        x -= half
-
-    # 제 4사분면
-    elif x >= 2 ** (n-1) and y >= 2 ** (n-1):
-        ans += 3 * area
-        x -= half
-        y -= half
+    for i in char:
+        if i == 'R':
+            reversed_flag = not reversed_flag
+        else:
+            if len(q) == 0:
+                flag = True
+                break
+            else:
+                if not reversed_flag:
+                    q.popleft()
+                else:
+                    q.pop()
     
-    n -= 1
+    if flag:
+        print('error')
+    else:
+        if reversed_flag:
+            print('[' + ','.join(reversed(q)) + ']')
+        else:
+            print('[' + ','.join(q) + ']')
 
-print(ans)
