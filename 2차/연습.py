@@ -1,74 +1,72 @@
 import sys
 input = sys.stdin.readline
+sys.setrecursionlimit(10**9)
 
 from collections import deque
 
-m,n,h = map(int,input().split())
+n = int(input())
+arr = [
+    list(input().rstrip())
+    for _ in range(n)
+]
+visited = [
+    [False] * n
+    for _ in range(n)
+]
 
-arr = []
-for _ in range(h):
-    temp = [
-        list(map(int,input().split()))
-        for _ in range(n)
-    ]
-    arr.append(temp)
+dxs = [-1,1,0,0]
+dys = [0,0,-1,1]
 
-dxs = [-1,1,0,0,0,0]
-dys = [0,0,-1,1,0,0]
-dzs = [0,0,0,0,-1,1]
+def in_range(x,y):
+    return 0<=x<n and 0<=y<n and not visited[x][y]
 
-q = deque()
+def dfs(x,y):
+    for dx,dy in zip(dxs, dys):
+        nx = x + dx
+        ny = y + dy
 
-def possible(x,y,z):
-    return 0<=x<n and 0<=y<m and 0<=z<h and arr[z][x][y] == 0
+        if in_range(nx,ny) and arr[x][y] == arr[nx][ny]:
+            visited[nx][ny] = True
+            dfs(nx,ny)
+
+cnt = 0
+for i in range(n):
+    for j in range(n):
+        if not visited[i][j]:
+            visited[i][j] = True
+            cnt += 1    
+            dfs(i,j)
 
 
-def bfs():
-    while q:
-        x,y,z = q.popleft()
+for i in range(n):
+    for j in range(n):
+        if arr[i][j] == 'R':
+            arr[i][j] = 'G'
 
-        for dx,dy,dz in zip(dxs, dys, dzs):
-            nx = x + dx
-            ny = y + dy
-            nz = z + dz
+visited2 = [
+    [False] * n
+    for _ in range(n)
+]
 
-            if possible(nx,ny,nz):
-                q.append((nx,ny,nz))
-                arr[nz][nx][ny] = arr[z][x][y] + 1
+def in_range2(x,y):
+    return 0<=x<n and 0<=y<n and not visited2[x][y]
 
-flag = False
-def initCheck(arr):
-    for z in range(h):
-        for x in range(n):
-            for y in range(m):
-                if arr[z][x][y] == 0:
-                    flag = True
+cnt2 = 0
+def dfs2(x,y):
+    for dx,dy in zip(dxs, dys):
+        nx = x + dx
+        ny = y + dy
 
-initCheck(arr)
+        if in_range2(nx,ny) and arr[x][y] == arr[nx][ny]:
+            visited2[nx][ny] = True
+            dfs2(nx,ny)
 
-for z in range(h):
-    for x in range(n):
-        for y in range(m):
-            if arr[z][x][y] == 1:
-                q.append((x,y,z))
+cnt2 = 0
+for i in range(n):
+    for j in range(n):
+        if not visited2[i][j]:
+            visited2[i][j] = True
+            cnt2 += 1    
+            dfs2(i,j)
 
-bfs()
-days = -1
-
-def zeroCheck(arr):
-    global days
-    for z in range(h):
-        for x in range(n):
-            for y in range(m):
-                if arr[z][x][y] == 0:
-                    return True
-                days = max(days, arr[z][x][y])
-                
-    return False
-
-if zeroCheck(arr) == True:
-    print(-1)
-elif flag:
-    print(0)
-else:
-    print(days-1)
+print(cnt,cnt2)
